@@ -9,5 +9,51 @@ package agencia;
  * @author Walter
  */
 public class Agencia {
+    private static String nome;
+    private static int codigo;
+    private static String cidade;
+    private static String endereco;
+    public static int qtdFuncionariosContratados;
+    
+    public Agencia(String nome, int codigo, String cidade, String endereco) {
+        Agencia.nome = nome;
+        Agencia.codigo = codigo;
+        Agencia.cidade = cidade;
+        Agencia.endereco = endereco;
+        Agencia.qtdFuncionariosContratados  += 1;
+    }
+
+    public static String getNome() {
+        return nome;
+    }
+
+    public static void setNome(String nome) {
+        Agencia.nome = nome;
+    }
+
+    public static int getCodigo() {
+        return codigo;
+    }
+
+    public static void setCodigo(int codigo) {
+        Agencia.codigo = codigo;
+    }
+
+    public static String getCidade() {
+        return cidade;
+    }
+
+    public static void setCidade(String cidade) {
+        Agencia.cidade = cidade;
+    }
+
+    public static String getEndereco() {
+        return endereco;
+    }
+
+    public static void setEndereco(String endereco) {
+        Agencia.endereco = endereco;
+    }
+    
     
 }

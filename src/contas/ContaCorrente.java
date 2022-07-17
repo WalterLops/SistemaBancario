@@ -8,6 +8,25 @@ package contas;
  *
  * @author Walter
  */
-public class ContaCorrente {
-    
+public class ContaCorrente extends Conta {
+
+    private double taxaManutencao;
+
+    public ContaCorrente(int idConta, int agencia, int numeroConta, double saldo, String tipoConta) {
+        super(idConta, agencia, numeroConta, saldo, tipoConta);
+    }
+
+	public double getTaxaManutencao() {
+		return taxaManutencao;
+	}
+
+	public void setTaxaManutencao(double taxaManutencao) {
+		this.taxaManutencao = taxaManutencao;
+	}
+
+    @Override
+    public String toString() {
+        return super.toString()+"\n==================================================================";
+    }
+
 }
