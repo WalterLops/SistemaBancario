@@ -7,6 +7,7 @@ package jsonOperations;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import javax.swing.JOptionPane;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import usuarios.Administrador;
@@ -23,69 +24,13 @@ public class Escrita {
     private static JSONArray arrayContas = new JSONArray();
     private static JSONObject jsonObject = new JSONObject();
 
-    public static void ecreverFuncionario(Funcionario funcionarios[], String caminho) {
+    private static void escreverJSON(String caminho) {
 
-        for (Funcionario f : funcionarios) {
-
-            jsonObject.put("ID", f.getId());
-            jsonObject.put("senha", f.getSenha());
-            jsonObject.put("nome", f.getNome());
-            jsonObject.put("endereco", f.getEndereco());
-            jsonObject.put("telefone", f.getTelefone());
-            for (Integer i : f.getsetIdConta()) {
-                arrayContas.add(i);
-            }
-            jsonObject.put("nContas", f.getsetIdConta().size());
-            jsonObject.put("ContasAssociadas", arrayContas);
-
-            array.add(jsonObject);
-            jsonObject = new JSONObject();
-            arrayContas = new JSONArray();
-            System.gc();
-        }
-        System.gc();
-        try {
-            FileWriter file = new FileWriter(caminho);
+        try ( FileWriter file = new FileWriter(caminho)) {
             file.write(array.toJSONString());
-            file.close();
+
         } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            array = new JSONArray();
-            arrayContas = new JSONArray();
-            jsonObject = new JSONObject();
-            System.gc();
-        }
-    }
-
-    public static void ecreverAdmin(Administrador administradores[], String caminho) {
-
-        for (Administrador f : administradores) {
-
-            jsonObject.put("ID", f.getId());
-            jsonObject.put("senha", f.getSenha());
-            jsonObject.put("nome", f.getNome());
-            jsonObject.put("endereco", f.getEndereco());
-            jsonObject.put("telefone", f.getTelefone());
-            for (Integer i : f.getsetIdConta()) {
-                arrayContas.add(i);
-            }
-            jsonObject.put("nContas", f.getsetIdConta().size());
-            jsonObject.put("ContasAssociadas", arrayContas);
-
-            array.add(jsonObject);
-            jsonObject = new JSONObject();
-            arrayContas = new JSONArray();
-            System.gc();
-        }
-        System.gc();
-
-        try {
-            FileWriter file = new FileWriter(caminho);
-            file.write(array.toJSONString());
-            file.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro desconhecido!");
         } finally {
             array = new JSONArray();
             arrayContas = new JSONArray();
@@ -97,35 +42,75 @@ public class Escrita {
     public static void ecreverCliente(List<Cliente> clientes, String caminho) {
 
         for (Cliente f : clientes) {
+            if (f != null) {
+                jsonObject.put("ID", f.getId());
+                jsonObject.put("senha", f.getSenha());
+                jsonObject.put("nome", f.getNome());
+                jsonObject.put("endereco", f.getEndereco());
+                jsonObject.put("telefone", f.getTelefone());
+                for (Integer i : f.getsetIdConta()) {
+                    arrayContas.add(i);
+                }
+                jsonObject.put("nContas", f.getsetIdConta().size());
+                jsonObject.put("ContasAssociadas", arrayContas);
 
-            jsonObject.put("ID", f.getId());
-            jsonObject.put("senha", f.getSenha());
-            jsonObject.put("nome", f.getNome());
-            jsonObject.put("endereco", f.getEndereco());
-            jsonObject.put("telefone", f.getTelefone());
-            for (Integer i : f.getsetIdConta()) {
-                arrayContas.add(i);
+                array.add(jsonObject);
+                jsonObject = new JSONObject();
+                arrayContas = new JSONArray();
+                System.gc();
             }
-            jsonObject.put("nContas", f.getsetIdConta().size());
-            jsonObject.put("ContasAssociadas", arrayContas);
-
-            array.add(jsonObject);
-            jsonObject = new JSONObject();
-            arrayContas = new JSONArray();
-            System.gc();
         }
         System.gc();
-        try {
-            FileWriter file = new FileWriter(caminho);
-            file.write(array.toJSONString());
-            file.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            array = new JSONArray();
-            arrayContas = new JSONArray();
-            jsonObject = new JSONObject();
-            System.gc();
+        escreverJSON(caminho);
+    }
+
+    public static void ecreverFuncionario(Funcionario funcionarios[], String caminho) {
+
+        for (Funcionario f : funcionarios) {
+            if (f != null) {
+                jsonObject.put("ID", f.getId());
+                jsonObject.put("senha", f.getSenha());
+                jsonObject.put("nome", f.getNome());
+                jsonObject.put("endereco", f.getEndereco());
+                jsonObject.put("telefone", f.getTelefone());
+                for (Integer i : f.getsetIdConta()) {
+                    arrayContas.add(i);
+                }
+                jsonObject.put("nContas", f.getsetIdConta().size());
+                jsonObject.put("ContasAssociadas", arrayContas);
+
+                array.add(jsonObject);
+                jsonObject = new JSONObject();
+                arrayContas = new JSONArray();
+                System.gc();
+            }
         }
+        System.gc();
+        escreverJSON(caminho);
+    }
+
+    public static void ecreverAdmin(Administrador administradores[], String caminho) {
+
+        for (Administrador f : administradores) {
+            if (f != null) {
+                jsonObject.put("ID", f.getId());
+                jsonObject.put("senha", f.getSenha());
+                jsonObject.put("nome", f.getNome());
+                jsonObject.put("endereco", f.getEndereco());
+                jsonObject.put("telefone", f.getTelefone());
+                for (Integer i : f.getsetIdConta()) {
+                    arrayContas.add(i);
+                }
+                jsonObject.put("nContas", f.getsetIdConta().size());
+                jsonObject.put("ContasAssociadas", arrayContas);
+
+                array.add(jsonObject);
+                jsonObject = new JSONObject();
+                arrayContas = new JSONArray();
+                System.gc();
+            }
+        }
+        System.gc();
+        escreverJSON(caminho);
     }
 }

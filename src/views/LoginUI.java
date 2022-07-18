@@ -4,11 +4,23 @@
  */
 package views;
 
+import views.login.ExemploUsuarios;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import org.json.simple.parser.ParseException;
+import sistema.Login;
+import usuarios.Cliente;
+
 /**
  *
  * @author Walter
  */
 public class LoginUI extends javax.swing.JFrame {
+
+    Login login = new Login();
+    Cliente usuarioLogado;
+    ExemploUsuarios exp = new ExemploUsuarios();
 
     /**
      * Creates new form LoginUI
@@ -30,12 +42,16 @@ public class LoginUI extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         Usuario = new javax.swing.JTextField();
-        Senha = new javax.swing.JPasswordField();
         jLabel4 = new javax.swing.JLabel();
         Entar = new javax.swing.JButton();
         Sair = new javax.swing.JButton();
+        Senha = new javax.swing.JTextField();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Login - WWBanck");
+        setLocation(new java.awt.Point(202, 94));
 
         Painel.setBackground(new java.awt.Color(0, 20, 73));
 
@@ -49,14 +65,6 @@ public class LoginUI extends javax.swing.JFrame {
 
         Usuario.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         Usuario.setForeground(new java.awt.Color(0, 20, 73));
-
-        Senha.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        Senha.setForeground(new java.awt.Color(0, 20, 73));
-        Senha.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SenhaActionPerformed(evt);
-            }
-        });
 
         jLabel4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
@@ -74,6 +82,11 @@ public class LoginUI extends javax.swing.JFrame {
         Sair.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         Sair.setForeground(new java.awt.Color(0, 20, 73));
         Sair.setText("Sair");
+        Sair.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                SairMouseClicked(evt);
+            }
+        });
         Sair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SairActionPerformed(evt);
@@ -85,7 +98,7 @@ public class LoginUI extends javax.swing.JFrame {
         PainelLayout.setHorizontalGroup(
             PainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PainelLayout.createSequentialGroup()
-                .addContainerGap(172, Short.MAX_VALUE)
+                .addGap(172, 172, 172)
                 .addGroup(PainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addGroup(PainelLayout.createSequentialGroup()
                         .addComponent(jLabel4)
@@ -97,14 +110,16 @@ public class LoginUI extends javax.swing.JFrame {
                         .addGap(129, 129, 129))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PainelLayout.createSequentialGroup()
                         .addComponent(jLabel2)
-                        .addGap(28, 70, Short.MAX_VALUE)
-                        .addComponent(Entar)
-                        .addGap(69, 69, 69)
-                        .addComponent(Sair)
-                        .addGap(31, 31, 31))
-                    .addGroup(PainelLayout.createSequentialGroup()
-                        .addGap(72, 72, 72)
-                        .addComponent(Senha)))
+                        .addGroup(PainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(PainelLayout.createSequentialGroup()
+                                .addGap(28, 70, Short.MAX_VALUE)
+                                .addComponent(Entar)
+                                .addGap(69, 69, 69)
+                                .addComponent(Sair)
+                                .addGap(31, 31, 31))
+                            .addGroup(PainelLayout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addComponent(Senha)))))
                 .addGap(273, 273, 273))
         );
         PainelLayout.setVerticalGroup(
@@ -120,12 +135,27 @@ public class LoginUI extends javax.swing.JFrame {
                 .addGroup(PainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(Senha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(58, 58, 58)
+                .addGap(59, 59, 59)
                 .addGroup(PainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(Entar)
                     .addComponent(Sair))
                 .addContainerGap(134, Short.MAX_VALUE))
         );
+
+        jMenu1.setText("Exemplo de usuários");
+        jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu1MouseClicked(evt);
+            }
+        });
+        jMenu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu1ActionPerformed(evt);
+            }
+        });
+        jMenuBar1.add(jMenu1);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -147,17 +177,52 @@ public class LoginUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void SenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SenhaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_SenhaActionPerformed
-
     private void EntarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EntarActionPerformed
-       
+        int response = 0;
+        try {
+            response = login.Logar(Usuario.getText(), Senha.getText());
+        } catch (ParseException ex) {
+            Logger.getLogger(LoginUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        switch (response) {
+            case 1 -> {
+                usuarioLogado = login.getUsuarioLogado();
+                this.setVisible(false);
+                exp.setVisible(false);
+                new ClienteUI().setVisible(true);
+            }
+            case 2 -> {
+                usuarioLogado = login.getUsuarioLogado();
+                this.setVisible(false);
+                exp.setVisible(false);
+                new FuncionarioUI().setVisible(true);
+            }
+            case 3 -> {
+                usuarioLogado = login.getUsuarioLogado();
+                this.setVisible(false);
+                exp.setVisible(false);
+                new AdministradorUI().setVisible(true);
+            }
+            default -> JOptionPane.showMessageDialog(null, "Dados incorretos!");
+        }
     }//GEN-LAST:event_EntarActionPerformed
 
     private void SairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SairActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_SairActionPerformed
+
+    private void SairMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SairMouseClicked
+        System.exit(0);
+    }//GEN-LAST:event_SairMouseClicked
+
+    private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
+
+    }//GEN-LAST:event_jMenu1ActionPerformed
+
+    private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
+        exp.setExemplo(login.getExemploUsuarios());
+        exp.setVisible(true);
+    }//GEN-LAST:event_jMenu1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -198,10 +263,12 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JButton Entar;
     private javax.swing.JPanel Painel;
     private javax.swing.JButton Sair;
-    private javax.swing.JPasswordField Senha;
+    private javax.swing.JTextField Senha;
     private javax.swing.JTextField Usuario;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables
 }

@@ -4,12 +4,10 @@
  */
 package views;
 
+import java.awt.MenuContainer;
 import views.conta.Transferir;
 import views.conta.Depositar;
 import views.conta.Sacar;
-import java.awt.Color;
-import usuarios.Cliente;
-
 
 /**
  *
@@ -23,7 +21,7 @@ public class ContaUI extends javax.swing.JFrame {
     public ContaUI() {
         initComponents();
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -36,7 +34,7 @@ public class ContaUI extends javax.swing.JFrame {
         ContaPainel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         ShowSaldo = new javax.swing.JLabel();
-        jMenuBar1 = new javax.swing.JMenuBar();
+        BarraMenuConta = new javax.swing.JMenuBar();
         Sacar = new javax.swing.JMenu();
         Depositar = new javax.swing.JMenu();
         Transferir = new javax.swing.JMenu();
@@ -44,6 +42,7 @@ public class ContaUI extends javax.swing.JFrame {
         Sair = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Conta - WWBanck");
 
         ContaPainel.setBackground(new java.awt.Color(0, 20, 73));
 
@@ -90,7 +89,7 @@ public class ContaUI extends javax.swing.JFrame {
                 SacarActionPerformed(evt);
             }
         });
-        jMenuBar1.add(Sacar);
+        BarraMenuConta.add(Sacar);
 
         Depositar.setText("Depositar");
         Depositar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -98,7 +97,7 @@ public class ContaUI extends javax.swing.JFrame {
                 clickDepositar(evt);
             }
         });
-        jMenuBar1.add(Depositar);
+        BarraMenuConta.add(Depositar);
 
         Transferir.setText("Transferir");
         Transferir.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -106,7 +105,7 @@ public class ContaUI extends javax.swing.JFrame {
                 clickTransferir(evt);
             }
         });
-        jMenuBar1.add(Transferir);
+        BarraMenuConta.add(Transferir);
 
         Extrato.setText("Extrato da conta");
         Extrato.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -114,7 +113,7 @@ public class ContaUI extends javax.swing.JFrame {
                 clickExtrato(evt);
             }
         });
-        jMenuBar1.add(Extrato);
+        BarraMenuConta.add(Extrato);
 
         Sair.setText("Sair");
         Sair.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -122,9 +121,9 @@ public class ContaUI extends javax.swing.JFrame {
                 clickSair(evt);
             }
         });
-        jMenuBar1.add(Sair);
+        BarraMenuConta.add(Sair);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(BarraMenuConta);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -211,6 +210,7 @@ public class ContaUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuBar BarraMenuConta;
     private javax.swing.JPanel ContaPainel;
     private javax.swing.JMenu Depositar;
     private javax.swing.JMenu Extrato;
@@ -219,6 +219,5 @@ public class ContaUI extends javax.swing.JFrame {
     private javax.swing.JLabel ShowSaldo;
     private javax.swing.JMenu Transferir;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables
 }

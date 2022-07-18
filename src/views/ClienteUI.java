@@ -4,6 +4,12 @@
  */
 package views;
 
+import views.cliente.ContasCliente;
+import views.cliente.DadosCliente;
+import views.cliente.ValidarConta;
+import views.conta.Depositar;
+import views.conta.Sacar;
+
 /**
  *
  * @author Walter
@@ -11,12 +17,12 @@ package views;
 public class ClienteUI extends javax.swing.JFrame {
 
     /**
-     * Creates new form ClienteUI
+     * Creates new form ContaCorrenteUI
      */
     public ClienteUI() {
         initComponents();
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,21 +32,155 @@ public class ClienteUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        ContaPainel = new javax.swing.JPanel();
+        PainelCliente = new javax.swing.JDesktopPane();
+        BarraMenuConta = new javax.swing.JMenuBar();
+        Sacar = new javax.swing.JMenu();
+        Depositar = new javax.swing.JMenu();
+        jMenu1 = new javax.swing.JMenu();
+        Sair = new javax.swing.JMenu();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Interface Cliente - WWBanck");
+
+        ContaPainel.setBackground(new java.awt.Color(0, 20, 73));
+
+        PainelCliente.setPreferredSize(new java.awt.Dimension(545, 385));
+
+        javax.swing.GroupLayout PainelClienteLayout = new javax.swing.GroupLayout(PainelCliente);
+        PainelCliente.setLayout(PainelClienteLayout);
+        PainelClienteLayout.setHorizontalGroup(
+            PainelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 545, Short.MAX_VALUE)
+        );
+        PainelClienteLayout.setVerticalGroup(
+            PainelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 385, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout ContaPainelLayout = new javax.swing.GroupLayout(ContaPainel);
+        ContaPainel.setLayout(ContaPainelLayout);
+        ContaPainelLayout.setHorizontalGroup(
+            ContaPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ContaPainelLayout.createSequentialGroup()
+                .addContainerGap(81, Short.MAX_VALUE)
+                .addComponent(PainelCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(78, 78, 78))
+        );
+        ContaPainelLayout.setVerticalGroup(
+            ContaPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ContaPainelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(PainelCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(22, Short.MAX_VALUE))
+        );
+
+        Sacar.setText("Minhas Contas");
+        Sacar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clickSacar(evt);
+            }
+        });
+        Sacar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SacarActionPerformed(evt);
+            }
+        });
+        BarraMenuConta.add(Sacar);
+
+        Depositar.setText("Meus dados");
+        Depositar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clickDepositar(evt);
+            }
+        });
+        Depositar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DepositarActionPerformed(evt);
+            }
+        });
+        BarraMenuConta.add(Depositar);
+
+        jMenu1.setText("Operações da conta");
+        jMenu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu1ActionPerformed(evt);
+            }
+        });
+        BarraMenuConta.add(jMenu1);
+
+        Sair.setText("Sair");
+        Sair.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clickSair(evt);
+            }
+        });
+        Sair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SairActionPerformed(evt);
+            }
+        });
+        BarraMenuConta.add(Sair);
+
+        setJMenuBar(BarraMenuConta);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(ContaPainel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(ContaPainel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void SacarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SacarActionPerformed
+        ContasCliente show = new ContasCliente();
+        this.PainelCliente.removeAll();
+        this.PainelCliente.add(show);
+        show.setVisible(true);
+    }//GEN-LAST:event_SacarActionPerformed
+
+    private void clickSacar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickSacar
+        //this.ShowSaldo.setText("Clicou sacar");
+        this.setVisible(false);
+        new Sacar().setVisible(true);
+    }//GEN-LAST:event_clickSacar
+
+    private void clickDepositar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickDepositar
+        //this.ShowSaldo.setText("Clicou Depositar1");
+        this.setVisible(false);
+        new Depositar().setVisible(true);
+    }//GEN-LAST:event_clickDepositar
+
+    private void clickSair(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickSair
+        //this.ShowSaldo.setText("Clicou Sair");
+        System.exit(0);
+    }//GEN-LAST:event_clickSair
+
+    private void DepositarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DepositarActionPerformed
+        DadosCliente show = new DadosCliente();
+        this.PainelCliente.removeAll();
+        this.PainelCliente.add(show);
+        show.setVisible(true);
+    }//GEN-LAST:event_DepositarActionPerformed
+
+    private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
+        ValidarConta show = new ValidarConta();
+        this.PainelCliente.removeAll();
+        this.PainelCliente.add(show);
+        show.setVisible(true);
+    }//GEN-LAST:event_jMenu1ActionPerformed
+
+    private void SairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SairActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_SairActionPerformed
 
     /**
      * @param args the command line arguments
@@ -68,6 +208,9 @@ public class ClienteUI extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(ClienteUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -78,5 +221,12 @@ public class ClienteUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuBar BarraMenuConta;
+    private javax.swing.JPanel ContaPainel;
+    private javax.swing.JMenu Depositar;
+    private javax.swing.JDesktopPane PainelCliente;
+    private javax.swing.JMenu Sacar;
+    private javax.swing.JMenu Sair;
+    private javax.swing.JMenu jMenu1;
     // End of variables declaration//GEN-END:variables
 }

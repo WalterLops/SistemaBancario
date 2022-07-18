@@ -4,8 +4,12 @@
  */
 package sistema;
 
+import agencia.Agencia;
+import contas.Conta;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+import jsonOperations.Leitura;
+import org.json.simple.parser.ParseException;
 import usuarios.Administrador;
 import usuarios.Cliente;
 import usuarios.Funcionario;
@@ -18,47 +22,74 @@ public class Login {
 
     public Login() {
     }
+    
+    private static List<Cliente> listaCliente = new ArrayList<>();
+    private static Funcionario[] listaFuncionarios = new Funcionario[25];
+    private static Administrador[] administradores = new Administrador[8];
+    
+    private String baseAdministradores = "./src/baseDeDados/administradores.json";
+    private String baseFuncionarios = "./src/baseDeDados/funcionarios.json";
+    private String baseClientes = "./src/baseDeDados/clientes.json";
+    
+    private Cliente usuarioLogado;
 
-    public static Cliente Logar(List<Cliente> list, Funcionario[] listaFuncionario, Administrador[] administrador) {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Digite o seu ID: ");
-        String id = sc.next();
+    public Cliente getUsuarioLogado() {
+        return usuarioLogado;
+    }
 
+    public void setUsuarioLogado(Cliente usuarioLogado) {
+        this.usuarioLogado = usuarioLogado;
+    }
 
-
-        System.out.print("Digite a sua senha: ");
-        String senha = sc.next();
-
-        if (list != null) {
-            for (Cliente cliente : list) {
-                if (id.equals(cliente.getId()) && senha.equals(cliente.getSenha())) {
-                    return cliente;
+    public int Logar(String id, String senha) throws ParseException {
+        
+        listaCliente = Leitura.lerClientes(baseClientes);
+        listaFuncionarios = Leitura.lerFuncionarios(baseFuncionarios);
+        administradores = Leitura.lerAdministradores(baseAdministradores);
+        
+        if (listaCliente != null) {
+            for (Cliente cli : listaCliente) {
+                if (id.equals(cli.getId()) && senha.equals(cli.getSenha())) {
+                    usuarioLogado = cli;
+                    return 1;
                 }
             }
-        } else if (listaFuncionario != null) {
-            for (Funcionario c : listaFuncionario) {
-                if (id == c.getId() && senha == c.getSenha()) {
-                    return c;
+        } 
+        if (listaFuncionarios != null) {
+            for (Funcionario c : listaFuncionarios) {
+                if (id.equals(c.getId()) && senha.equals(c.getSenha())) {
+                    usuarioLogado = c;
+                    return 2;
                 }
             }
 
-        } else if (administrador != null) {
-            for (Administrador c : administrador) {
-                if (id == c.getId() && senha == c.getSenha()) {
-                    return c;
+        } 
+        if (administradores != null) {
+            for (Administrador c : administradores) {
+                if (id.equals(c.getId()) && senha.equals(c.getSenha())) {
+                    usuarioLogado = c;
+                    return 3;
                 }
-
             }
         }
-        return null;
+        return 0;
     }
-
     
-
-    public void Logout() {
-
-        System.out.println("Finalizando programa.");
-
+    public String getExemploUsuarios(){
+        return  """
+                Cliente 
+                ID: C1022
+                Senha: 1234
+                
+                Funcionário
+                ID: F1022
+                Senha: 1234
+                
+                Administrador
+                ID: A1020
+                Senha: 1234""";
     }
-
 }
+
+
+

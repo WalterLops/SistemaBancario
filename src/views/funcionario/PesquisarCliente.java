@@ -31,6 +31,10 @@ public class PesquisarCliente extends javax.swing.JInternalFrame {
         jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
+        setMaximumSize(new java.awt.Dimension(700, 495));
+        setMinimumSize(new java.awt.Dimension(700, 495));
+        setPreferredSize(new java.awt.Dimension(700, 495));
+
         jLabel1.setText("Digite o ID do cliente");
 
         jButton1.setText("Continuar");

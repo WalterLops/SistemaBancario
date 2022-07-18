@@ -31,6 +31,11 @@ public class AlterarSenha extends javax.swing.JInternalFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
+        setTitle("Alterar Senha");
+        setMaximumSize(new java.awt.Dimension(700, 495));
+        setMinimumSize(new java.awt.Dimension(700, 495));
+        setPreferredSize(new java.awt.Dimension(700, 495));
+
         jLabel1.setText("Nova senha:");
 
         jButton1.setText("Salvar");
