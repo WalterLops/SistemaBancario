@@ -4,6 +4,10 @@
  */
 package jsonOperations;
 
+import contas.Conta;
+import contas.ContaCorrente;
+import contas.ContaPoupanca;
+import contas.ContaSalario;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -110,4 +114,42 @@ public class Leitura {
         }
         return administrador;
     }
+    
+    public static List<Conta> lerContas(String caminho) throws org.json.simple.parser.ParseException {
+
+        lerJSON(caminho);
+        List<Conta> listaContas = new ArrayList<>();
+        for (int i = 0; i < array.size(); i++) {
+
+            jsonString = array.get(i).toString();
+            obj = (JSONObject) parser.parse(jsonString);
+            
+            int idConta = Integer.parseInt(obj.get("idConta").toString());
+            int agencia = Integer.parseInt(obj.get("agencia").toString());
+            int numeroConta = Integer.parseInt(obj.get("numeroConta").toString());
+            double saldo = Double.parseDouble(obj.get("saldo").toString());
+            String tipoConta = (String) obj.get("tipoConta");
+            
+            if (obj.get("tipoConta").equals("Conta Poupança")){
+                double limiteSaque = Double.parseDouble(obj.get("limiteSaque").toString());
+                ContaPoupanca conta = new ContaPoupanca(idConta, agencia, numeroConta, saldo, tipoConta);
+                conta.setLimiteSaque(limiteSaque);
+                listaContas.add(conta);
+            }
+            if (obj.get("tipoConta").equals("Conta Corrente")){
+                double taxaManutencao = Double.parseDouble(obj.get("taxaManutencao").toString());
+                ContaCorrente conta = new ContaCorrente(idConta, agencia, numeroConta, saldo, tipoConta);
+                conta.setTaxaManutencao(taxaManutencao);
+                listaContas.add(conta);
+            }
+            if (obj.get("tipoConta").equals("Conta Salário")){
+                String  cnpjEmpresa = obj.get("cnpjEmpresa").toString();
+                ContaSalario conta = new ContaSalario(cnpjEmpresa, idConta, agencia, numeroConta, saldo, tipoConta);
+                conta.setCnpjEmpresa(cnpjEmpresa);
+                listaContas.add(conta);
+            }
+        }
+        return listaContas;
+    }
+    
 }

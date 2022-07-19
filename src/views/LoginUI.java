@@ -189,7 +189,9 @@ public class LoginUI extends javax.swing.JFrame {
                 usuarioLogado = login.getUsuarioLogado();
                 this.setVisible(false);
                 exp.setVisible(false);
-                new ClienteUI().setVisible(true);
+                ClienteUI cliente = new ClienteUI();
+                cliente.setClienteLogado(usuarioLogado);
+                cliente.setVisible(true);
             }
             case 2 -> {
                 usuarioLogado = login.getUsuarioLogado();

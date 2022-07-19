@@ -4,6 +4,10 @@
  */
 package jsonOperations;
 
+import contas.Conta;
+import contas.ContaCorrente;
+import contas.ContaPoupanca;
+import contas.ContaSalario;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
@@ -39,7 +43,7 @@ public class Escrita {
         }
     }
 
-    public static void ecreverCliente(List<Cliente> clientes, String caminho) {
+    public static void escreverCliente(List<Cliente> clientes, String caminho) {
 
         for (Cliente f : clientes) {
             if (f != null) {
@@ -64,7 +68,7 @@ public class Escrita {
         escreverJSON(caminho);
     }
 
-    public static void ecreverFuncionario(Funcionario funcionarios[], String caminho) {
+    public static void escreverFuncionario(Funcionario funcionarios[], String caminho) {
 
         for (Funcionario f : funcionarios) {
             if (f != null) {
@@ -89,7 +93,7 @@ public class Escrita {
         escreverJSON(caminho);
     }
 
-    public static void ecreverAdmin(Administrador administradores[], String caminho) {
+    public static void escreverAdmin(Administrador administradores[], String caminho) {
 
         for (Administrador f : administradores) {
             if (f != null) {
@@ -104,6 +108,37 @@ public class Escrita {
                 jsonObject.put("nContas", f.getsetIdConta().size());
                 jsonObject.put("ContasAssociadas", arrayContas);
 
+                array.add(jsonObject);
+                jsonObject = new JSONObject();
+                arrayContas = new JSONArray();
+                System.gc();
+            }
+        }
+        System.gc();
+        escreverJSON(caminho);
+    }
+
+    public static void escreverContas(List<Conta> listaContas, String caminho) {
+
+        for (Conta f : listaContas) {
+            if (f != null) {
+                jsonObject.put("idConta", f.getIdConta());
+                jsonObject.put("agencia", f.getAgencia());
+                jsonObject.put("numeroConta", f.getNumeroConta());
+                jsonObject.put("saldo", f.getSaldo());
+                jsonObject.put("tipoConta", f.getTipoConta());
+                if (f instanceof ContaPoupanca contaPoupanca) {
+                    //double limiteSaque;
+                    jsonObject.put("limiteSaque", contaPoupanca.getLimiteSaque());
+                }
+                if (f instanceof ContaCorrente contaCorrente) {
+                    //double taxaManutencao;
+                    jsonObject.put("taxaManutencao", contaCorrente.getTaxaManutencao());
+                }
+                if (f instanceof ContaSalario contaSalario) {
+                    //int cnpjEmpresa;
+                    jsonObject.put("cnpjEmpresa", contaSalario.getCnpjEmpresa());
+                }
                 array.add(jsonObject);
                 jsonObject = new JSONObject();
                 arrayContas = new JSONArray();

@@ -4,6 +4,14 @@
  */
 package views.cliente;
 
+import contas.Conta;
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import views.ClienteUI;
+import views.ContaUI;
+
 /**
  *
  * @author Walter
@@ -26,24 +34,133 @@ public class ValidarConta extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        CaixaID = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        CaixaNumeroConta = new javax.swing.JTextField();
+        BtnIR = new javax.swing.JButton();
+
+        setBackground(new java.awt.Color(2, 78, 148));
         setBorder(null);
-        setPreferredSize(new java.awt.Dimension(545, 385));
+        setMaximumSize(new java.awt.Dimension(700, 400));
+        setMinimumSize(new java.awt.Dimension(700, 400));
+        setPreferredSize(new java.awt.Dimension(700, 400));
+
+        jLabel1.setText("ID da conta");
+
+        CaixaID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CaixaIDActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("N° da conta");
+
+        CaixaNumeroConta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CaixaNumeroContaActionPerformed(evt);
+            }
+        });
+
+        BtnIR.setText("IR");
+        BtnIR.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BtnIRMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 406, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(127, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(CaixaNumeroConta, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(CaixaID, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(BtnIR))
+                .addGap(111, 111, 111))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 286, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(114, 114, 114)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(CaixaID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(CaixaNumeroConta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(37, 37, 37)
+                .addComponent(BtnIR)
+                .addContainerGap(117, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void CaixaIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CaixaIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CaixaIDActionPerformed
+
+    private void CaixaNumeroContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CaixaNumeroContaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CaixaNumeroContaActionPerformed
+
+    List<Conta> listaContas = new ArrayList<>();
+    ClienteUI clienteUI;
+
+    public ClienteUI getClienteUI() {
+        return clienteUI;
+    }
+
+    public void setClienteUI(ClienteUI clienteUI) {
+        this.clienteUI = clienteUI;
+    }
+
+    public List<Conta> getListaContas() {
+        return listaContas;
+    }
+
+    public void setListaContas(List<Conta> listaContas) {
+        this.listaContas = listaContas;
+    }
+
+    private void BtnIRMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnIRMouseClicked
+        Conta contaSelecionada = null;
+        ContaUI show = new ContaUI();
+        int numeroConta = Integer.parseInt(this.CaixaNumeroConta.getText());
+        int idConta = Integer.parseInt(this.CaixaID.getText());
+        int cont = 0;
+        for (Conta conta : listaContas) {
+            cont++;
+            if (conta.getNumeroConta() == numeroConta && conta.getIdConta() == idConta) {
+                contaSelecionada = conta;
+                break;
+            }
+        }
+        if (contaSelecionada == null) {
+            JOptionPane.showMessageDialog(null, "Dados incorretos!");
+        } else {
+            show.setContaSelecionada(contaSelecionada);
+            clienteUI.setVisible(false);
+            show.setVisible(true);
+        }
+    }//GEN-LAST:event_BtnIRMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BtnIR;
+    private javax.swing.JTextField CaixaID;
+    private javax.swing.JTextField CaixaNumeroConta;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
 }

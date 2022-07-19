@@ -75,7 +75,7 @@ public class Administrador extends Funcionario implements InterfaceAdmin {
                     }
                     if ("Conta Salário".equals(conta.getTipoConta())) {
                         System.out.println("Digite o novo CNPJ da empresa: ");
-                        int cnpj = sc.nextInt();
+                        String cnpj = sc.next();
                         if (conta instanceof ContaSalario contaSalario) {
                             contaSalario.setCnpjEmpresa(cnpj);
                         }

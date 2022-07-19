@@ -4,17 +4,33 @@
  */
 package views.cliente;
 
+import usuarios.Cliente;
+
 /**
  *
  * @author Walter
  */
 public class DadosCliente extends javax.swing.JInternalFrame {
-
+    
+    Cliente clienteLogado;
+    
     /**
      * Creates new form DadosCliente
      */
     public DadosCliente() {
         initComponents();
+    }
+
+    public Cliente getClienteLogado() {
+        return clienteLogado;
+    }
+
+    public void setClienteLogado(Cliente clienteLogado) {
+        this.clienteLogado = clienteLogado;
+    }
+    
+    public void setDadosCliente(Cliente clienteLogado){
+        this.ShowDados.setText(clienteLogado.toString());
     }
 
     /**
@@ -26,17 +42,31 @@ public class DadosCliente extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        ShowDados = new javax.swing.JTextArea();
+
+        setBackground(new java.awt.Color(2, 78, 148));
+        setBorder(null);
         setPreferredSize(new java.awt.Dimension(545, 385));
+
+        ShowDados.setColumns(20);
+        ShowDados.setRows(5);
+        ShowDados.setPreferredSize(new java.awt.Dimension(700, 400));
+        jScrollPane1.setViewportView(ShowDados);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 539, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -44,5 +74,7 @@ public class DadosCliente extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea ShowDados;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

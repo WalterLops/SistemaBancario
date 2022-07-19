@@ -4,6 +4,9 @@
  */
 package views.cliente;
 
+import contas.Conta;
+import java.util.List;
+
 /**
  *
  * @author Walter
@@ -16,6 +19,16 @@ public class ContasCliente extends javax.swing.JInternalFrame {
     public ContasCliente() {
         initComponents();
     }
+    
+    public void setContasCliente(List<Conta> listaContas){
+        if (listaContas != null){
+        for (Conta conta : listaContas){
+            if (conta != null){
+            ShowContas.setText(conta.toString());
+            }
+        }
+       }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -26,18 +39,51 @@ public class ContasCliente extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        ShowContas = new javax.swing.JTextArea();
+
+        setBackground(new java.awt.Color(2, 78, 148));
         setBorder(null);
-        setPreferredSize(new java.awt.Dimension(545, 385));
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(680, 400));
+        setMinimumSize(new java.awt.Dimension(680, 400));
+        setPreferredSize(new java.awt.Dimension(680, 400));
+
+        jPanel1.setBackground(new java.awt.Color(2, 78, 148));
+
+        ShowContas.setColumns(20);
+        ShowContas.setRows(5);
+        jScrollPane1.setViewportView(ShowContas);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 406, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 286, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -45,5 +91,8 @@ public class ContasCliente extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea ShowContas;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

@@ -17,10 +17,13 @@ import usuarios.Administrador;
 import usuarios.Cliente;
 import usuarios.Funcionario;
 
-import static jsonOperations.Escrita.ecreverAdmin;
-import static jsonOperations.Escrita.ecreverFuncionario;
 
 import views.LoginUI;
+import views.SplashUI;
+import static jsonOperations.Escrita.escreverAdmin;
+import static jsonOperations.Escrita.escreverCliente;
+import static jsonOperations.Escrita.escreverContas;
+import static jsonOperations.Escrita.escreverFuncionario;
 
 /**
  *
@@ -51,11 +54,11 @@ public class Sistema {
         listaCliente.add(c2);
 
         String baseClientes = "./src/baseDeDados/clientes.json";
-        Escrita.ecreverCliente(listaCliente, baseClientes);
+        escreverCliente(listaCliente, baseClientes);
 
         // Contas de Funcionários
         Funcionario f1 = new Funcionario(null, null, "F1020", "1234", "Ana S", "Rua B", "9999855");
-        listaConta.add(new ContaSalario(115548, 1126, 709, 11445, 4500, "Conta Salário"));
+        listaConta.add(new ContaSalario("115548", 1126, 709, 11445, 4500, "Conta Salário"));
         f1.setIdConta(1126);
         listaFuncionarios[0] = f1;
 
@@ -65,7 +68,7 @@ public class Sistema {
         listaFuncionarios[1] = f2;
 
         String baseFuncionarios = "./src/baseDeDados/funcionarios.json";
-        ecreverFuncionario(listaFuncionarios, baseFuncionarios);
+        escreverFuncionario(listaFuncionarios, baseFuncionarios);
 
         // Contas de Administradores
         Administrador a1 = new Administrador(null, null, "A1020", "1234", "Carla", "Rua B", "9997755");
@@ -79,14 +82,19 @@ public class Sistema {
         administradores[1] = a2;
 
         String baseAdministradores = "./src/baseDeDados/administradores.json";
-        ecreverAdmin(administradores, baseAdministradores);
+        escreverAdmin(administradores, baseAdministradores);
 
+        String baseContas = "./src/baseDeDados/listaContas.json";
+        escreverContas(listaConta, baseContas);
+        
+        // Tela SplashUI
+        SplashUI spl = new SplashUI();
+        spl.setVisible(true);
+        spl.eventoCarregando();
+        spl.dispose();
+        
         // Inicializando a tela de login
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new LoginUI().setVisible(true);
-            }
-        });
+        new LoginUI().setVisible(true);
 
     }
 }

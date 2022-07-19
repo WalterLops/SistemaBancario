@@ -10,18 +10,18 @@ package contas;
  */
 public class ContaSalario extends Conta {
 
-    private int cnpjEmpresa;
+    private String  cnpjEmpresa;
 
-    public ContaSalario(int cnpjEmpresa, int idConta, int agencia, int numeroConta, double saldo, String tipoConta) {
+    public ContaSalario(String  cnpjEmpresa, int idConta, int agencia, int numeroConta, double saldo, String tipoConta) {
         super(idConta, agencia, numeroConta, saldo, tipoConta);
         this.cnpjEmpresa = cnpjEmpresa;
     }
 
-    public int getCnpjEmpresa() {
+    public String getCnpjEmpresa() {
         return cnpjEmpresa;
     }
 
-    public void setCnpjEmpresa(int cnpjEmpresa) {
+    public void setCnpjEmpresa(String  cnpjEmpresa) {
         this.cnpjEmpresa = cnpjEmpresa;
     }
 

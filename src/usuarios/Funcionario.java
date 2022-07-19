@@ -49,6 +49,17 @@ public class Funcionario extends Cliente implements InterfaceFuncionario {
 
     //----------Definição dos métodos do funcionário-----------
     @Override
+    public String toString() {
+        if (dataDemissao == null) {
+            return super.toString()
+                    + "\nData de admissao: " + dataAdmissao;
+        }
+        return super.toString()
+                + "\nData de admissao: " + dataAdmissao
+                + "\nData de demissao: " + dataDemissao;
+    }
+
+    @Override
     public void alterarSenhaAcesso(String senha) {
         setSenha(senha);
     }
@@ -81,7 +92,7 @@ public class Funcionario extends Cliente implements InterfaceFuncionario {
             }
             case 305 -> {
                 System.out.print("Digite o CNPJ da empresa: ");
-                int cnpjEmpresa = sc.nextInt();
+                String cnpjEmpresa = sc.next();
                 return new ContaSalario(cnpjEmpresa, idConta, agencia, numeroConta, saldo, "Conta Salário");
             }
             case 309 -> {
@@ -104,7 +115,7 @@ public class Funcionario extends Cliente implements InterfaceFuncionario {
     @Override
     public void acessarInfoCliente(String idCliente, List<Cliente> listaCleinte) {
         for (Cliente cliente : listaCleinte) {
-            if (idCliente == cliente.getId()) {
+            if (idCliente.equals(cliente.getId())) {
                 System.out.println(cliente.toString());
             }
         }
@@ -113,7 +124,7 @@ public class Funcionario extends Cliente implements InterfaceFuncionario {
     @Override
     public List<Cliente> alterarCliente(String idCliente, List<Cliente> listaCliente) {
         for (Cliente cliente : listaCliente) {
-            if (cliente.getId() == idCliente) {
+            if (cliente.getId().equals(idCliente)) {
                 System.out.print("Digite o código da operação desejada: "
                         + "1 - alterar senha"
                         + "2 - alterar nome"

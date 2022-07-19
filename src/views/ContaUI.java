@@ -4,6 +4,7 @@
  */
 package views;
 
+import contas.Conta;
 import java.awt.MenuContainer;
 import views.conta.Transferir;
 import views.conta.Depositar;
@@ -14,12 +15,23 @@ import views.conta.Sacar;
  * @author Walter
  */
 public class ContaUI extends javax.swing.JFrame {
+    
+    Conta contaSelecionada;
 
+    public Conta getContaSelecionada() {
+        return contaSelecionada;
+    }
+
+    public void setContaSelecionada(Conta contaSelecionada) {
+        this.contaSelecionada = contaSelecionada;
+    }
+    
     /**
      * Creates new form ContaCorrenteUI
      */
     public ContaUI() {
         initComponents();
+        this.ShowSaldo.setText(Double.toString(contaSelecionada.getSaldo()));
     }
     
     /**
