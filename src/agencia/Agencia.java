@@ -13,14 +13,13 @@ public class Agencia {
     private static int codigo;
     private static String cidade;
     private static String endereco;
-    public static int qtdFuncionariosContratados;
+    private static double montanteTotal;
     
     public Agencia(String nome, int codigo, String cidade, String endereco) {
         Agencia.nome = nome;
         Agencia.codigo = codigo;
         Agencia.cidade = cidade;
         Agencia.endereco = endereco;
-        Agencia.qtdFuncionariosContratados  += 1;
     }
 
     public static String getNome() {
@@ -54,6 +53,13 @@ public class Agencia {
     public static void setEndereco(String endereco) {
         Agencia.endereco = endereco;
     }
-    
+
+    public static double getMontanteTotal() {
+        return montanteTotal;
+    }
+
+    public static void setMontanteTotal(double montanteTotal) {
+        Agencia.montanteTotal += montanteTotal;
+    }
     
 }

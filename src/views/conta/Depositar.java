@@ -4,6 +4,14 @@
  */
 package views.conta;
 
+import contas.Conta;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import jsonOperations.Escrita;
+import jsonOperations.Leitura;
+import org.json.simple.parser.ParseException;
 import views.ContaUI;
 
 /**
@@ -11,7 +19,38 @@ import views.ContaUI;
  * @author Walter
  */
 public class Depositar extends javax.swing.JFrame {
+    
+    private Conta contaSelecionada;
+    private ContaUI contaUI;
+    private List<Conta> listaContas;
+    private String baseContas = "./src/baseDeDados/listaContas.json";
 
+    public List<Conta> getListaContas() {
+        return listaContas;
+    }
+
+    public void setListaContas(List<Conta> listaContas) {
+        this.listaContas = listaContas;
+    }
+
+    public Conta getContaSelecionada() {
+        return contaSelecionada;
+    }
+
+    public void setContaSelecionada(Conta contaSelecionada) {
+        this.contaSelecionada = contaSelecionada;
+    }
+
+    public ContaUI getContaUI() {
+        return contaUI;
+    }
+
+    public void setContaUI(ContaUI contaUI) {
+        this.contaUI = contaUI;
+    }
+    
+    
+    
     /**
      * Creates new form Depositar
      */
@@ -29,41 +68,51 @@ public class Depositar extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        BtnDepositar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        BtnVoltar = new javax.swing.JButton();
+        CaixaDeposito = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setLocation(new java.awt.Point(400, 180));
+        setUndecorated(true);
 
-        jButton1.setText("Depositar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jPanel1.setBackground(new java.awt.Color(2, 78, 148));
+
+        BtnDepositar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        BtnDepositar.setForeground(new java.awt.Color(2, 78, 148));
+        BtnDepositar.setText("Depositar");
+        BtnDepositar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BtnDepositarMouseClicked(evt);
+            }
+        });
+        BtnDepositar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                BtnDepositarActionPerformed(evt);
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Valor do depósito");
 
-        jButton2.setText("Tela inicial");
-        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+        BtnVoltar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        BtnVoltar.setForeground(new java.awt.Color(2, 78, 148));
+        BtnVoltar.setText("Tela inicial");
+        BtnVoltar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 clickTelaInicial(evt);
             }
         });
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        BtnVoltar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                BtnVoltarActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Sair");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
+        CaixaDeposito.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        CaixaDeposito.setForeground(new java.awt.Color(2, 78, 148));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -71,22 +120,16 @@ public class Depositar extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(71, 71, 71)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(11, 11, 11)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jLabel1))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(59, 59, 59))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(CaixaDeposito, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(59, 59, 59))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(125, 125, 125)
+                .addComponent(BtnDepositar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(52, 52, 52)
+                .addComponent(BtnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(78, 78, 78))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -94,13 +137,12 @@ public class Depositar extends javax.swing.JFrame {
                 .addGap(78, 78, 78)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(CaixaDeposito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(70, 70, 70)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
-                .addContainerGap(108, Short.MAX_VALUE))
+                    .addComponent(BtnDepositar)
+                    .addComponent(BtnVoltar))
+                .addContainerGap(106, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -117,22 +159,35 @@ public class Depositar extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void BtnDepositarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDepositarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_BtnDepositarActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void BtnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnVoltarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_BtnVoltarActionPerformed
 
     private void clickTelaInicial(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickTelaInicial
+        listaContas.add(contaSelecionada);
+        Escrita.escreverContas(listaContas, baseContas);
+        contaUI.setContaSelecionada(contaSelecionada);
+        contaUI.atualizarSaldo("R$ " + Double.toString(contaSelecionada.getSaldo()));
+        contaUI.setVisible(true);
         this.dispose();
-        new ContaUI().setVisible(true);
     }//GEN-LAST:event_clickTelaInicial
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-       System.exit(0);
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void BtnDepositarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnDepositarMouseClicked
+        try {
+            listaContas = Leitura.lerContas(baseContas);
+            listaContas.remove(contaSelecionada);
+            double valorDeposito = Double.parseDouble(this.CaixaDeposito.getText());
+            listaContas.remove(contaSelecionada);
+            contaSelecionada.depositar(valorDeposito);
+            this.CaixaDeposito.setText("");
+        } catch (ParseException ex) {
+            Logger.getLogger(Depositar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_BtnDepositarMouseClicked
 
     /**
      * @param args the command line arguments
@@ -170,11 +225,10 @@ public class Depositar extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton BtnDepositar;
+    private javax.swing.JButton BtnVoltar;
+    private javax.swing.JTextField CaixaDeposito;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

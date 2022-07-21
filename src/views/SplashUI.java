@@ -31,7 +31,7 @@ public class SplashUI extends javax.swing.JFrame {
                 this.ProgressBar.setValue(i + 10);
  
                 // pausar a thread
-                Thread.sleep(500);
+                Thread.sleep(250);
                 i += 20;
             }
         }
@@ -58,6 +58,8 @@ public class SplashUI extends javax.swing.JFrame {
         setUndecorated(true);
 
         jPanel2.setBackground(new java.awt.Color(2, 78, 148));
+        jPanel2.setMaximumSize(new java.awt.Dimension(530, 233));
+        jPanel2.setMinimumSize(new java.awt.Dimension(530, 233));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/views/img/WWB.png"))); // NOI18N
 
@@ -80,7 +82,7 @@ public class SplashUI extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
+                .addComponent(ProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
                 .addContainerGap())
         );
 

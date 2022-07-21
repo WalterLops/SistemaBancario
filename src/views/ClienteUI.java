@@ -71,8 +71,8 @@ public class ClienteUI extends javax.swing.JFrame {
         PainelCliente = new javax.swing.JDesktopPane();
         BarraMenuConta = new javax.swing.JMenuBar();
         DadosCliente = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
-        jMenu1 = new javax.swing.JMenu();
+        ContasCliente = new javax.swing.JMenu();
+        OperacoesConta = new javax.swing.JMenu();
         Sair = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -90,7 +90,7 @@ public class ClienteUI extends javax.swing.JFrame {
         );
         PainelClienteLayout.setVerticalGroup(
             PainelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 399, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout ContaPainelLayout = new javax.swing.GroupLayout(ContaPainel);
@@ -106,11 +106,16 @@ public class ClienteUI extends javax.swing.JFrame {
             ContaPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ContaPainelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(PainelCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(PainelCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
+        BarraMenuConta.setBackground(new java.awt.Color(1, 38, 119));
+
+        DadosCliente.setForeground(new java.awt.Color(255, 255, 255));
         DadosCliente.setText("Meus dados");
+        DadosCliente.setContentAreaFilled(false);
+        DadosCliente.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         DadosCliente.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 DadosClienteMouseClicked(evt);
@@ -123,33 +128,39 @@ public class ClienteUI extends javax.swing.JFrame {
         });
         BarraMenuConta.add(DadosCliente);
 
-        jMenu2.setText("Minhas Contas");
-        jMenu2.addMouseListener(new java.awt.event.MouseAdapter() {
+        ContasCliente.setForeground(new java.awt.Color(255, 255, 255));
+        ContasCliente.setText("Minhas Contas");
+        ContasCliente.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        ContasCliente.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu2MouseClicked(evt);
+                ContasClienteMouseClicked(evt);
             }
         });
-        jMenu2.addActionListener(new java.awt.event.ActionListener() {
+        ContasCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu2ActionPerformed(evt);
+                ContasClienteActionPerformed(evt);
             }
         });
-        BarraMenuConta.add(jMenu2);
+        BarraMenuConta.add(ContasCliente);
 
-        jMenu1.setText("Operações da conta");
-        jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
+        OperacoesConta.setForeground(new java.awt.Color(255, 255, 255));
+        OperacoesConta.setText("Operações da conta");
+        OperacoesConta.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        OperacoesConta.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu1MouseClicked(evt);
+                OperacoesContaMouseClicked(evt);
             }
         });
-        jMenu1.addActionListener(new java.awt.event.ActionListener() {
+        OperacoesConta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu1ActionPerformed(evt);
+                OperacoesContaActionPerformed(evt);
             }
         });
-        BarraMenuConta.add(jMenu1);
+        BarraMenuConta.add(OperacoesConta);
 
+        Sair.setForeground(new java.awt.Color(255, 255, 255));
         Sair.setText("Sair");
+        Sair.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         Sair.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 clickSair(evt);
@@ -192,43 +203,16 @@ public class ClienteUI extends javax.swing.JFrame {
         show.setVisible(true);
     }//GEN-LAST:event_DadosClienteActionPerformed
 
-    private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
-        ValidarConta show = new ValidarConta();
+    private void OperacoesContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OperacoesContaActionPerformed
+        /*ValidarConta show = new ValidarConta();
         this.PainelCliente.removeAll();
-        this.PainelCliente.add(show);
+        show.setClienteUI(this);
+        show.setClienteLogado(clienteLogado);
+        show.setListaContas(contasCliente);
         show.setVisible(true);
-    }//GEN-LAST:event_jMenu1ActionPerformed
-
-    private void SairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SairActionPerformed
-        System.exit(0);
-    }//GEN-LAST:event_SairActionPerformed
-
-    private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
         
-    }//GEN-LAST:event_jMenu2ActionPerformed
-
-    private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
-        try {
-            ContasCliente show = new ContasCliente();
-            this.PainelCliente.removeAll();
-            this.PainelCliente.add(show);
-            setContasCliente(clienteLogado.getsetIdConta());
-            show.setContasCliente(contasCliente);
-            show.setVisible(true);
-        } catch (ParseException ex) {
-            Logger.getLogger(ClienteUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jMenu2MouseClicked
-
-    private void DadosClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DadosClienteMouseClicked
-        DadosCliente show = new DadosCliente();
-        show.setDadosCliente(clienteLogado);
-        this.PainelCliente.removeAll();
-        this.PainelCliente.add(show);
-        show.setVisible(true);
-    }//GEN-LAST:event_DadosClienteMouseClicked
-
-    private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
+        
+        /*
         try {
             ValidarConta show = new ValidarConta();
             show.setClienteUI(this);
@@ -240,7 +224,52 @@ public class ClienteUI extends javax.swing.JFrame {
         } catch (ParseException ex) {
             Logger.getLogger(ClienteUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jMenu1MouseClicked
+        */
+    }//GEN-LAST:event_OperacoesContaActionPerformed
+
+    private void SairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SairActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_SairActionPerformed
+
+    private void ContasClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ContasClienteActionPerformed
+        
+    }//GEN-LAST:event_ContasClienteActionPerformed
+
+    private void ContasClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ContasClienteMouseClicked
+        try {
+            ContasCliente show = new ContasCliente();
+            this.PainelCliente.removeAll();
+            this.PainelCliente.add(show);
+            setContasCliente(clienteLogado.getsetIdConta());
+            show.setContasCliente(contasCliente);
+            show.setVisible(true);
+        } catch (ParseException ex) {
+            Logger.getLogger(ClienteUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_ContasClienteMouseClicked
+
+    private void DadosClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DadosClienteMouseClicked
+        DadosCliente show = new DadosCliente();
+        show.setDadosCliente(clienteLogado);
+        this.PainelCliente.removeAll();
+        this.PainelCliente.add(show);
+        show.setVisible(true);
+    }//GEN-LAST:event_DadosClienteMouseClicked
+
+    private void OperacoesContaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_OperacoesContaMouseClicked
+        try {
+            ValidarConta show = new ValidarConta();
+            this.PainelCliente.removeAll();
+            show.setClienteUI(this);
+            show.setClienteLogado(clienteLogado);
+            setContasCliente(clienteLogado.getsetIdConta());
+            show.setListaContas(contasCliente);
+            show.setVisible(true);
+            
+        } catch (ParseException ex) {
+            Logger.getLogger(ClienteUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_OperacoesContaMouseClicked
 
     /**
      * @param args the command line arguments
@@ -283,10 +312,10 @@ public class ClienteUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar BarraMenuConta;
     private javax.swing.JPanel ContaPainel;
+    private javax.swing.JMenu ContasCliente;
     private javax.swing.JMenu DadosCliente;
+    private javax.swing.JMenu OperacoesConta;
     private javax.swing.JDesktopPane PainelCliente;
     private javax.swing.JMenu Sair;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     // End of variables declaration//GEN-END:variables
 }

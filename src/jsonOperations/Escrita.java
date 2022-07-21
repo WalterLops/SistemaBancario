@@ -4,6 +4,7 @@
  */
 package jsonOperations;
 
+import agencia.Agencia;
 import contas.Conta;
 import contas.ContaCorrente;
 import contas.ContaPoupanca;
@@ -148,4 +149,35 @@ public class Escrita {
         System.gc();
         escreverJSON(caminho);
     }
+
+    private static List<Agencia> atualizarMontante(List<Agencia> listaAgencias, List<Conta> listaContas) {
+        for (Agencia a : listaAgencias) {
+            for (Conta c : listaContas) {
+                if (c.getAgencia() == a.getCodigo()) {
+                    a.setMontanteTotal(c.getSaldo());
+                }
+            }
+        }
+        return listaAgencias;
+    }
+
+    public static void escreverAgencia(List<Agencia> listaAgencias, List<Conta> listaContas, String caminho) {
+
+        listaAgencias = atualizarMontante(listaAgencias, listaContas);
+        for (Agencia f: listaAgencias) {
+            if (f != null) {
+                jsonObject.put("nome", f.getNome());
+                jsonObject.put("codigo", f.getCodigo());
+                jsonObject.put("cidade", f.getCidade());
+                jsonObject.put("endereco", f.getEndereco());
+                jsonObject.put("montanteTotal", f.getMontanteTotal());
+                array.add(jsonObject);
+                jsonObject = new JSONObject();
+                System.gc();
+            }
+        }
+        System.gc();
+        escreverJSON(caminho);
+    }
+
 }

@@ -5,9 +5,10 @@
 package views;
 
 import contas.Conta;
-import java.awt.MenuContainer;
+import java.util.List;
 import views.conta.Transferir;
 import views.conta.Depositar;
+import views.conta.Extrato;
 import views.conta.Sacar;
 
 /**
@@ -15,8 +16,26 @@ import views.conta.Sacar;
  * @author Walter
  */
 public class ContaUI extends javax.swing.JFrame {
-    
+
     Conta contaSelecionada;
+    ClienteUI clienteUI;
+    List<Conta> listaContas;
+
+    public ClienteUI getClienteUI() {
+        return clienteUI;
+    }
+
+    public List<Conta> getListaContas() {
+        return listaContas;
+    }
+
+    public void setListaContas(List<Conta> listaContas) {
+        this.listaContas = listaContas;
+    }
+
+    public void setClienteUI(ClienteUI clienteUI) {
+        this.clienteUI = clienteUI;
+    }
 
     public Conta getContaSelecionada() {
         return contaSelecionada;
@@ -24,16 +43,20 @@ public class ContaUI extends javax.swing.JFrame {
 
     public void setContaSelecionada(Conta contaSelecionada) {
         this.contaSelecionada = contaSelecionada;
+        this.ShowSaldo.setText("R$ " + Double.toString(contaSelecionada.getSaldo()));
     }
-    
+
+    public void atualizarSaldo(String novoValor) {
+        this.ShowSaldo.setText(novoValor);
+    }
+
     /**
      * Creates new form ContaCorrenteUI
      */
     public ContaUI() {
         initComponents();
-        this.ShowSaldo.setText(Double.toString(contaSelecionada.getSaldo()));
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -87,10 +110,12 @@ public class ContaUI extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ShowSaldo)
-                .addContainerGap(199, Short.MAX_VALUE))
+                .addContainerGap(198, Short.MAX_VALUE))
         );
 
+        Sacar.setForeground(new java.awt.Color(0, 20, 73));
         Sacar.setText("Sacar");
+        Sacar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         Sacar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 clickSacar(evt);
@@ -104,14 +129,21 @@ public class ContaUI extends javax.swing.JFrame {
         BarraMenuConta.add(Sacar);
 
         Depositar.setText("Depositar");
+        Depositar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         Depositar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 clickDepositar(evt);
             }
         });
+        Depositar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DepositarActionPerformed(evt);
+            }
+        });
         BarraMenuConta.add(Depositar);
 
         Transferir.setText("Transferir");
+        Transferir.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         Transferir.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 clickTransferir(evt);
@@ -120,6 +152,7 @@ public class ContaUI extends javax.swing.JFrame {
         BarraMenuConta.add(Transferir);
 
         Extrato.setText("Extrato da conta");
+        Extrato.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         Extrato.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 clickExtrato(evt);
@@ -128,6 +161,7 @@ public class ContaUI extends javax.swing.JFrame {
         BarraMenuConta.add(Extrato);
 
         Sair.setText("Sair");
+        Sair.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         Sair.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 clickSair(evt);
@@ -155,35 +189,56 @@ public class ContaUI extends javax.swing.JFrame {
 
     private void SacarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SacarActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_SacarActionPerformed
 
     private void clickSacar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickSacar
-        //this.ShowSaldo.setText("Clicou sacar");
+        Sacar show = new Sacar();
+        listaContas.remove(contaSelecionada);
+        show.setContaSelecionada(contaSelecionada);
+        show.setListaContas(listaContas);
+        show.setContaUI(this);
         this.setVisible(false);
-        new Sacar().setVisible(true);
+        show.setVisible(true);
     }//GEN-LAST:event_clickSacar
 
     private void clickDepositar(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickDepositar
-        //this.ShowSaldo.setText("Clicou Depositar1");
+        Depositar show = new Depositar();
+        listaContas.remove(contaSelecionada);
+        show.setContaSelecionada(contaSelecionada);
+        show.setListaContas(listaContas);
+        show.setContaUI(this);
         this.setVisible(false);
-        new Depositar().setVisible(true);
+        show.setVisible(true);
     }//GEN-LAST:event_clickDepositar
 
     private void clickTransferir(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickTransferir
-        //this.ShowSaldo.setText("Clicou Transferir");
+        Transferir show = new Transferir();
+        listaContas.remove(contaSelecionada);
+        show.setContaSelecionada(contaSelecionada);
+        show.setListaContas(listaContas);
+        show.setContaUI(this);
         this.setVisible(false);
-        new Transferir().setVisible(true);
+        show.setVisible(true);
     }//GEN-LAST:event_clickTransferir
 
     private void clickExtrato(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickExtrato
-        this.ShowSaldo.setText("Clicou Extrato");
+        Extrato show = new Extrato();
+        show.setContaUI(this);
+        show.setListaContas(listaContas);
+        show.setShowExtrato(contaSelecionada.toString());
+        show.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_clickExtrato
 
     private void clickSair(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickSair
-        //this.ShowSaldo.setText("Clicou Sair");
         System.exit(0);
+
     }//GEN-LAST:event_clickSair
+
+    private void DepositarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DepositarActionPerformed
+
+    }//GEN-LAST:event_DepositarActionPerformed
 
     /**
      * @param args the command line arguments

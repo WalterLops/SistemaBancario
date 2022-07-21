@@ -6,6 +6,7 @@ package contas;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -74,12 +75,11 @@ public class Conta {
         if (valorSaque <= getSaldo()) {
             double novoSaldo = getSaldo() - valorSaque;
             setSaldo(novoSaldo);
-            System.out.println("Operação realizada com sucesso. "
+            JOptionPane.showMessageDialog(null, "Operação realizada com sucesso. "
                     + "\nNovo valor da conta: " + getSaldo());
             return true;
         } else {
-            System.out.println("Você não tem saldo suficiente para essa operação."
-                    + "\nPor favor, tente novamente.");
+            JOptionPane.showMessageDialog(null, "Você não tem saldo suficiente para essa operação.");
             return false;
         }
 
@@ -88,13 +88,24 @@ public class Conta {
     public void depositar(double valorDeposito) {
         double novoSaldo = getSaldo() + valorDeposito;
         setSaldo(novoSaldo);
+        JOptionPane.showMessageDialog(null, "Valor depositado com sucesso!");
     }
 
-    public void transferir(double valorTranferir, Conta contaDestino) {
+    public Conta transferir(double valorTranferir, Conta contaDestino) {
         if (sacar(valorTranferir)){
         contaDestino.depositar(valorTranferir);
         }
-        
+        return contaDestino;
+    }
+    
+    public String infoConta(){
+        return "\n=================================================================="
+                + "\nTipo da conta: " + getTipoConta()
+                + "\nAgência: " + getAgencia()
+                + "\nID da Conta: " + getIdConta()
+                + "\nNumero da Conta: " + getNumeroConta()
+                + "\nSaldo: " + getSaldo()
+                +"\n==================================================================";
     }
 
     @Override
@@ -102,9 +113,8 @@ public class Conta {
         return "\n=================================================================="
                 + "\nWW Bank" + "  Extro " + getTipoConta()
                 + "\nAgência: " + getAgencia() + " Data: " + data.format(new Date()) + " Hora: " + hora.format(new Date())
-                + "\nConta: " + getIdConta()
-                + "\nSaldo: " + getSaldo();
-                
+                + "\nID da Conta: " + getIdConta()
+                + "\nNumero da Conta: " + getNumeroConta()
+                + "\nSaldo: " + getSaldo(); 
     }
-
 }

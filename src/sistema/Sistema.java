@@ -17,13 +17,13 @@ import usuarios.Administrador;
 import usuarios.Cliente;
 import usuarios.Funcionario;
 
-
 import views.LoginUI;
 import views.SplashUI;
 import static jsonOperations.Escrita.escreverAdmin;
 import static jsonOperations.Escrita.escreverCliente;
 import static jsonOperations.Escrita.escreverContas;
 import static jsonOperations.Escrita.escreverFuncionario;
+import jsonOperations.Leitura;
 
 /**
  *
@@ -53,9 +53,6 @@ public class Sistema {
         c2.setIdConta(1131);
         listaCliente.add(c2);
 
-        String baseClientes = "./src/baseDeDados/clientes.json";
-        escreverCliente(listaCliente, baseClientes);
-
         // Contas de Funcionários
         Funcionario f1 = new Funcionario(null, null, "F1020", "1234", "Ana S", "Rua B", "9999855");
         listaConta.add(new ContaSalario("115548", 1126, 709, 11445, 4500, "Conta Salário"));
@@ -66,9 +63,6 @@ public class Sistema {
         listaConta.add(new ContaCorrente(1127, 709, 5105, 4500.00, "Conta Corrente"));
         f2.setIdConta(1127);
         listaFuncionarios[1] = f2;
-
-        String baseFuncionarios = "./src/baseDeDados/funcionarios.json";
-        escreverFuncionario(listaFuncionarios, baseFuncionarios);
 
         // Contas de Administradores
         Administrador a1 = new Administrador(null, null, "A1020", "1234", "Carla", "Rua B", "9997755");
@@ -81,18 +75,39 @@ public class Sistema {
         a2.setIdConta(1128);
         administradores[1] = a2;
 
+        String baseClientes = "./src/baseDeDados/clientes.json";
+        if (!Leitura.arquivoExiste(baseClientes)) {
+            escreverCliente(listaCliente, baseClientes);
+        }
+
+        String baseFuncionarios = "./src/baseDeDados/funcionarios.json";
+        if (!Leitura.arquivoExiste(baseFuncionarios)) {
+            escreverFuncionario(listaFuncionarios, baseFuncionarios);
+        }
+
         String baseAdministradores = "./src/baseDeDados/administradores.json";
-        escreverAdmin(administradores, baseAdministradores);
+        if (!Leitura.arquivoExiste(baseAdministradores)) {
+            escreverAdmin(administradores, baseAdministradores);
+        }
 
         String baseContas = "./src/baseDeDados/listaContas.json";
-        escreverContas(listaConta, baseContas);
+        if (!Leitura.arquivoExiste(baseContas)) {
+            escreverContas(listaConta, baseContas);
+        }
         
+        String baseAgencias = "./src/baseDeDados/listaAgencias.json";
+        if (!Leitura.arquivoExiste(baseAgencias)) {
+            Escrita.escreverAgencia(listaAgencias, listaConta, baseAgencias);
+        }
+        
+        System.out.println(Leitura.lerAgencias(baseAgencias));
+
         // Tela SplashUI
         SplashUI spl = new SplashUI();
         spl.setVisible(true);
         spl.eventoCarregando();
         spl.dispose();
-        
+
         // Inicializando a tela de login
         new LoginUI().setVisible(true);
 

@@ -4,6 +4,14 @@
  */
 package views.conta;
 
+import contas.Conta;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import jsonOperations.Escrita;
+import jsonOperations.Leitura;
+import org.json.simple.parser.ParseException;
 import views.ContaUI;
 
 /**
@@ -12,6 +20,64 @@ import views.ContaUI;
  */
 public class Transferir extends javax.swing.JFrame {
 
+    private ContaUI contaUI;
+    private Conta contaSelecionada;
+    private List<Conta> listaContas;
+    private String baseContas = "./src/baseDeDados/listaContas.json";
+
+    public ContaUI getContaUI() {
+        return contaUI;
+    }
+
+    public void setContaUI(ContaUI contaUI) {
+        this.contaUI = contaUI;
+    }
+    
+    public Conta getContaSelecionada() {
+        return contaSelecionada;
+    }
+
+    public void setContaSelecionada(Conta contaSelecionada) {
+        this.contaSelecionada = contaSelecionada;
+    }
+
+    public List<Conta> getListaContas() {
+        return listaContas;
+    }
+
+    public void setListaContas(List<Conta> listaContas) {
+        this.listaContas = listaContas;
+    }
+    
+    private Conta autenticarConta(int idConta, int agencia, int numeroConta) throws ParseException{
+        listaContas = Leitura.lerContas(baseContas);
+        listaContas.remove(contaSelecionada);
+        for (Conta c : listaContas){
+            if(c.getIdConta() == idConta && c.getAgencia() == agencia && c.getNumeroConta() == numeroConta){
+                return c;
+            }
+        }
+        return null;
+    }
+    
+    private double autenticarTransferencia(double valor){
+        if (contaSelecionada.getSaldo() > valor){
+            return valor;
+        }
+        else
+            return 0;
+    }
+            
+    private void atualizarListaContas(Conta contaSelecionada){
+        Conta remover = null;
+        for (Conta c : listaContas){
+            if (c.getIdConta() == contaSelecionada.getIdConta() && c.getNumeroConta() == contaSelecionada.getNumeroConta())
+                remover = c;
+        }
+        listaContas.remove(remover);
+        listaContas.add(contaSelecionada);
+    }
+    
     /**
      * Creates new form Transferir
      */
@@ -33,76 +99,94 @@ public class Transferir extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        cxNumeroConta = new javax.swing.JTextField();
+        cxAgencia = new javax.swing.JTextField();
+        cxIDConta = new javax.swing.JTextField();
+        cxValor = new javax.swing.JTextField();
+        btnTransferir = new javax.swing.JButton();
+        btnTelaInicial = new javax.swing.JButton();
         Avisos = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setLocation(new java.awt.Point(400, 180));
 
+        jPanel1.setBackground(new java.awt.Color(2, 78, 148));
+
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Numero da conta");
 
+        jLabel2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText(" Agencia ");
 
+        jLabel3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("ID Conta");
 
+        jLabel4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Valor a ser transferido");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        cxNumeroConta.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        cxNumeroConta.setForeground(new java.awt.Color(2, 78, 148));
+        cxNumeroConta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                cxNumeroContaActionPerformed(evt);
             }
         });
 
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        cxAgencia.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        cxAgencia.setForeground(new java.awt.Color(2, 78, 148));
+        cxAgencia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                cxAgenciaActionPerformed(evt);
             }
         });
 
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+        cxIDConta.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        cxIDConta.setForeground(new java.awt.Color(2, 78, 148));
+        cxIDConta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
+                cxIDContaActionPerformed(evt);
             }
         });
 
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+        cxValor.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        cxValor.setForeground(new java.awt.Color(2, 78, 148));
+        cxValor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
+                cxValorActionPerformed(evt);
             }
         });
 
-        jButton1.setText("Transferir");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnTransferir.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        btnTransferir.setForeground(new java.awt.Color(2, 78, 148));
+        btnTransferir.setText("Transferir");
+        btnTransferir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnTransferirActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Tela inicial");
-        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnTelaInicial.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        btnTelaInicial.setForeground(new java.awt.Color(2, 78, 148));
+        btnTelaInicial.setText("Tela inicial");
+        btnTelaInicial.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 clickTelaInicial(evt);
             }
         });
 
-        jButton3.setText("Sair");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
+        Avisos.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        Avisos.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(74, Short.MAX_VALUE)
+                .addContainerGap(31, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Avisos)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -110,18 +194,18 @@ public class Transferir extends javax.swing.JFrame {
                             .addComponent(jLabel4)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jButton1))
+                            .addComponent(jLabel3))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton2)
-                                .addGap(61, 61, 61)
-                                .addComponent(jButton3))
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(cxIDConta, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cxAgencia, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cxNumeroConta, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cxValor, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnTransferir)
+                        .addGap(117, 117, 117)
+                        .addComponent(btnTelaInicial)
+                        .addGap(70, 70, 70)))
                 .addGap(56, 56, 56))
         );
         jPanel1Layout.setVerticalGroup(
@@ -130,27 +214,26 @@ public class Transferir extends javax.swing.JFrame {
                 .addGap(105, 105, 105)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cxNumeroConta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cxAgencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cxIDConta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cxValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(51, 51, 51)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(btnTransferir)
+                    .addComponent(btnTelaInicial))
                 .addGap(44, 44, 44)
                 .addComponent(Avisos)
-                .addContainerGap(85, Short.MAX_VALUE))
+                .addContainerGap(80, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -173,34 +256,55 @@ public class Transferir extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void cxNumeroContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cxNumeroContaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_cxNumeroContaActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void cxAgenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cxAgenciaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_cxAgenciaActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+    private void cxIDContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cxIDContaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+    }//GEN-LAST:event_cxIDContaActionPerformed
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    private void cxValorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cxValorActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_cxValorActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnTransferirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransferirActionPerformed
+        try {
+            int idConta = Integer.parseInt(this.cxIDConta.getText());
+            int agencia = Integer.parseInt(this.cxAgencia.getText());
+            int numeroConta = Integer.parseInt(this.cxNumeroConta.getText());
+            double valorTransferencia = Double.parseDouble(this.cxValor.getText());
+            
+            Conta contaDestino = autenticarConta(idConta, agencia, numeroConta);
+            valorTransferencia = autenticarTransferencia(valorTransferencia);
+            
+            if (contaDestino != null && valorTransferencia > 0){
+                listaContas.remove(contaDestino);
+                contaDestino = contaSelecionada.transferir(valorTransferencia, contaDestino);
+                listaContas.add(contaDestino);
+            }
+            else if(contaDestino == null)
+                JOptionPane.showMessageDialog(null, "Desculpe, não foi possível depositar! Conta não encontrada.");
+            else
+                JOptionPane.showMessageDialog(null, "Desculpe, não foi possível depositar! Valor insuficiente para operação.");
+        } catch (ParseException ex) {
+            Logger.getLogger(Transferir.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+    }//GEN-LAST:event_btnTransferirActionPerformed
 
     private void clickTelaInicial(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickTelaInicial
+        atualizarListaContas(contaSelecionada);
+        Escrita.escreverContas(listaContas, baseContas);
+        contaUI.setContaSelecionada(contaSelecionada);
+        contaUI.atualizarSaldo("R$ " + contaSelecionada.getSaldo());
+        contaUI.setVisible(true);
         this.dispose();
-        new ContaUI().setVisible(true);
     }//GEN-LAST:event_clickTelaInicial
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        System.exit(0);
-    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -239,17 +343,16 @@ public class Transferir extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Avisos;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton btnTelaInicial;
+    private javax.swing.JButton btnTransferir;
+    private javax.swing.JTextField cxAgencia;
+    private javax.swing.JTextField cxIDConta;
+    private javax.swing.JTextField cxNumeroConta;
+    private javax.swing.JTextField cxValor;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables
 }

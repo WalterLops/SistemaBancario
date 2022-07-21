@@ -4,6 +4,7 @@
  */
 package jsonOperations;
 
+import agencia.Agencia;
 import contas.Conta;
 import contas.ContaCorrente;
 import contas.ContaPoupanca;
@@ -39,11 +40,9 @@ public class Leitura {
 
         try ( FileReader arquivoJSON = new FileReader(caminho)) {
             array = (JSONArray) parser.parse(arquivoJSON);
-        } 
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(null, "Arquivo JSON não encontrado!");
-        } 
-        catch (IOException e) {
+        } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Ocorreu um erro desconhecido!");
         }
     }
@@ -114,7 +113,7 @@ public class Leitura {
         }
         return administrador;
     }
-    
+
     public static List<Conta> lerContas(String caminho) throws org.json.simple.parser.ParseException {
 
         lerJSON(caminho);
@@ -123,27 +122,27 @@ public class Leitura {
 
             jsonString = array.get(i).toString();
             obj = (JSONObject) parser.parse(jsonString);
-            
+
             int idConta = Integer.parseInt(obj.get("idConta").toString());
             int agencia = Integer.parseInt(obj.get("agencia").toString());
             int numeroConta = Integer.parseInt(obj.get("numeroConta").toString());
             double saldo = Double.parseDouble(obj.get("saldo").toString());
             String tipoConta = (String) obj.get("tipoConta");
-            
-            if (obj.get("tipoConta").equals("Conta Poupança")){
+
+            if (obj.get("tipoConta").equals("Conta Poupança")) {
                 double limiteSaque = Double.parseDouble(obj.get("limiteSaque").toString());
                 ContaPoupanca conta = new ContaPoupanca(idConta, agencia, numeroConta, saldo, tipoConta);
                 conta.setLimiteSaque(limiteSaque);
                 listaContas.add(conta);
             }
-            if (obj.get("tipoConta").equals("Conta Corrente")){
+            if (obj.get("tipoConta").equals("Conta Corrente")) {
                 double taxaManutencao = Double.parseDouble(obj.get("taxaManutencao").toString());
                 ContaCorrente conta = new ContaCorrente(idConta, agencia, numeroConta, saldo, tipoConta);
                 conta.setTaxaManutencao(taxaManutencao);
                 listaContas.add(conta);
             }
-            if (obj.get("tipoConta").equals("Conta Salário")){
-                String  cnpjEmpresa = obj.get("cnpjEmpresa").toString();
+            if (obj.get("tipoConta").equals("Conta Salário")) {
+                String cnpjEmpresa = obj.get("cnpjEmpresa").toString();
                 ContaSalario conta = new ContaSalario(cnpjEmpresa, idConta, agencia, numeroConta, saldo, tipoConta);
                 conta.setCnpjEmpresa(cnpjEmpresa);
                 listaContas.add(conta);
@@ -151,5 +150,31 @@ public class Leitura {
         }
         return listaContas;
     }
-    
+
+    public static List<Agencia> lerAgencias(String caminho) throws org.json.simple.parser.ParseException {
+
+        lerJSON(caminho);
+
+        List<Agencia> agencia = new ArrayList<>();
+        for (int i = 0; i < array.size(); i++) {
+
+            jsonString = array.get(i).toString();
+            obj = (JSONObject) parser.parse(jsonString);
+
+            Agencia novaAgencia = new Agencia((String) obj.get("nome"), Integer.parseInt(obj.get("codigo").toString()), (String) obj.get("cidade"), (String) obj.get("endereco"));
+            agencia.add(novaAgencia);
+        }
+        return agencia;
+    }
+
+    public static boolean arquivoExiste(String caminho) {
+        try ( FileReader arquivoJSON = new FileReader(caminho)) {
+            return true;
+        } catch (FileNotFoundException e) {
+            return false;
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro desconhecido!");
+        }
+        return false;
+    }
 }
