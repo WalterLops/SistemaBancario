@@ -78,12 +78,14 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return "ID: " + id
-             + "\nSenha: " + senha 
+        return "\n===============================================\n"
+             + "ID: " + id
              + "\nNome: " + nome
+             + "\nSenha: " + senha 
              + "\nEndereco: " + endereco
              + "\nTelefone: " + telefone
-             + "\nContasAssociadas: " + contasAssociadas;
+             + "\nContasAssociadas: " + contasAssociadas
+             +"\n===============================================\n";
     }
     
     

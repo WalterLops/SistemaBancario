@@ -48,6 +48,31 @@ public class Sacar extends javax.swing.JFrame {
         this.contaSelecionada = contaSelecionada;
     }
     
+    private int contarContas() {
+        int cont = 0;
+        for (Conta c : listaContas) {
+            if (c.getAgencia() == contaSelecionada.getAgencia() && c.getIdConta() == contaSelecionada.getIdConta()) {
+                if (c.getNumeroConta() == contaSelecionada.getNumeroConta()) {
+                    cont++;
+                }
+            }
+        }
+        return cont;
+    }
+
+    private void removerConta() {
+        for (int i = 0; i < contarContas(); i++) {
+            for (Conta c : listaContas) {
+                if (c.getAgencia() == contaSelecionada.getAgencia() && c.getIdConta() == contaSelecionada.getIdConta()) {
+                    if (c.getNumeroConta() == contaSelecionada.getNumeroConta()) {
+                        listaContas.remove(c);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    
     /**
      * Creates new form Sacar
      */
@@ -158,16 +183,16 @@ public class Sacar extends javax.swing.JFrame {
     private void btnSacarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSacarActionPerformed
         try {
             listaContas = Leitura.lerContas(baseContas);
-            listaContas.remove(contaSelecionada);
+            removerConta();
             contaSelecionada.sacar(Double.parseDouble(this.cxSaque.getText()));
+            listaContas.add(contaSelecionada);
+            Escrita.escreverContas(listaContas, baseContas);
         } catch (ParseException ex) {
             Logger.getLogger(Sacar.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnSacarActionPerformed
 
     private void clickTelaInicial(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickTelaInicial
-        listaContas.add(contaSelecionada);
-        Escrita.escreverContas(listaContas, baseContas);
         contaUI.setContaSelecionada(contaSelecionada);
         contaUI.setVisible(true);
         this.dispose();

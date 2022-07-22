@@ -99,8 +99,6 @@ public class Sistema {
         if (!Leitura.arquivoExiste(baseAgencias)) {
             Escrita.escreverAgencia(listaAgencias, listaConta, baseAgencias);
         }
-        
-        System.out.println(Leitura.lerAgencias(baseAgencias));
 
         // Tela SplashUI
         SplashUI spl = new SplashUI();
@@ -109,7 +107,12 @@ public class Sistema {
         spl.dispose();
 
         // Inicializando a tela de login
-        new LoginUI().setVisible(true);
-
+        LoginUI show = new LoginUI();
+        show.setBaseClientes(baseClientes);
+        show.setBaseFuncionarios(baseFuncionarios);
+        show.setBaseAdministradores(baseAdministradores);
+        show.setBaseAgencias(baseAgencias);
+        show.setBaseContas(baseContas);
+        show.setVisible(true);
     }
 }

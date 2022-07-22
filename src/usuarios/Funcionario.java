@@ -9,9 +9,11 @@ import contas.ContaCorrente;
 import contas.ContaPoupanca;
 import contas.ContaSalario;
 import interfaces_e_Login.InterfaceFuncionario;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -23,6 +25,7 @@ public class Funcionario extends Cliente implements InterfaceFuncionario {
     private Date dataDemissao;
     public static int numeroFuncionarios;
     protected final Scanner sc = new Scanner(System.in);
+    protected final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
     public Funcionario(Date dataAdmissao, Date dataDemissao, String id, String senha, String nome, String endereco, String telefone) {
         super(id, senha, nome, endereco, telefone);
@@ -31,16 +34,16 @@ public class Funcionario extends Cliente implements InterfaceFuncionario {
         Funcionario.numeroFuncionarios += 1;
     }
 
-    public Date getDataAdmissao() {
-        return dataAdmissao;
+    public String getDataAdmissao() {
+        return sdf.format(dataAdmissao);
     }
 
     public void setDataAdmissao(Date dataAdmissao) {
         this.dataAdmissao = dataAdmissao;
     }
 
-    public Date getDataDemissao() {
-        return dataDemissao;
+    public String getDataDemissao() {
+        return sdf.format(dataDemissao);
     }
 
     public void setDataDemissao(Date dataDemissao) {
@@ -62,40 +65,25 @@ public class Funcionario extends Cliente implements InterfaceFuncionario {
     @Override
     public void alterarSenhaAcesso(String senha) {
         setSenha(senha);
+        JOptionPane.showMessageDialog(null, "Senha alterada com sucesso!");
     }
 
     @Override
-    public Conta adicionarConta() {
-        System.out.println("""
-                           Escolha o código do tipo de conta a ser cadastrada: 
-                            \n 301 = Conta poupança
-                            \n 305 = Conta Salário
-                            \n 309 = Conta corrente""");
-        int option = sc.nextInt();
+    public Conta adicionarConta(int tipoConta, int idConta, int agencia,
+            int numeroConta, double saldo, double limiteSaque,
+            double taxaManutenção, String CNPJ) {
 
-        if (option != 301 && option != 301 && option != 301) {
-            System.out.println("Código inválido");
-            return null;
-        }
-        System.out.print("Digite o id da conta: ");
-        int idConta = sc.nextInt();
-        System.out.print("Digite o número da agência:");
-        int agencia = sc.nextInt();
-        System.out.print("Digite o número da Conta: ");
-        int numeroConta = sc.nextInt();
-        System.out.print("Digite o saldo inicial da conta: ");
-        double saldo = sc.nextDouble();
-
+        int option = tipoConta;
         switch (option) {
-            case 301 -> {
+            case 201 -> {
                 return new ContaPoupanca(idConta, agencia, numeroConta, saldo, "Conta Poupança");
             }
-            case 305 -> {
+            case 205 -> {
                 System.out.print("Digite o CNPJ da empresa: ");
                 String cnpjEmpresa = sc.next();
                 return new ContaSalario(cnpjEmpresa, idConta, agencia, numeroConta, saldo, "Conta Salário");
             }
-            case 309 -> {
+            case 209 -> {
                 return new ContaCorrente(idConta, agencia, numeroConta, saldo, "Conta Corrente");
             }
         }
@@ -103,10 +91,18 @@ public class Funcionario extends Cliente implements InterfaceFuncionario {
     }
 
     @Override
-    public List<Conta> removerConta(int idConta, List<Conta> listaConta) {
-        for (Conta conta : listaConta) {
-            if (conta.getIdConta() == idConta) {
-                listaConta.remove(conta);
+    public List<Conta> removerConta(int idConta, int numeroConta, int agencia, List<Conta> listaConta) {
+        int cont = listaConta.size();
+        for (int i = 0; i < listaConta.size(); i++) {
+            for (Conta c : listaConta) {
+                if (c.getIdConta() == idConta && c.getNumeroConta() == numeroConta && c.getAgencia() == agencia) {
+                    listaConta.remove(c);
+                    JOptionPane.showMessageDialog(null, "Conta removida com sucesso!");
+                    break;
+                }
+            }
+            if (cont == listaConta.size()) {
+                JOptionPane.showMessageDialog(null, "Conta não encontrada");
             }
         }
         return listaConta;
@@ -122,39 +118,51 @@ public class Funcionario extends Cliente implements InterfaceFuncionario {
     }
 
     @Override
-    public List<Cliente> alterarCliente(String idCliente, List<Cliente> listaCliente) {
-        for (Cliente cliente : listaCliente) {
-            if (cliente.getId().equals(idCliente)) {
-                System.out.print("Digite o código da operação desejada: "
-                        + "1 - alterar senha"
-                        + "2 - alterar nome"
-                        + "3 - alterar endereco"
-                        + "4 - alterar telefone");
-                int option = sc.nextInt();
-                switch (option) {
-                    case 1 -> {
-                        System.out.print("Digite a nova senha: ");
-                        cliente.setSenha(sc.next());
-                    }
-                    case 2 -> {
-                        System.out.print("Digite o novo nome: ");
-                        cliente.setNome(sc.nextLine());
-                    }
-                    case 3 -> {
-                        System.out.print("Digite o novo endereco: ");
-                        cliente.setEndereco(sc.nextLine());
-                    }
-                    case 4 -> {
-                        System.out.print("Digite o novo telefone: ");
-                        cliente.setEndereco(sc.next());
-                    }
-                    default ->
-                        throw new AssertionError();
+    public Cliente alterarCliente(Cliente cliente) {
+
+        Object[] itens = {"1 - alterar senha", "2 - alterar nome", "3 - alterar endereco", "4 - alterar telefone"};//QUESTION_MESSAGE
+        String listaResult = JOptionPane.showInputDialog(null,
+                "Escolha um item", "Opçao",
+                JOptionPane.QUESTION_MESSAGE, null,
+                itens, itens[0]).toString();
+        int option = Integer.parseInt(listaResult.replaceAll("[^0-9]", ""));
+
+        switch (option) {
+            case 1 -> {
+                String valor = JOptionPane.showInputDialog(null,
+                        "Digite a nova senha: ", "Alterar senha",
+                        JOptionPane.QUESTION_MESSAGE);
+                if (valor != null) {
+                    cliente.setSenha(valor);
                 }
-
             }
+            case 2 -> {
+                String valor = JOptionPane.showInputDialog(null,
+                        "Digite o novo nome:", "Alterar nome",
+                        JOptionPane.QUESTION_MESSAGE);
+                if (valor != null) {
+                    cliente.setNome(valor);
+                }
+            }
+            case 3 -> {
+                String valor = JOptionPane.showInputDialog(null,
+                        "Digite o novo endereco:", "Alterar endereco",
+                        JOptionPane.QUESTION_MESSAGE);
+                if (valor != null) {
+                    cliente.setEndereco(valor);
+                }
+            }
+            case 4 -> {
+                String valor = JOptionPane.showInputDialog(null,
+                        "Digite o novo telefone:", "Alterar telefone",
+                        JOptionPane.QUESTION_MESSAGE);
+                if (valor != null) {
+                    cliente.setEndereco(valor);
+                }
+            }
+            default ->
+                throw new AssertionError();
         }
-        return listaCliente;
+        return cliente;
     }
-
 }

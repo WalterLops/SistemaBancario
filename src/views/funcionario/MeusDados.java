@@ -10,6 +10,10 @@ package views.funcionario;
  */
 public class MeusDados extends javax.swing.JInternalFrame {
 
+    public void setShowMeusDados(String msg){
+        this.ShowMeusDados.setText(msg);
+    }
+    
     /**
      * Creates new form MeusDados
      */
@@ -26,8 +30,8 @@ public class MeusDados extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        ShowMeusDados = new javax.swing.JTextArea();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         setTitle("Meus dados");
@@ -35,37 +39,25 @@ public class MeusDados extends javax.swing.JInternalFrame {
         setMinimumSize(new java.awt.Dimension(700, 495));
         setPreferredSize(new java.awt.Dimension(700, 495));
 
-        jLabel1.setText(" ");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(100, 100, 100)
-                .addComponent(jLabel1)
-                .addContainerGap(365, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(112, 112, 112)
-                .addComponent(jLabel1)
-                .addContainerGap(193, Short.MAX_VALUE))
-        );
+        ShowMeusDados.setColumns(20);
+        ShowMeusDados.setRows(5);
+        ShowMeusDados.setMaximumSize(new java.awt.Dimension(700, 495));
+        ShowMeusDados.setMinimumSize(new java.awt.Dimension(700, 495));
+        ShowMeusDados.setPreferredSize(new java.awt.Dimension(700, 495));
+        jScrollPane1.setViewportView(ShowMeusDados);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 463, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -74,7 +66,7 @@ public class MeusDados extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextArea ShowMeusDados;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

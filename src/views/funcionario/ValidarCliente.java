@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package views.cliente;
+package views.funcionario;
 
 import contas.Conta;
 import java.util.ArrayList;
@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import jsonOperations.Leitura;
 import org.json.simple.parser.ParseException;
 import usuarios.Cliente;
+import usuarios.Funcionario;
 import views.ClienteUI;
 import views.ContaUI;
 import views.FuncionarioUI;
@@ -21,12 +22,25 @@ import views.FuncionarioUI;
  *
  * @author Walter
  */
-public class ValidarConta extends javax.swing.JFrame {
+public class ValidarCliente extends javax.swing.JFrame {
 
-    List<Conta> contasCliente = new ArrayList<>();
-    ClienteUI clienteUI = null;
-    FuncionarioUI funcionarioUI = null;
-    Cliente clienteLogado;
+    
+    private String baseClientes = "./src/baseDeDados/clientes.json";
+    private Cliente clienteSelecionado;
+    
+    private Funcionario funcionarioLogado;
+    
+    InfoCliente infoCliente = null;
+    AlterarInfoCliente alterarInfoCliente = null;
+    FuncionarioUI funcionarioUI;
+    
+    public Funcionario getFuncionarioLogado() {
+        return funcionarioLogado;
+    }
+
+    public void setFuncionarioLogado(Funcionario funcionarioLogado) {
+        this.funcionarioLogado = funcionarioLogado;
+    }
 
     public FuncionarioUI getFuncionarioUI() {
         return funcionarioUI;
@@ -35,47 +49,86 @@ public class ValidarConta extends javax.swing.JFrame {
     public void setFuncionarioUI(FuncionarioUI funcionarioUI) {
         this.funcionarioUI = funcionarioUI;
     }
+    
+    
 
-    public Cliente getClienteLogado() {
-        return clienteLogado;
+    public AlterarInfoCliente getAlterarInfoCliente() {
+        return alterarInfoCliente;
     }
 
-    public void setClienteLogado(Cliente clienteLogado) {
-        this.clienteLogado = clienteLogado;
+    public void setAlterarInfoCliente(AlterarInfoCliente alterarInfoCliente) {
+        this.alterarInfoCliente = alterarInfoCliente;
     }
 
-    public ClienteUI getClienteUI() {
-        return clienteUI;
+    public InfoCliente getInfoCliente() {
+        return infoCliente;
     }
 
-    public void setClienteUI(ClienteUI clienteUI) {
-        this.clienteUI = clienteUI;
-    }
-
-    public List<Conta> getContasCliente() {
-        return contasCliente;
+    public void setInfoCliente(InfoCliente infoCliente) {
+        this.infoCliente = infoCliente;
     }
     
-    public void setContasCliente(List<Integer> contasAssociadas) {
+    
+
+    public Cliente getClienteSelecionado() {
+        return clienteSelecionado;
+    }
+
+    public void setClienteSelecionado(Cliente clienteSelecionado) {
+        this.clienteSelecionado = clienteSelecionado;
+    }
+    
+    
+
+    public String getBaseClientes() {
+        return baseClientes;
+    }
+
+    public void setBaseClientes(String baseClientes) {
+        this.baseClientes = baseClientes;
+    }
+    
+    public void prosseguir(){
         try {
-            String baseContas = "./src/baseDeDados/listaContas.json";
-            List<Conta> listaContas = Leitura.lerContas(baseContas);
-            for (Integer idConta : contasAssociadas){
-                for (Conta conta : listaContas){
-                    if (conta.getIdConta() == idConta){
-                        contasCliente.add(conta);
-                    }
+            String id = this.cxID.getText();
+            String nome = this.cxNome.getText();
+            List<Cliente> listaCliente = Leitura.lerClientes(baseClientes);
+            for (Cliente c : listaCliente){
+                if(c.getId().equals(id) && c.getNome().equals(nome)){
+                    clienteSelecionado = c;
                 }
             }
+            
+            if (infoCliente != null){
+                funcionarioUI.setClienteSelecionado(clienteSelecionado);
+                infoCliente.setClienteSelecionado(clienteSelecionado);
+                infoCliente.setVisible(true);
+                funcionarioUI.setLimparAreaDeTrabalho();
+                funcionarioUI.setInfoCliente(infoCliente);
+                this.setVisible(false); //adicionar todos os textos aos campos
+            }
+            else if (alterarInfoCliente != null){
+                alterarInfoCliente.setFuncionarioLogado(funcionarioLogado);
+                alterarInfoCliente.setClienteSelecionado(clienteSelecionado);
+                alterarInfoCliente.setBaseClientes(baseClientes);
+                funcionarioUI.setClienteSelecionado(clienteSelecionado);
+                funcionarioUI.setLimparAreaDeTrabalho();
+                funcionarioUI.setAlterarCliente(alterarInfoCliente);
+                alterarInfoCliente.setVisible(true);
+                this.setVisible(false); 
+            }
+            
+            
         } catch (ParseException ex) {
-            Logger.getLogger(ValidarConta.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ValidarCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }
     
     /**
      * Creates new form ValidarConta
      */
-    public ValidarConta() {
+    public ValidarCliente() {
         initComponents();
     }
 
@@ -89,50 +142,50 @@ public class ValidarConta extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        BtnIR = new javax.swing.JButton();
-        CaixaID = new javax.swing.JTextField();
-        CaixaNumeroConta = new javax.swing.JTextField();
+        btnProsseguir = new javax.swing.JButton();
+        cxID = new javax.swing.JTextField();
+        cxNome = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocation(new java.awt.Point(400, 180));
-        setMaximumSize(new java.awt.Dimension(700, 400));
         setMinimumSize(new java.awt.Dimension(700, 400));
-        setPreferredSize(new java.awt.Dimension(700, 400));
 
         jPanel1.setBackground(new java.awt.Color(2, 78, 148));
         jPanel1.setMaximumSize(new java.awt.Dimension(700, 400));
         jPanel1.setMinimumSize(new java.awt.Dimension(700, 400));
         jPanel1.setPreferredSize(new java.awt.Dimension(700, 400));
 
-        BtnIR.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        BtnIR.setForeground(new java.awt.Color(2, 78, 148));
-        BtnIR.setText("IR");
-        BtnIR.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnProsseguir.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        btnProsseguir.setForeground(new java.awt.Color(2, 78, 148));
+        btnProsseguir.setText("IR");
+        btnProsseguir.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                BtnIRMouseClicked(evt);
+                btnProsseguirMouseClicked(evt);
             }
         });
-        BtnIR.addActionListener(new java.awt.event.ActionListener() {
+        btnProsseguir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnIRActionPerformed(evt);
-            }
-        });
-
-        CaixaID.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        CaixaID.setForeground(new java.awt.Color(2, 78, 148));
-        CaixaID.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CaixaIDActionPerformed(evt);
+                btnProsseguirActionPerformed(evt);
             }
         });
 
-        CaixaNumeroConta.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        CaixaNumeroConta.setForeground(new java.awt.Color(2, 78, 148));
-        CaixaNumeroConta.addActionListener(new java.awt.event.ActionListener() {
+        cxID.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        cxID.setForeground(new java.awt.Color(2, 78, 148));
+        cxID.setText("C1022");
+        cxID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CaixaNumeroContaActionPerformed(evt);
+                cxIDActionPerformed(evt);
+            }
+        });
+
+        cxNome.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        cxNome.setForeground(new java.awt.Color(2, 78, 148));
+        cxNome.setText("Laura");
+        cxNome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cxNomeActionPerformed(evt);
             }
         });
 
@@ -154,12 +207,12 @@ public class ValidarConta extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(CaixaNumeroConta, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cxNome, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(CaixaID, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(BtnIR))
+                        .addComponent(cxID, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnProsseguir))
                 .addGap(163, 163, 163))
         );
         jPanel1Layout.setVerticalGroup(
@@ -168,13 +221,13 @@ public class ValidarConta extends javax.swing.JFrame {
                 .addContainerGap(147, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(CaixaID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cxID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(CaixaNumeroConta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cxNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(37, 37, 37)
-                .addComponent(BtnIR)
+                .addComponent(btnProsseguir)
                 .addGap(120, 120, 120))
         );
 
@@ -194,43 +247,21 @@ public class ValidarConta extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void CaixaNumeroContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CaixaNumeroContaActionPerformed
+    private void cxNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cxNomeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_CaixaNumeroContaActionPerformed
+    }//GEN-LAST:event_cxNomeActionPerformed
 
-    private void CaixaIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CaixaIDActionPerformed
+    private void cxIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cxIDActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_CaixaIDActionPerformed
+    }//GEN-LAST:event_cxIDActionPerformed
 
-    private void BtnIRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnIRActionPerformed
+    private void btnProsseguirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProsseguirActionPerformed
        
-    }//GEN-LAST:event_BtnIRActionPerformed
+    }//GEN-LAST:event_btnProsseguirActionPerformed
 
-    private void BtnIRMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnIRMouseClicked
-        Conta contaSelecionada = null;
-        int numeroConta = Integer.parseInt(this.CaixaNumeroConta.getText());
-        int idConta = Integer.parseInt(this.CaixaID.getText());
-        int cont = 0;
-        for (Conta conta : contasCliente) {
-            cont++;
-            if (conta.getNumeroConta() == numeroConta && conta.getIdConta() == idConta) {
-                contaSelecionada = conta;
-                break;
-            }
-        }
-        if (contaSelecionada == null) {
-            JOptionPane.showMessageDialog(null, "Dados incorretos!");
-        } else {
-            ContaUI show = new ContaUI();
-            show.setContaSelecionada(contaSelecionada);
-            show.setListaContas(contasCliente);
-            //clienteUI != null ? show.setClienteUI(clienteUI) : 
-            show.setVisible(true);
-            if (clienteUI != null) clienteUI.setVisible(false); 
-            else funcionarioUI.setVisible(false);
-            this.dispose();
-        }
-    }//GEN-LAST:event_BtnIRMouseClicked
+    private void btnProsseguirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnProsseguirMouseClicked
+        prosseguir();
+    }//GEN-LAST:event_btnProsseguirMouseClicked
 
     /**
      * @param args the command line arguments
@@ -249,28 +280,31 @@ public class ValidarConta extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ValidarConta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ValidarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ValidarConta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ValidarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ValidarConta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ValidarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ValidarConta.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ValidarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ValidarConta().setVisible(true);
+                new ValidarCliente().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BtnIR;
-    private javax.swing.JTextField CaixaID;
-    private javax.swing.JTextField CaixaNumeroConta;
+    private javax.swing.JButton btnProsseguir;
+    private javax.swing.JTextField cxID;
+    private javax.swing.JTextField cxNome;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

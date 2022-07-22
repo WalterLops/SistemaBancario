@@ -5,6 +5,7 @@
 package views.conta;
 
 import contas.Conta;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,7 +20,7 @@ import views.ContaUI;
  * @author Walter
  */
 public class Depositar extends javax.swing.JFrame {
-    
+
     private Conta contaSelecionada;
     private ContaUI contaUI;
     private List<Conta> listaContas;
@@ -48,9 +49,21 @@ public class Depositar extends javax.swing.JFrame {
     public void setContaUI(ContaUI contaUI) {
         this.contaUI = contaUI;
     }
+
     
-    
-    
+    private void removerConta() {
+        for (int i = 0; i < 2; i++) {
+            for (Conta c : listaContas) {
+                if (c.getAgencia() == contaSelecionada.getAgencia() && c.getIdConta() == contaSelecionada.getIdConta()) {
+                    if (c.getNumeroConta() == contaSelecionada.getNumeroConta()) {
+                        listaContas.remove(c);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * Creates new form Depositar
      */
@@ -168,8 +181,6 @@ public class Depositar extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnVoltarActionPerformed
 
     private void clickTelaInicial(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickTelaInicial
-        listaContas.add(contaSelecionada);
-        Escrita.escreverContas(listaContas, baseContas);
         contaUI.setContaSelecionada(contaSelecionada);
         contaUI.atualizarSaldo("R$ " + Double.toString(contaSelecionada.getSaldo()));
         contaUI.setVisible(true);
@@ -179,10 +190,11 @@ public class Depositar extends javax.swing.JFrame {
     private void BtnDepositarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnDepositarMouseClicked
         try {
             listaContas = Leitura.lerContas(baseContas);
-            listaContas.remove(contaSelecionada);
+            removerConta();
             double valorDeposito = Double.parseDouble(this.CaixaDeposito.getText());
-            listaContas.remove(contaSelecionada);
             contaSelecionada.depositar(valorDeposito);
+            listaContas.add(contaSelecionada);
+            Escrita.escreverContas(listaContas, baseContas);
             this.CaixaDeposito.setText("");
         } catch (ParseException ex) {
             Logger.getLogger(Depositar.class.getName()).log(Level.SEVERE, null, ex);

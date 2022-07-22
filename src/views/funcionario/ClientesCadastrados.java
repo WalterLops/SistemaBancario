@@ -10,6 +10,11 @@ package views.funcionario;
  */
 public class ClientesCadastrados extends javax.swing.JInternalFrame {
 
+   public void setShowContas(String msg, int linhas){
+       this.ShowContas.setRows(linhas);
+       this.ShowContas.setText(msg);
+    }
+    
     /**
      * Creates new form MeusDados
      */
@@ -26,17 +31,31 @@ public class ClientesCadastrados extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        ShowContas = new javax.swing.JTextArea();
+
         setTitle("Clientes Cadastrados");
+        setMaximumSize(new java.awt.Dimension(700, 495));
+        setMinimumSize(new java.awt.Dimension(700, 495));
+        setPreferredSize(new java.awt.Dimension(700, 495));
+
+        ShowContas.setColumns(20);
+        ShowContas.setRows(5);
+        jScrollPane1.setViewportView(ShowContas);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 682, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -44,5 +63,7 @@ public class ClientesCadastrados extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea ShowContas;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

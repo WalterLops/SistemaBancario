@@ -4,17 +4,58 @@
  */
 package views.funcionario;
 
+import contas.Conta;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import jsonOperations.Escrita;
+import jsonOperations.Leitura;
+import org.json.simple.parser.ParseException;
+import usuarios.Funcionario;
+import views.ApenasNumeros;
+
 /**
  *
  * @author Walter
  */
 public class RemoverConta extends javax.swing.JInternalFrame {
 
+    private List<Conta> listaContas;
+    private Funcionario funcionarioLogado;
+    private String baseContas;
+
+    public String getBaseContas() {
+        return baseContas;
+    }
+
+    public void setBaseContas(String baseContas) {
+        this.baseContas = baseContas;
+    }
+
+    public Funcionario getFuncionarioLogado() {
+        return funcionarioLogado;
+    }
+
+    public void setFuncionarioLogado(Funcionario funcionarioLogado) {
+        this.funcionarioLogado = funcionarioLogado;
+    }
+
+    private void setListaContas() {
+        try {
+            this.listaContas = Leitura.lerContas(baseContas);
+        } catch (ParseException ex) {
+            Logger.getLogger(AdicionarConta.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     /**
      * Creates new form MeusDados
      */
     public RemoverConta() {
         initComponents();
+        this.cxNumeroConta.setDocument(new ApenasNumeros());
+        this.cxID.setDocument(new ApenasNumeros());
     }
 
     /**
@@ -26,21 +67,117 @@ public class RemoverConta extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        cxAgencia = new javax.swing.JComboBox<>();
+        cxID = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        cxNumeroConta = new javax.swing.JTextField();
+        btnRemover = new javax.swing.JButton();
+
+        setTitle("Remover conta");
+        setMaximumSize(new java.awt.Dimension(700, 495));
+        setMinimumSize(new java.awt.Dimension(700, 495));
+        setPreferredSize(new java.awt.Dimension(700, 495));
+
+        jLabel2.setText("ID da conta");
+
+        jLabel3.setText("Número da agência");
+
+        cxAgencia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "709" }));
+
+        jLabel8.setText("Número da conta");
+
+        cxNumeroConta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cxNumeroContaActionPerformed(evt);
+            }
+        });
+
+        btnRemover.setText("Remover");
+        btnRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoverActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(87, 87, 87)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cxNumeroConta, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cxID, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(41, 41, 41)
+                                .addComponent(cxAgencia, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(292, 292, 292)
+                        .addComponent(btnRemover)))
+                .addContainerGap(129, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(115, 115, 115)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(cxAgencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(cxID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8)
+                    .addComponent(cxNumeroConta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(95, 95, 95)
+                .addComponent(btnRemover)
+                .addContainerGap(131, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cxNumeroContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cxNumeroContaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cxNumeroContaActionPerformed
+
+    private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
+        try {
+            setListaContas();
+            int agencia = Integer.parseInt(this.cxAgencia.getSelectedItem().toString());
+            int idConta = Integer.parseInt(this.cxID.getText());
+            int numeroConta = Integer.parseInt(this.cxNumeroConta.getText());
+
+            listaContas = funcionarioLogado.removerConta(idConta, numeroConta, agencia, listaContas);
+            Escrita.escreverContas(listaContas, baseContas);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Digite todos os dados");
+        }
+
+    }//GEN-LAST:event_btnRemoverActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRemover;
+    private javax.swing.JComboBox<String> cxAgencia;
+    private javax.swing.JTextField cxID;
+    private javax.swing.JTextField cxNumeroConta;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel8;
     // End of variables declaration//GEN-END:variables
 }

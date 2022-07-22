@@ -47,6 +47,7 @@ public class DadosCliente extends javax.swing.JInternalFrame {
 
         setBackground(new java.awt.Color(2, 78, 148));
         setBorder(null);
+        setTitle("Meus dados");
         setMaximumSize(new java.awt.Dimension(700, 400));
         setMinimumSize(new java.awt.Dimension(700, 400));
         setPreferredSize(new java.awt.Dimension(700, 400));

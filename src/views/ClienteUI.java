@@ -257,18 +257,13 @@ public class ClienteUI extends javax.swing.JFrame {
     }//GEN-LAST:event_DadosClienteMouseClicked
 
     private void OperacoesContaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_OperacoesContaMouseClicked
-        try {
-            ValidarConta show = new ValidarConta();
-            this.PainelCliente.removeAll();
-            show.setClienteUI(this);
-            show.setClienteLogado(clienteLogado);
-            setContasCliente(clienteLogado.getsetIdConta());
-            show.setListaContas(contasCliente);
-            show.setVisible(true);
-            
-        } catch (ParseException ex) {
-            Logger.getLogger(ClienteUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ValidarConta show = new ValidarConta();
+        this.PainelCliente.removeAll();
+        show.setClienteUI(this);
+        show.setClienteLogado(clienteLogado);
+        show.setContasCliente(clienteLogado.getsetIdConta());
+        this.setVisible(false);
+        show.setVisible(true);
     }//GEN-LAST:event_OperacoesContaMouseClicked
 
     /**

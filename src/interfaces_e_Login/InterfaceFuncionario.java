@@ -16,11 +16,11 @@ public interface InterfaceFuncionario {
     
 public void alterarSenhaAcesso(String senha);
 
-public contas.Conta adicionarConta();
-public List<Conta> removerConta(int idConta, List<Conta> listaConta);
+public Conta adicionarConta(int tipoConta, int idConta, int agencia, int numeroConta, double saldo, double limiteSaque, double taxaManutenção, String CNPJ);
+public List<Conta> removerConta(int idConta, int numeroConta, int agencia, List<Conta> listaConta);
 
 public void acessarInfoCliente(String idCliente, List<Cliente> listaCleinte);
-public List<Cliente> alterarCliente(String idCliente, List<Cliente> listaCliente);
+public Cliente alterarCliente(Cliente cliente);
     
 }
 

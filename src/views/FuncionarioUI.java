@@ -4,6 +4,15 @@
  */
 package views;
 
+import contas.Conta;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import jsonOperations.Leitura;
+import org.json.simple.parser.ParseException;
+import usuarios.Cliente;
+import usuarios.Funcionario;
+import views.cliente.ValidarConta;
 import views.funcionario.AdicionarConta;
 import views.funcionario.AlterarInfoCliente;
 import views.funcionario.AlterarSenha;
@@ -12,12 +21,66 @@ import views.funcionario.ContasCadastradas;
 import views.funcionario.InfoCliente;
 import views.funcionario.MeusDados;
 import views.funcionario.RemoverConta;
+import views.funcionario.ValidarCliente;
 
 /**
  *
  * @author Walter
  */
 public class FuncionarioUI extends javax.swing.JFrame {
+//////////////////////////////
+
+    private Funcionario funcionarioLogado = new Funcionario(null, null, "F1020", "123", "Ana S", "Rua B", "9999855");
+    ///////////////////////////////
+    private String baseFuncionarios = "./src/baseDeDados/funcionarios.json";
+    private String baseContas = "./src/baseDeDados/listaContas.json";
+    private String baseClientes = "./src/baseDeDados/clientes.json";
+
+    Cliente clienteSelecionado = null;
+
+    public Cliente getClienteSelecionado() {
+        return clienteSelecionado;
+    }
+
+    public void setClienteSelecionado(Cliente clienteSelecionado) {
+        this.clienteSelecionado = clienteSelecionado;
+    }
+
+    public String getBaseContas() {
+        return baseContas;
+    }
+
+    public void setBaseContas(String baseContas) {
+        this.baseContas = baseContas;
+    }
+
+    public String getBaseFuncionarios() {
+        return baseFuncionarios;
+    }
+
+    public void setBaseFuncionarios(String baseFuncionarios) {
+        this.baseFuncionarios = baseFuncionarios;
+    }
+
+    public Funcionario getFuncionarioLogado() {
+        return funcionarioLogado;
+    }
+
+    public void setFuncionarioLogado(Funcionario funcionarioLogado) {
+        this.funcionarioLogado = funcionarioLogado;
+    }
+
+    public void setLimparAreaDeTrabalho() {
+        this.AreaDeTrabalho.removeAll();
+    }
+
+    public void setAlterarCliente(AlterarInfoCliente alterarInfoCliente) {
+        this.AreaDeTrabalho.add(alterarInfoCliente);
+    }
+
+    public void setInfoCliente(InfoCliente infoCliente) {
+        this.AreaDeTrabalho.add(infoCliente);
+    }
 
     /**
      * Creates new form AdministradorUI
@@ -38,24 +101,26 @@ public class FuncionarioUI extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         AreaDeTrabalho = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        MinhaConta = new javax.swing.JMenu();
+        MeusDados = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        AlterarSenha = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        Sair = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem8 = new javax.swing.JMenuItem();
+        contasCadastradas = new javax.swing.JMenuItem();
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
         jMenuItem4 = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         jMenuItem5 = new javax.swing.JMenuItem();
+        jSeparator7 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem6 = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem7 = new javax.swing.JMenuItem();
+        acessarInfoCliente = new javax.swing.JMenuItem();
+        Separator = new javax.swing.JPopupMenu.Separator();
+        alterarInfoCliente = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Interface Funcionário - WWBanck");
@@ -66,8 +131,8 @@ public class FuncionarioUI extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(0, 20, 73));
         jPanel1.setMinimumSize(new java.awt.Dimension(600, 400));
 
-        AreaDeTrabalho.setMaximumSize(new java.awt.Dimension(500, 350));
-        AreaDeTrabalho.setMinimumSize(new java.awt.Dimension(500, 350));
+        AreaDeTrabalho.setMaximumSize(new java.awt.Dimension(700, 495));
+        AreaDeTrabalho.setMinimumSize(new java.awt.Dimension(700, 495));
 
         javax.swing.GroupLayout AreaDeTrabalhoLayout = new javax.swing.GroupLayout(AreaDeTrabalho);
         AreaDeTrabalho.setLayout(AreaDeTrabalhoLayout);
@@ -97,58 +162,68 @@ public class FuncionarioUI extends javax.swing.JFrame {
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
-        jMenu1.setText("Minha Conta");
-        jMenu1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jMenu1.setMaximumSize(new java.awt.Dimension(100, 22));
-        jMenu1.setMinimumSize(new java.awt.Dimension(100, 22));
-        jMenu1.setPreferredSize(new java.awt.Dimension(100, 22));
+        MinhaConta.setText("Minha Conta");
+        MinhaConta.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        MinhaConta.setMaximumSize(new java.awt.Dimension(100, 22));
+        MinhaConta.setMinimumSize(new java.awt.Dimension(100, 22));
+        MinhaConta.setPreferredSize(new java.awt.Dimension(100, 22));
+        MinhaConta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MinhaContaActionPerformed(evt);
+            }
+        });
 
-        jMenuItem1.setText("Meus dados");
-        jMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
+        MeusDados.setText("Meus dados");
+        MeusDados.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenuItem1MouseClicked(evt);
+                MeusDadosMouseClicked(evt);
             }
         });
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        MeusDados.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                MeusDadosActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
-        jMenu1.add(jSeparator2);
+        MinhaConta.add(MeusDados);
+        MinhaConta.add(jSeparator2);
 
-        jMenuItem2.setText("Alterar senha");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        AlterarSenha.setText("Alterar senha");
+        AlterarSenha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                AlterarSenhaActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
-        jMenu1.add(jSeparator4);
+        MinhaConta.add(AlterarSenha);
+        MinhaConta.add(jSeparator4);
 
-        jMenuItem3.setText("Sair");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        Sair.setText("Sair");
+        Sair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                SairActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem3);
+        MinhaConta.add(Sair);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(MinhaConta);
 
         jMenu2.setText("Contas");
         jMenu2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jMenu2.setMaximumSize(new java.awt.Dimension(100, 22));
         jMenu2.setMinimumSize(new java.awt.Dimension(100, 22));
         jMenu2.setPreferredSize(new java.awt.Dimension(100, 22));
-
-        jMenuItem8.setText("Contas cadastradas");
-        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+        jMenu2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem8ActionPerformed(evt);
+                jMenu2ActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem8);
+
+        contasCadastradas.setText("Contas cadastradas");
+        contasCadastradas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                contasCadastradasActionPerformed(evt);
+            }
+        });
+        jMenu2.add(contasCadastradas);
         jMenu2.add(jSeparator5);
 
         jMenuItem4.setText("Adicionar conta");
@@ -167,6 +242,15 @@ public class FuncionarioUI extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem5);
+        jMenu2.add(jSeparator7);
+
+        jMenuItem1.setText("Ir para minha conta bancária");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem1);
 
         jMenuBar1.add(jMenu2);
 
@@ -184,22 +268,22 @@ public class FuncionarioUI extends javax.swing.JFrame {
         jMenu3.add(jMenuItem9);
         jMenu3.add(jSeparator6);
 
-        jMenuItem6.setText("Acessar informações do cliente");
-        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+        acessarInfoCliente.setText("Acessar informações do cliente");
+        acessarInfoCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem6ActionPerformed(evt);
+                acessarInfoClienteActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem6);
-        jMenu3.add(jSeparator1);
+        jMenu3.add(acessarInfoCliente);
+        jMenu3.add(Separator);
 
-        jMenuItem7.setText("Alterar informações do cliente");
-        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+        alterarInfoCliente.setText("Alterar informações do cliente");
+        alterarInfoCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem7ActionPerformed(evt);
+                alterarInfoClienteActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem7);
+        jMenu3.add(alterarInfoCliente);
 
         jMenuBar1.add(jMenu3);
 
@@ -223,37 +307,57 @@ public class FuncionarioUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem1MouseClicked
-        
-    }//GEN-LAST:event_jMenuItem1MouseClicked
+    private void MeusDadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MeusDadosMouseClicked
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_MeusDadosMouseClicked
+
+    private void MeusDadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MeusDadosActionPerformed
         MeusDados show = new MeusDados();
+        show.setShowMeusDados(funcionarioLogado.toString());
         this.AreaDeTrabalho.removeAll();
         this.AreaDeTrabalho.add(show);
         show.setVisible(true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_MeusDadosActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void AlterarSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlterarSenhaActionPerformed
         AlterarSenha show = new AlterarSenha();
+        show.setFuncionarioUI(this);
+        show.setBaseFuncionarios(baseFuncionarios);
+        show.setFuncionarioLogado(funcionarioLogado);
         this.AreaDeTrabalho.removeAll();
         this.AreaDeTrabalho.add(show);
         show.setVisible(true);
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_AlterarSenhaActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void SairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SairActionPerformed
         System.exit(0);
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }//GEN-LAST:event_SairActionPerformed
 
-    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        ContasCadastradas show = new ContasCadastradas();
-        this.AreaDeTrabalho.removeAll();
-        this.AreaDeTrabalho.add(show);
-        show.setVisible(true);
-    }//GEN-LAST:event_jMenuItem8ActionPerformed
+    private void contasCadastradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contasCadastradasActionPerformed
+        try {
+            List<Conta> listaContas = Leitura.lerContas(baseContas);
+            StringBuilder sb = new StringBuilder();
+            int linhas = 7;
+            for (Conta c : listaContas) {
+                sb.append(c.infoConta());
+                linhas += linhas;
+            }
+
+            ContasCadastradas show = new ContasCadastradas();
+            show.setShowContas(sb.toString(), linhas);
+            this.AreaDeTrabalho.removeAll();
+            this.AreaDeTrabalho.add(show);
+            show.setVisible(true);
+
+        } catch (ParseException ex) {
+            Logger.getLogger(FuncionarioUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_contasCadastradasActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         AdicionarConta show = new AdicionarConta();
+        show.setFuncionarioLogado(funcionarioLogado);
+        show.setBaseContas(baseContas);
         this.AreaDeTrabalho.removeAll();
         this.AreaDeTrabalho.add(show);
         show.setVisible(true);
@@ -261,31 +365,70 @@ public class FuncionarioUI extends javax.swing.JFrame {
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         RemoverConta show = new RemoverConta();
+        show.setFuncionarioLogado(funcionarioLogado);
+        show.setBaseContas(baseContas);
         this.AreaDeTrabalho.removeAll();
         this.AreaDeTrabalho.add(show);
         show.setVisible(true);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
-        ClientesCadastrados show = new ClientesCadastrados();
-        this.AreaDeTrabalho.removeAll();
-        this.AreaDeTrabalho.add(show);
-        show.setVisible(true);
+        try {
+            List<Cliente> listaClientes = Leitura.lerClientes(baseClientes);
+            StringBuilder sb = new StringBuilder();
+            int linhas = 7;
+            for (Cliente c : listaClientes) {
+                sb.append(c.toString());
+                linhas += linhas;
+            }
+
+            ClientesCadastrados show = new ClientesCadastrados();
+            show.setShowContas(sb.toString(), linhas);
+            this.AreaDeTrabalho.removeAll();
+            this.AreaDeTrabalho.add(show);
+            show.setVisible(true);
+
+        } catch (ParseException ex) {
+            Logger.getLogger(FuncionarioUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
-    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        InfoCliente show = new InfoCliente();
+    private void acessarInfoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acessarInfoClienteActionPerformed
+        ValidarCliente show = new ValidarCliente();
+        show.setFuncionarioLogado(funcionarioLogado);
+        show.setInfoCliente(new InfoCliente());
+        show.setFuncionarioUI(this);
         this.AreaDeTrabalho.removeAll();
-        this.AreaDeTrabalho.add(show);
         show.setVisible(true);
-    }//GEN-LAST:event_jMenuItem6ActionPerformed
 
-    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        AlterarInfoCliente show = new AlterarInfoCliente();
+    }//GEN-LAST:event_acessarInfoClienteActionPerformed
+
+    private void alterarInfoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarInfoClienteActionPerformed
+        ValidarCliente show = new ValidarCliente();
+        show.setFuncionarioLogado(funcionarioLogado);
+        show.setAlterarInfoCliente(new AlterarInfoCliente());
+        show.setFuncionarioUI(this);
         this.AreaDeTrabalho.removeAll();
-        this.AreaDeTrabalho.add(show);
         show.setVisible(true);
-    }//GEN-LAST:event_jMenuItem7ActionPerformed
+    }//GEN-LAST:event_alterarInfoClienteActionPerformed
+
+    private void MinhaContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MinhaContaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_MinhaContaActionPerformed
+
+    private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
+
+    }//GEN-LAST:event_jMenu2ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        ValidarConta show = new ValidarConta();
+        this.AreaDeTrabalho.removeAll();
+        show.setFuncionarioUI(this);
+        show.setClienteLogado(funcionarioLogado);
+        show.setContasCliente(funcionarioLogado.getsetIdConta());
+        show.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -324,26 +467,28 @@ public class FuncionarioUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem AlterarSenha;
     private javax.swing.JPanel AreaDeTrabalho;
-    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuItem MeusDados;
+    private javax.swing.JMenu MinhaConta;
+    private javax.swing.JMenuItem Sair;
+    private javax.swing.JPopupMenu.Separator Separator;
+    private javax.swing.JMenuItem acessarInfoCliente;
+    private javax.swing.JMenuItem alterarInfoCliente;
+    private javax.swing.JMenuItem contasCadastradas;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JPopupMenu.Separator jSeparator6;
+    private javax.swing.JPopupMenu.Separator jSeparator7;
     // End of variables declaration//GEN-END:variables
 }

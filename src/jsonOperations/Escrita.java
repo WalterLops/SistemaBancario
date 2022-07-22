@@ -73,6 +73,8 @@ public class Escrita {
 
         for (Funcionario f : funcionarios) {
             if (f != null) {
+                /*jsonObject.put("dataAdmissao", f.getDataAdmissao());
+                jsonObject.put("dataDemissao", f.getDataDemissao());*/
                 jsonObject.put("ID", f.getId());
                 jsonObject.put("senha", f.getSenha());
                 jsonObject.put("nome", f.getNome());

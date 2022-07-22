@@ -4,6 +4,7 @@
  */
 package views;
 
+import java.awt.event.KeyEvent;
 import views.login.ExemploUsuarios;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,6 +12,7 @@ import javax.swing.JOptionPane;
 import org.json.simple.parser.ParseException;
 import sistema.Login;
 import usuarios.Cliente;
+import usuarios.Funcionario;
 
 /**
  *
@@ -18,9 +20,91 @@ import usuarios.Cliente;
  */
 public class LoginUI extends javax.swing.JFrame {
 
-    Login login = new Login();
-    Cliente usuarioLogado;
-    ExemploUsuarios exp = new ExemploUsuarios();
+    private Login login = new Login();
+    private Cliente usuarioLogado;
+    private ExemploUsuarios exp = new ExemploUsuarios();
+    private String baseFuncionarios;
+    private String baseContas;
+    private String baseAdministradores;
+    private String baseAgencias;
+    private String baseClientes;
+
+    public String getBaseClientes() {
+        return baseClientes;
+    }
+
+    public void setBaseClientes(String baseClientes) {
+        this.baseClientes = baseClientes;
+    }
+    
+    public String getBaseFuncionarios() {
+        return baseFuncionarios;
+    }
+
+    public void setBaseFuncionarios(String baseFuncionarios) {
+        this.baseFuncionarios = baseFuncionarios;
+    }
+
+    public String getBaseContas() {
+        return baseContas;
+    }
+
+    public void setBaseContas(String baseContas) {
+        this.baseContas = baseContas;
+    }
+
+    public String getBaseAdministradores() {
+        return baseAdministradores;
+    }
+
+    public void setBaseAdministradores(String baseAdministradores) {
+        this.baseAdministradores = baseAdministradores;
+    }
+
+    public String getBaseAgencias() {
+        return baseAgencias;
+    }
+
+    public void setBaseAgencias(String baseAgencias) {
+        this.baseAgencias = baseAgencias;
+    }
+    
+    private void entrar(){
+        int response = 0;
+        try {
+            response = login.Logar(Usuario.getText(), Senha.getText());
+        } catch (ParseException ex) {
+            Logger.getLogger(LoginUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        switch (response) {
+            case 1 -> { // Cliente fez login
+                usuarioLogado = login.getUsuarioLogado();
+                this.setVisible(false);
+                exp.setVisible(false);
+                ClienteUI cliente = new ClienteUI();
+                cliente.setClienteLogado(usuarioLogado);
+                cliente.setVisible(true);
+            }
+            case 2 -> { // Funcionario fez login
+                usuarioLogado = login.getUsuarioLogado();
+                this.setVisible(false);
+                exp.setVisible(false);
+                FuncionarioUI show = new FuncionarioUI();
+                show.setFuncionarioLogado((Funcionario) usuarioLogado);
+                show.setBaseFuncionarios(baseFuncionarios);
+                show.setBaseContas(baseContas);
+                show.setVisible(true);
+            }
+            case 3 -> { // Administrador fez login
+                usuarioLogado = login.getUsuarioLogado();
+                this.setVisible(false);
+                exp.setVisible(false);
+                new AdministradorUI().setVisible(true);
+            }
+            default -> JOptionPane.showMessageDialog(null, "Dados incorretos!");
+        }
+    }
+    
 
     /**
      * Creates new form LoginUI
@@ -76,6 +160,11 @@ public class LoginUI extends javax.swing.JFrame {
         Entar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EntarActionPerformed(evt);
+            }
+        });
+        Entar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                EntarKeyPressed(evt);
             }
         });
 
@@ -178,35 +267,7 @@ public class LoginUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void EntarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EntarActionPerformed
-        int response = 0;
-        try {
-            response = login.Logar(Usuario.getText(), Senha.getText());
-        } catch (ParseException ex) {
-            Logger.getLogger(LoginUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        switch (response) {
-            case 1 -> {
-                usuarioLogado = login.getUsuarioLogado();
-                this.setVisible(false);
-                exp.setVisible(false);
-                ClienteUI cliente = new ClienteUI();
-                cliente.setClienteLogado(usuarioLogado);
-                cliente.setVisible(true);
-            }
-            case 2 -> {
-                usuarioLogado = login.getUsuarioLogado();
-                this.setVisible(false);
-                exp.setVisible(false);
-                new FuncionarioUI().setVisible(true);
-            }
-            case 3 -> {
-                usuarioLogado = login.getUsuarioLogado();
-                this.setVisible(false);
-                exp.setVisible(false);
-                new AdministradorUI().setVisible(true);
-            }
-            default -> JOptionPane.showMessageDialog(null, "Dados incorretos!");
-        }
+        entrar();
     }//GEN-LAST:event_EntarActionPerformed
 
     private void SairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SairActionPerformed
@@ -225,6 +286,14 @@ public class LoginUI extends javax.swing.JFrame {
         exp.setExemplo(login.getExemploUsuarios());
         exp.setVisible(true);
     }//GEN-LAST:event_jMenu1MouseClicked
+
+    private void EntarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_EntarKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER){
+            entrar();
+        }
+        
+    }//GEN-LAST:event_EntarKeyPressed
 
     /**
      * @param args the command line arguments

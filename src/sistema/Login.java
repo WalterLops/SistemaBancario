@@ -4,8 +4,6 @@
  */
 package sistema;
 
-import agencia.Agencia;
-import contas.Conta;
 import java.util.ArrayList;
 import java.util.List;
 import jsonOperations.Leitura;
