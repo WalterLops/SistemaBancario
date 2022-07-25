@@ -15,8 +15,6 @@ import usuarios.Cliente;
 import views.cliente.ContasCliente;
 import views.cliente.DadosCliente;
 import views.cliente.ValidarConta;
-import views.conta.Depositar;
-import views.conta.Sacar;
 
 /**
  *
@@ -204,27 +202,7 @@ public class ClienteUI extends javax.swing.JFrame {
     }//GEN-LAST:event_DadosClienteActionPerformed
 
     private void OperacoesContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OperacoesContaActionPerformed
-        /*ValidarConta show = new ValidarConta();
-        this.PainelCliente.removeAll();
-        show.setClienteUI(this);
-        show.setClienteLogado(clienteLogado);
-        show.setListaContas(contasCliente);
-        show.setVisible(true);
-        
-        
-        /*
-        try {
-            ValidarConta show = new ValidarConta();
-            show.setClienteUI(this);
-            setContasCliente(clienteLogado.getsetIdConta());
-            show.setListaContas(contasCliente);
-            this.PainelCliente.removeAll();
-            this.PainelCliente.add(show);
-            show.setVisible(true);
-        } catch (ParseException ex) {
-            Logger.getLogger(ClienteUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        */
+       
     }//GEN-LAST:event_OperacoesContaActionPerformed
 
     private void SairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SairActionPerformed
@@ -262,7 +240,6 @@ public class ClienteUI extends javax.swing.JFrame {
         show.setClienteUI(this);
         show.setClienteLogado(clienteLogado);
         show.setContasCliente(clienteLogado.getsetIdConta());
-        this.setVisible(false);
         show.setVisible(true);
     }//GEN-LAST:event_OperacoesContaMouseClicked
 

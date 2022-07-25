@@ -9,57 +9,69 @@ package agencia;
  * @author Walter
  */
 public class Agencia {
-    private static String nome;
-    private static int codigo;
-    private static String cidade;
-    private static String endereco;
-    private static double montanteTotal;
+    private String nome;
+    private int codigo;
+    private String cidade;
+    private String endereco;
+    private double montanteTotal;
     
     public Agencia(String nome, int codigo, String cidade, String endereco) {
-        Agencia.nome = nome;
-        Agencia.codigo = codigo;
-        Agencia.cidade = cidade;
-        Agencia.endereco = endereco;
+        this.nome = nome;
+        this.codigo = codigo;
+        this.cidade = cidade;
+        this.endereco = endereco;
     }
 
-    public static String getNome() {
+    public String getNome() {
         return nome;
     }
 
-    public static void setNome(String nome) {
-        Agencia.nome = nome;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public static int getCodigo() {
+    public int getCodigo() {
         return codigo;
     }
 
-    public static void setCodigo(int codigo) {
-        Agencia.codigo = codigo;
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
     }
 
-    public static String getCidade() {
+    public String getCidade() {
         return cidade;
     }
 
-    public static void setCidade(String cidade) {
-        Agencia.cidade = cidade;
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
     }
 
-    public static String getEndereco() {
+    public String getEndereco() {
         return endereco;
     }
 
-    public static void setEndereco(String endereco) {
-        Agencia.endereco = endereco;
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
     }
 
-    public static double getMontanteTotal() {
+    public double getMontanteTotal() {
         return montanteTotal;
     }
-
-    public static void setMontanteTotal(double montanteTotal) {
-        Agencia.montanteTotal += montanteTotal;
+    
+    public void setMontanteTotal(double montanteTotal) {
+        this.montanteTotal += montanteTotal;
     }
+
+    @Override
+    public String toString() {
+        return "\n======================================"
+                + "\nNome: " + nome 
+                + "\nCódigo: " + codigo 
+                + "\nCidade: " + cidade 
+                + "\nEndereço: " + endereco
+                +"\n======================================";
+    }
+    
+    
     
 }

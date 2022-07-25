@@ -10,7 +10,9 @@ import javax.swing.JOptionPane;
 import jsonOperations.Escrita;
 import jsonOperations.Leitura;
 import org.json.simple.parser.ParseException;
+import usuarios.Administrador;
 import usuarios.Funcionario;
+import views.AdministradorUI;
 import views.FuncionarioUI;
 
 /**
@@ -19,10 +21,42 @@ import views.FuncionarioUI;
  */
 public class AlterarSenha extends javax.swing.JInternalFrame {
 
-    private Funcionario funcionarioLogado;
+    private FuncionarioUI funcionarioUI;
+    private Funcionario funcionarioLogado = null;
     private Funcionario[] listaFuncionarios;
     private String baseFuncionarios;
-    private FuncionarioUI funcionarioUI;
+    
+    private AdministradorUI administradorUI;
+    private Administrador administradorLogado = null;
+    private String baseAdministradores;
+    private Administrador [] listaAdministradores;
+
+    public Administrador getAdministradorLogado() {
+        return administradorLogado;
+    }
+
+    public void setAdministradorLogado(Administrador administradorLogado) {
+        this.administradorLogado = administradorLogado;
+    }
+
+    public String getBaseAdministradores() {
+        return baseAdministradores;
+    }
+
+    public void setBaseAdministradores(String baseAdministradores) {
+        this.baseAdministradores = baseAdministradores;
+    }
+
+    
+    public AdministradorUI getAdministradorUI() {
+        return administradorUI;
+    }
+
+    public void setAdministradorUI(AdministradorUI administradorUI) {
+        this.administradorUI = administradorUI;
+    }
+    
+    
 
     public FuncionarioUI getFuncionarioUI() {
         return funcionarioUI;
@@ -50,7 +84,7 @@ public class AlterarSenha extends javax.swing.JInternalFrame {
         this.funcionarioLogado = funcionarioLogado;
     }
 
-    private void alterarSenha(String novaSenha) throws ParseException {
+    private void alterarSenhaF(String novaSenha) throws ParseException {
 
         listaFuncionarios = Leitura.lerFuncionarios(baseFuncionarios);
         for (int i = 0; i < listaFuncionarios.length; i++) {
@@ -60,6 +94,21 @@ public class AlterarSenha extends javax.swing.JInternalFrame {
                     listaFuncionarios[i].alterarSenhaAcesso(novaSenha);
                     funcionarioUI.setFuncionarioLogado(listaFuncionarios[i]);
                     Escrita.escreverFuncionario(listaFuncionarios, baseFuncionarios);
+                }
+            }
+        }
+    }
+    
+    private void alterarSenhaA(String novaSenha) throws ParseException {
+
+        listaAdministradores = Leitura.lerAdministradores(baseAdministradores);
+        for (int i = 0; i < listaAdministradores.length; i++) {
+            System.out.println(listaAdministradores[i].toString());
+            if (listaAdministradores[i].getId().equals(administradorLogado.getId())) {
+                if (listaAdministradores[i].getSenha().equals(administradorLogado.getSenha())) {
+                    listaAdministradores[i].alterarSenhaAcesso(novaSenha);
+                    administradorUI.setAdministradorLogado(listaAdministradores[i]);
+                    Escrita.escreverAdmin(listaAdministradores, baseAdministradores);
                 }
             }
         }
@@ -165,7 +214,10 @@ public class AlterarSenha extends javax.swing.JInternalFrame {
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         try {
             String novaSenha = this.cxSenha.getText();
-            alterarSenha(novaSenha);
+            if (funcionarioLogado != null)
+                alterarSenhaF(novaSenha);
+            if (administradorLogado != null)
+                alterarSenhaA(novaSenha);
         } catch (ParseException ex) {
             Logger.getLogger(AlterarSenha.class.getName()).log(Level.SEVERE, null, ex);
         }

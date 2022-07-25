@@ -4,14 +4,60 @@
  */
 package views.administrador;
 
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import jsonOperations.Escrita;
+import jsonOperations.Leitura;
+import org.json.simple.parser.ParseException;
+import usuarios.Administrador;
+import usuarios.Cliente;
+
 /**
  *
  * @author Walter
  */
 public class RemoverCliente extends javax.swing.JInternalFrame {
 
+    private Cliente clienteSelecionado;
+    private Administrador adiministradorLogado;
+    private String baseClientes = "./src/baseDeDados/clientes.json";
+
+    public Cliente getClienteSelecionado() {
+        return clienteSelecionado;
+    }
+
+    public void setClienteSelecionado(Cliente clienteSelecionado) {
+        this.clienteSelecionado = clienteSelecionado;
+    }
+
+    public Administrador getAdiministradorLogado() {
+        return adiministradorLogado;
+    }
+
+    public void setAdiministradorLogado(Administrador adiministradorLogado) {
+        this.adiministradorLogado = adiministradorLogado;
+    }
+
+    public String getBaseClientes() {
+        return baseClientes;
+    }
+
+    public void setBaseClientes(String baseClientes) {
+        this.baseClientes = baseClientes;
+    }
+    
+    public void setInfoCliente(){
+        this.cxID.setText(clienteSelecionado.getId());
+        this.cxNome.setText(clienteSelecionado.getNome());
+        this.cxSenha.setText(clienteSelecionado.getSenha());
+        this.cxEndereco.setText(clienteSelecionado.getEndereco());
+        this.cxTelefone.setText(clienteSelecionado.getTelefone());
+        this.cxContas.setText(clienteSelecionado.getsetIdConta().toString()); 
+    }
+
     /**
-     * Creates new form AdicionarCliente
+     * Creates new form MeusDados
      */
     public RemoverCliente() {
         initComponents();
@@ -27,18 +73,123 @@ public class RemoverCliente extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        cxNome = new javax.swing.JTextField();
+        cxSenha = new javax.swing.JTextField();
+        cxEndereco = new javax.swing.JTextField();
+        cxTelefone = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        cxContas = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        cxID = new javax.swing.JTextField();
+        btnRemover = new javax.swing.JButton();
 
+        setTitle("Informações do cliente");
+        setMaximumSize(new java.awt.Dimension(700, 495));
+        setMinimumSize(new java.awt.Dimension(700, 495));
         setPreferredSize(new java.awt.Dimension(700, 495));
+
+        jLabel1.setText("Nome");
+
+        jLabel2.setText("Senha");
+
+        jLabel3.setText("Endereço");
+
+        jLabel4.setText("Telefone");
+
+        cxNome.setMaximumSize(new java.awt.Dimension(385, 2147483647));
+
+        cxSenha.setMaximumSize(new java.awt.Dimension(385, 2147483647));
+
+        cxEndereco.setMaximumSize(new java.awt.Dimension(385, 2147483647));
+
+        cxTelefone.setMaximumSize(new java.awt.Dimension(385, 2147483647));
+        cxTelefone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cxTelefoneActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Contas Associadas");
+
+        cxContas.setMaximumSize(new java.awt.Dimension(385, 2147483647));
+        cxContas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cxContasActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("ID");
+
+        cxID.setMaximumSize(new java.awt.Dimension(385, 2147483647));
+
+        btnRemover.setText("Remover cliente");
+        btnRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoverActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 388, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(65, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel6))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(cxID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cxContas, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
+                    .addComponent(cxTelefone, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
+                    .addComponent(cxEndereco, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cxSenha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cxNome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(110, 110, 110))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(297, 297, 297)
+                .addComponent(btnRemover)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 268, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(75, 75, 75)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cxID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(cxNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(cxSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(cxEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(cxTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(cxContas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(52, 52, 52)
+                .addComponent(btnRemover)
+                .addContainerGap(82, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -46,6 +197,7 @@ public class RemoverCliente extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -59,8 +211,36 @@ public class RemoverCliente extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cxTelefoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cxTelefoneActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cxTelefoneActionPerformed
+
+    private void cxContasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cxContasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cxContasActionPerformed
+
+    private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
+        List<Cliente>  listaCliente = Leitura.lerClientes(baseClientes);
+        listaCliente = adiministradorLogado.removerCliente(clienteSelecionado.getId(), listaCliente);
+        Escrita.escreverCliente(listaCliente, baseClientes);
+        this.dispose();
+    }//GEN-LAST:event_btnRemoverActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRemover;
+    private javax.swing.JTextField cxContas;
+    private javax.swing.JTextField cxEndereco;
+    private javax.swing.JTextField cxID;
+    private javax.swing.JTextField cxNome;
+    private javax.swing.JTextField cxSenha;
+    private javax.swing.JTextField cxTelefone;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

@@ -4,37 +4,33 @@
  */
 package views;
 
+import views.FA.InfoAgenciaFA;
 import contas.Conta;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import jsonOperations.Leitura;
-import org.json.simple.parser.ParseException;
+import sistema.Sistema;
 import usuarios.Cliente;
 import usuarios.Funcionario;
 import views.cliente.ValidarConta;
 import views.funcionario.AdicionarConta;
 import views.funcionario.AlterarInfoCliente;
 import views.funcionario.AlterarSenha;
-import views.funcionario.ClientesCadastrados;
 import views.funcionario.ContasCadastradas;
 import views.funcionario.InfoCliente;
 import views.funcionario.MeusDados;
 import views.funcionario.RemoverConta;
-import views.funcionario.ValidarCliente;
 
 /**
  *
  * @author Walter
  */
 public class FuncionarioUI extends javax.swing.JFrame {
-//////////////////////////////
-
-    private Funcionario funcionarioLogado = new Funcionario(null, null, "F1020", "123", "Ana S", "Rua B", "9999855");
-    ///////////////////////////////
+    
+    private Funcionario funcionarioLogado;
     private String baseFuncionarios = "./src/baseDeDados/funcionarios.json";
     private String baseContas = "./src/baseDeDados/listaContas.json";
     private String baseClientes = "./src/baseDeDados/clientes.json";
+    private String baseAgencias = "./src/baseDeDados/listaAgencias.json";
 
     Cliente clienteSelecionado = null;
 
@@ -68,6 +64,14 @@ public class FuncionarioUI extends javax.swing.JFrame {
 
     public void setFuncionarioLogado(Funcionario funcionarioLogado) {
         this.funcionarioLogado = funcionarioLogado;
+    }
+    
+    public String getBaseAgencias() {
+        return baseAgencias;
+    }
+
+    public void setBaseAgencias(String baseAgencias) {
+        this.baseAgencias = baseAgencias;
     }
 
     public void setLimparAreaDeTrabalho() {
@@ -107,20 +111,22 @@ public class FuncionarioUI extends javax.swing.JFrame {
         AlterarSenha = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         Sair = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        Contas = new javax.swing.JMenu();
         contasCadastradas = new javax.swing.JMenuItem();
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        addConta = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        removerConta = new javax.swing.JMenuItem();
         jSeparator7 = new javax.swing.JPopupMenu.Separator();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
+        Clientes = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
         acessarInfoCliente = new javax.swing.JMenuItem();
         Separator = new javax.swing.JPopupMenu.Separator();
         alterarInfoCliente = new javax.swing.JMenuItem();
+        nCli = new javax.swing.JMenuItem();
+        DadosAgencia = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Interface Funcionário - WWBanck");
@@ -206,14 +212,14 @@ public class FuncionarioUI extends javax.swing.JFrame {
 
         jMenuBar1.add(MinhaConta);
 
-        jMenu2.setText("Contas");
-        jMenu2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jMenu2.setMaximumSize(new java.awt.Dimension(100, 22));
-        jMenu2.setMinimumSize(new java.awt.Dimension(100, 22));
-        jMenu2.setPreferredSize(new java.awt.Dimension(100, 22));
-        jMenu2.addActionListener(new java.awt.event.ActionListener() {
+        Contas.setText("Contas");
+        Contas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Contas.setMaximumSize(new java.awt.Dimension(100, 22));
+        Contas.setMinimumSize(new java.awt.Dimension(100, 22));
+        Contas.setPreferredSize(new java.awt.Dimension(100, 22));
+        Contas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu2ActionPerformed(evt);
+                ContasActionPerformed(evt);
             }
         });
 
@@ -223,26 +229,26 @@ public class FuncionarioUI extends javax.swing.JFrame {
                 contasCadastradasActionPerformed(evt);
             }
         });
-        jMenu2.add(contasCadastradas);
-        jMenu2.add(jSeparator5);
+        Contas.add(contasCadastradas);
+        Contas.add(jSeparator5);
 
-        jMenuItem4.setText("Adicionar conta");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        addConta.setText("Adicionar conta");
+        addConta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                addContaActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem4);
-        jMenu2.add(jSeparator3);
+        Contas.add(addConta);
+        Contas.add(jSeparator3);
 
-        jMenuItem5.setText("Remover conta");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+        removerConta.setText("Remover conta");
+        removerConta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
+                removerContaActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem5);
-        jMenu2.add(jSeparator7);
+        Contas.add(removerConta);
+        Contas.add(jSeparator7);
 
         jMenuItem1.setText("Ir para minha conta bancária");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
@@ -250,14 +256,14 @@ public class FuncionarioUI extends javax.swing.JFrame {
                 jMenuItem1ActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem1);
+        Contas.add(jMenuItem1);
 
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(Contas);
 
-        jMenu3.setText("Clientes");
-        jMenu3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jMenu3.setMaximumSize(new java.awt.Dimension(100, 22));
-        jMenu3.setPreferredSize(new java.awt.Dimension(100, 22));
+        Clientes.setText("Clientes");
+        Clientes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Clientes.setMaximumSize(new java.awt.Dimension(100, 22));
+        Clientes.setPreferredSize(new java.awt.Dimension(100, 22));
 
         jMenuItem9.setText("Clientes cadastrados");
         jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
@@ -265,8 +271,8 @@ public class FuncionarioUI extends javax.swing.JFrame {
                 jMenuItem9ActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem9);
-        jMenu3.add(jSeparator6);
+        Clientes.add(jMenuItem9);
+        Clientes.add(jSeparator6);
 
         acessarInfoCliente.setText("Acessar informações do cliente");
         acessarInfoCliente.addActionListener(new java.awt.event.ActionListener() {
@@ -274,8 +280,8 @@ public class FuncionarioUI extends javax.swing.JFrame {
                 acessarInfoClienteActionPerformed(evt);
             }
         });
-        jMenu3.add(acessarInfoCliente);
-        jMenu3.add(Separator);
+        Clientes.add(acessarInfoCliente);
+        Clientes.add(Separator);
 
         alterarInfoCliente.setText("Alterar informações do cliente");
         alterarInfoCliente.addActionListener(new java.awt.event.ActionListener() {
@@ -283,9 +289,30 @@ public class FuncionarioUI extends javax.swing.JFrame {
                 alterarInfoClienteActionPerformed(evt);
             }
         });
-        jMenu3.add(alterarInfoCliente);
+        Clientes.add(alterarInfoCliente);
 
-        jMenuBar1.add(jMenu3);
+        nCli.setText("Numero de clientes cadastrados");
+        nCli.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nCliActionPerformed(evt);
+            }
+        });
+        Clientes.add(nCli);
+
+        jMenuBar1.add(Clientes);
+
+        DadosAgencia.setText("Visualizar informações de agência");
+        DadosAgencia.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                DadosAgenciaMouseClicked(evt);
+            }
+        });
+        DadosAgencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DadosAgenciaActionPerformed(evt);
+            }
+        });
+        jMenuBar1.add(DadosAgencia);
 
         setJMenuBar(jMenuBar1);
 
@@ -334,68 +361,56 @@ public class FuncionarioUI extends javax.swing.JFrame {
     }//GEN-LAST:event_SairActionPerformed
 
     private void contasCadastradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contasCadastradasActionPerformed
-        try {
-            List<Conta> listaContas = Leitura.lerContas(baseContas);
-            StringBuilder sb = new StringBuilder();
-            int linhas = 7;
-            for (Conta c : listaContas) {
-                sb.append(c.infoConta());
-                linhas += linhas;
-            }
-
-            ContasCadastradas show = new ContasCadastradas();
-            show.setShowContas(sb.toString(), linhas);
-            this.AreaDeTrabalho.removeAll();
-            this.AreaDeTrabalho.add(show);
-            show.setVisible(true);
-
-        } catch (ParseException ex) {
-            Logger.getLogger(FuncionarioUI.class.getName()).log(Level.SEVERE, null, ex);
+        List<Conta> listaContas = Leitura.lerContas(baseContas);
+        StringBuilder sb = new StringBuilder();
+        int linhas = 7;
+        for (Conta c : listaContas) {
+            sb.append(c.infoConta());
+            linhas += linhas;
         }
+        ContasCadastradas show = new ContasCadastradas();
+        show.setShowContas(sb.toString(), linhas);
+        this.AreaDeTrabalho.removeAll();
+        this.AreaDeTrabalho.add(show);
+        show.setVisible(true);
     }//GEN-LAST:event_contasCadastradasActionPerformed
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+    private void addContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addContaActionPerformed
         AdicionarConta show = new AdicionarConta();
         show.setFuncionarioLogado(funcionarioLogado);
         show.setBaseContas(baseContas);
         this.AreaDeTrabalho.removeAll();
         this.AreaDeTrabalho.add(show);
         show.setVisible(true);
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+    }//GEN-LAST:event_addContaActionPerformed
 
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+    private void removerContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerContaActionPerformed
         RemoverConta show = new RemoverConta();
         show.setFuncionarioLogado(funcionarioLogado);
         show.setBaseContas(baseContas);
         this.AreaDeTrabalho.removeAll();
         this.AreaDeTrabalho.add(show);
         show.setVisible(true);
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
+    }//GEN-LAST:event_removerContaActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
-        try {
-            List<Cliente> listaClientes = Leitura.lerClientes(baseClientes);
-            StringBuilder sb = new StringBuilder();
-            int linhas = 7;
-            for (Cliente c : listaClientes) {
-                sb.append(c.toString());
-                linhas += linhas;
-            }
-
-            ClientesCadastrados show = new ClientesCadastrados();
-            show.setShowContas(sb.toString(), linhas);
-            this.AreaDeTrabalho.removeAll();
-            this.AreaDeTrabalho.add(show);
-            show.setVisible(true);
-
-        } catch (ParseException ex) {
-            Logger.getLogger(FuncionarioUI.class.getName()).log(Level.SEVERE, null, ex);
+        List<Cliente> listaClientes = Leitura.lerClientes(baseClientes);
+        StringBuilder sb = new StringBuilder();
+        int linhas = 7;
+        for (Cliente c : listaClientes) {
+            sb.append(c.toString());
+            linhas += linhas;
         }
+        UsuariosCadastrados show = new UsuariosCadastrados();
+        show.setShowContas(sb.toString(), linhas);
+        this.AreaDeTrabalho.removeAll();
+        this.AreaDeTrabalho.add(show);
+        show.setVisible(true);
 
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void acessarInfoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acessarInfoClienteActionPerformed
-        ValidarCliente show = new ValidarCliente();
+        ValidarUsuariosUI show = new ValidarUsuariosUI();
         show.setFuncionarioLogado(funcionarioLogado);
         show.setInfoCliente(new InfoCliente());
         show.setFuncionarioUI(this);
@@ -405,7 +420,7 @@ public class FuncionarioUI extends javax.swing.JFrame {
     }//GEN-LAST:event_acessarInfoClienteActionPerformed
 
     private void alterarInfoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarInfoClienteActionPerformed
-        ValidarCliente show = new ValidarCliente();
+        ValidarUsuariosUI show = new ValidarUsuariosUI();
         show.setFuncionarioLogado(funcionarioLogado);
         show.setAlterarInfoCliente(new AlterarInfoCliente());
         show.setFuncionarioUI(this);
@@ -417,18 +432,42 @@ public class FuncionarioUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_MinhaContaActionPerformed
 
-    private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
+    private void ContasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ContasActionPerformed
 
-    }//GEN-LAST:event_jMenu2ActionPerformed
+    }//GEN-LAST:event_ContasActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         ValidarConta show = new ValidarConta();
         this.AreaDeTrabalho.removeAll();
         show.setFuncionarioUI(this);
-        show.setClienteLogado(funcionarioLogado);
+        show.setFuncionarioLogado(funcionarioLogado);
         show.setContasCliente(funcionarioLogado.getsetIdConta());
         show.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void DadosAgenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DadosAgenciaActionPerformed
+       
+    }//GEN-LAST:event_DadosAgenciaActionPerformed
+
+    private void DadosAgenciaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DadosAgenciaMouseClicked
+        InfoAgenciaFA show = new InfoAgenciaFA();
+       show.setBaseAgencias(baseAgencias);
+       show.setShowDadosAgencia();
+       show.setVisible(true);
+       this.AreaDeTrabalho.removeAll();
+       this.AreaDeTrabalho.add(show);
+    }//GEN-LAST:event_DadosAgenciaMouseClicked
+
+    private void nCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nCliActionPerformed
+        StringBuilder sb = new StringBuilder();
+        sb.append("Número de Clientes com atributo private: "+Sistema.nInstanciasClienteP());
+        sb.append("\nNúmero de Clientes com atributo protegido: "+Sistema.nInstanciasClienteS());
+        UsuariosCadastrados show = new UsuariosCadastrados();
+        show.setShowContas(sb.toString(), 20);
+        this.AreaDeTrabalho.removeAll();
+        this.AreaDeTrabalho.add(show);
+        show.setVisible(true);
+    }//GEN-LAST:event_nCliActionPerformed
 
     /**
      * @param args the command line arguments
@@ -469,19 +508,19 @@ public class FuncionarioUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AlterarSenha;
     private javax.swing.JPanel AreaDeTrabalho;
+    private javax.swing.JMenu Clientes;
+    private javax.swing.JMenu Contas;
+    private javax.swing.JMenu DadosAgencia;
     private javax.swing.JMenuItem MeusDados;
     private javax.swing.JMenu MinhaConta;
     private javax.swing.JMenuItem Sair;
     private javax.swing.JPopupMenu.Separator Separator;
     private javax.swing.JMenuItem acessarInfoCliente;
+    private javax.swing.JMenuItem addConta;
     private javax.swing.JMenuItem alterarInfoCliente;
     private javax.swing.JMenuItem contasCadastradas;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
@@ -490,5 +529,7 @@ public class FuncionarioUI extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JPopupMenu.Separator jSeparator6;
     private javax.swing.JPopupMenu.Separator jSeparator7;
+    private javax.swing.JMenuItem nCli;
+    private javax.swing.JMenuItem removerConta;
     // End of variables declaration//GEN-END:variables
 }

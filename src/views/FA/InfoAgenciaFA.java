@@ -2,23 +2,48 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
-package views.funcionario;
+package views.FA;
+
+import agencia.Agencia;
+import contas.Conta;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import jsonOperations.Leitura;
+import org.json.simple.parser.ParseException;
 
 /**
  *
  * @author Walter
  */
-public class ClientesCadastrados extends javax.swing.JInternalFrame {
+public class InfoAgenciaFA extends javax.swing.JInternalFrame {
+    
+    private String baseAgencias = "./src/baseDeDados/listaAgencias.json";
 
-   public void setShowContas(String msg, int linhas){
-       this.ShowContas.setRows(linhas);
-       this.ShowContas.setText(msg);
+    public String getBaseAgencias() {
+        return baseAgencias;
+    }
+
+    public void setBaseAgencias(String baseAgencias) {
+        this.baseAgencias = baseAgencias;
+    }
+    
+    public void setShowDadosAgencia(){
+        List<Agencia> listaAgencias = Leitura.lerAgencias(baseAgencias);
+        StringBuilder sb = new StringBuilder();
+        int linhas = 6;
+        for (Agencia agencia : listaAgencias){
+            sb.append(agencia.toString());
+            linhas += linhas;
+        }
+        this.ShowDados.setRows(linhas);
+        this.ShowDados.setText(sb.toString());
     }
     
     /**
-     * Creates new form MeusDados
+     * Creates new form InfoAgenciaFA
      */
-    public ClientesCadastrados() {
+    public InfoAgenciaFA() {
         initComponents();
     }
 
@@ -32,30 +57,26 @@ public class ClientesCadastrados extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        ShowContas = new javax.swing.JTextArea();
+        ShowDados = new javax.swing.JTextArea();
 
-        setTitle("Clientes Cadastrados");
+        setTitle("Informações de agências");
         setMaximumSize(new java.awt.Dimension(700, 495));
         setMinimumSize(new java.awt.Dimension(700, 495));
         setPreferredSize(new java.awt.Dimension(700, 495));
 
-        ShowContas.setColumns(20);
-        ShowContas.setRows(5);
-        jScrollPane1.setViewportView(ShowContas);
+        ShowDados.setColumns(20);
+        ShowDados.setRows(5);
+        jScrollPane1.setViewportView(ShowDados);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 682, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
         );
 
         pack();
@@ -63,7 +84,7 @@ public class ClientesCadastrados extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextArea ShowContas;
+    private javax.swing.JTextArea ShowDados;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

@@ -6,6 +6,9 @@ package views;
 
 import contas.Conta;
 import java.util.List;
+import usuarios.Administrador;
+import usuarios.Cliente;
+import usuarios.Funcionario;
 import views.conta.Transferir;
 import views.conta.Depositar;
 import views.conta.Extrato;
@@ -18,7 +21,12 @@ import views.conta.Sacar;
 public class ContaUI extends javax.swing.JFrame {
 
     Conta contaSelecionada;
-    ClienteUI clienteUI;
+    ClienteUI clienteUI = null;
+    FuncionarioUI funcionarioUI = null;
+    AdministradorUI administradorUI = null;
+    private Cliente clienteLogado = null;
+    private Funcionario funcionarioLogado = null;
+    private Administrador administradorLogado = null;
     List<Conta> listaContas;
 
     public ClienteUI getClienteUI() {
@@ -50,6 +58,48 @@ public class ContaUI extends javax.swing.JFrame {
         this.ShowSaldo.setText(novoValor);
     }
 
+    public FuncionarioUI getFuncionarioUI() {
+        return funcionarioUI;
+    }
+
+    public void setFuncionarioUI(FuncionarioUI funcionarioUI) {
+        this.funcionarioUI = funcionarioUI;
+    }
+
+    public AdministradorUI getAdministradorUI() {
+        return administradorUI;
+    }
+
+    public void setAdministradorUI(AdministradorUI administradorUI) {
+        this.administradorUI = administradorUI;
+    }
+
+    public Cliente getClienteLogado() {
+        return clienteLogado;
+    }
+
+    public void setClienteLogado(Cliente clienteLogado) {
+        this.clienteLogado = clienteLogado;
+    }
+
+    public Funcionario getFuncionarioLogado() {
+        return funcionarioLogado;
+    }
+
+    public void setFuncionarioLogado(Funcionario funcionarioLogado) {
+        this.funcionarioLogado = funcionarioLogado;
+    }
+
+    public Administrador getAdministradorLogado() {
+        return administradorLogado;
+    }
+
+    public void setAdministradorLogado(Administrador administradorLogado) {
+        this.administradorLogado = administradorLogado;
+    }
+    
+    
+
     /**
      * Creates new form ContaCorrenteUI
      */
@@ -74,6 +124,7 @@ public class ContaUI extends javax.swing.JFrame {
         Depositar = new javax.swing.JMenu();
         Transferir = new javax.swing.JMenu();
         Extrato = new javax.swing.JMenu();
+        telaInicial = new javax.swing.JMenu();
         Sair = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -160,6 +211,20 @@ public class ContaUI extends javax.swing.JFrame {
         });
         BarraMenuConta.add(Extrato);
 
+        telaInicial.setText("Tela inicial");
+        telaInicial.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        telaInicial.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clicktelaInicial(evt);
+            }
+        });
+        telaInicial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                telaInicialActionPerformed(evt);
+            }
+        });
+        BarraMenuConta.add(telaInicial);
+
         Sair.setText("Sair");
         Sair.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         Sair.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -222,11 +287,49 @@ public class ContaUI extends javax.swing.JFrame {
         show.setVisible(true);
     }//GEN-LAST:event_clickTransferir
 
+    private String setExtrato(boolean nlinhas){
+        StringBuilder sb = new StringBuilder();
+        
+        int index = 0;
+        if (clienteLogado != null){
+            index = 1;
+        }else if(funcionarioLogado != null){
+            index = 2;
+        }else if (administradorLogado != null){
+            index = 3;
+        }
+        
+        if (nlinhas == false){
+        if (index == 1){
+            for (String e : clienteLogado.getExtratos())
+                sb.append(e);
+        }else if (index == 2){
+            for (String e : funcionarioLogado.getExtratos())
+                sb.append(e);
+        }else if (index == 3){
+            for (String e : administradorLogado.getExtratos())
+                sb.append(e);
+        }
+        
+        sb.append(contaSelecionada.toString());
+        return sb.toString();
+        }
+        
+        if (index == 1){
+                return Integer.toString(clienteLogado.getExtratos().size()+70);
+        }else if (index == 2){
+                return Integer.toString(funcionarioLogado.getExtratos().size()+70);
+        }else if (index == 3){
+                return Integer.toString(administradorLogado.getExtratos().size()+70);
+        }
+        return "0";
+    }
+    
     private void clickExtrato(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickExtrato
         Extrato show = new Extrato();
         show.setContaUI(this);
         show.setListaContas(listaContas);
-        show.setShowExtrato(contaSelecionada.toString());
+        show.setShowExtrato(setExtrato(false), Integer.parseInt(setExtrato(true)));
         show.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_clickExtrato
@@ -239,6 +342,24 @@ public class ContaUI extends javax.swing.JFrame {
     private void DepositarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DepositarActionPerformed
 
     }//GEN-LAST:event_DepositarActionPerformed
+
+    private void clicktelaInicial(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clicktelaInicial
+
+        if (clienteUI != null) {
+            clienteUI.setVisible(true);
+        } else if (funcionarioUI != null) {
+            funcionarioUI.setVisible(true);
+        } else if (administradorUI != null) {
+            administradorUI.setVisible(true);
+        }
+        this.dispose();
+
+    }//GEN-LAST:event_clicktelaInicial
+
+    private void telaInicialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_telaInicialActionPerformed
+
+        
+    }//GEN-LAST:event_telaInicialActionPerformed
 
     /**
      * @param args the command line arguments
@@ -286,5 +407,6 @@ public class ContaUI extends javax.swing.JFrame {
     private javax.swing.JLabel ShowSaldo;
     private javax.swing.JMenu Transferir;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu telaInicial;
     // End of variables declaration//GEN-END:variables
 }

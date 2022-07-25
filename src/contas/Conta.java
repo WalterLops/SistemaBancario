@@ -6,7 +6,13 @@ package contas;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import javax.swing.JOptionPane;
+import jsonOperations.Escrita;
+import jsonOperations.Leitura;
+import usuarios.Administrador;
+import usuarios.Cliente;
+import usuarios.Funcionario;
 
 /**
  *
@@ -106,6 +112,66 @@ public class Conta {
                 + "\nNumero da Conta: " + getNumeroConta()
                 + "\nSaldo: " + getSaldo()
                 +"\n==================================================================";
+    }
+    
+    public void setRegistrarExtrato(double valor, String operacao, Conta conta){
+        String baseClientes = "./src/baseDeDados/clientes.json";
+        String baseFuncionarios = "./src/baseDeDados/funcionarios.json";
+        String baseAdministradores = "./src/baseDeDados/administradores.json";
+        String baseContas = "./src/baseDeDados/listaContas.json";
+        
+        List<Cliente> listaClientes = Leitura.lerClientes(baseClientes);
+        Funcionario[] listaFuncionarios = Leitura.lerFuncionarios(baseFuncionarios);
+        Administrador[] listaAdministradors = Leitura.lerAdministradores(baseAdministradores);
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        
+        String extrato = String.format(
+                "\n"+sdf.format(new Date())+" - "+operacao+" - R$"+valor
+                        +" Saldo total da conta: R$ "+conta.getSaldo());
+        int index = 0;
+        for (Cliente c : listaClientes){
+            for (Integer i : c.getsetIdConta()){
+                if(conta.getIdConta() == i){
+                    c.setExtratos(extrato);
+                    index = 1;
+                    break;
+                }
+            }
+        }
+        for (Funcionario f : listaFuncionarios){
+            for (Integer i : f.getsetIdConta()){
+                if(conta.getIdConta() == i){
+                    f.setExtratos(extrato);
+                    index = 2;
+                    break;
+                }
+            }
+        }
+        for (Administrador a : listaAdministradors){
+            for (Integer i : a.getsetIdConta()){
+                if(conta.getIdConta() == i){
+                    a.setExtratos(extrato);
+                    index = 3;
+                    break;
+                }
+            }
+        }
+        switch (index) {
+            case 1 -> {
+                Escrita.escreverCliente(listaClientes, baseClientes);
+            }
+            case 2 -> {
+                 Escrita.escreverFuncionario(listaFuncionarios, baseFuncionarios);
+            }
+            case 3 -> {
+                 Escrita.escreverAdmin(listaAdministradors, baseAdministradores);
+            }
+        }
+        listaClientes = null;
+        listaFuncionarios = null;
+        listaAdministradors = null;
+        System.gc();
     }
 
     @Override

@@ -5,14 +5,18 @@
 package views.conta;
 
 import contas.Conta;
-import java.util.LinkedList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
+import java.util.Locale;
 import jsonOperations.Escrita;
+import static jsonOperations.Escrita.escreverAdmin;
+import static jsonOperations.Escrita.escreverCliente;
+import static jsonOperations.Escrita.escreverFuncionario;
 import jsonOperations.Leitura;
-import org.json.simple.parser.ParseException;
+import usuarios.Administrador;
+import usuarios.Cliente;
+import usuarios.Funcionario;
 import views.ContaUI;
 
 /**
@@ -188,17 +192,14 @@ public class Depositar extends javax.swing.JFrame {
     }//GEN-LAST:event_clickTelaInicial
 
     private void BtnDepositarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnDepositarMouseClicked
-        try {
-            listaContas = Leitura.lerContas(baseContas);
-            removerConta();
-            double valorDeposito = Double.parseDouble(this.CaixaDeposito.getText());
-            contaSelecionada.depositar(valorDeposito);
-            listaContas.add(contaSelecionada);
-            Escrita.escreverContas(listaContas, baseContas);
-            this.CaixaDeposito.setText("");
-        } catch (ParseException ex) {
-            Logger.getLogger(Depositar.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        listaContas = Leitura.lerContas(baseContas);
+        removerConta();
+        double valorDeposito = Double.parseDouble(this.CaixaDeposito.getText());
+        contaSelecionada.depositar(valorDeposito);
+        listaContas.add(contaSelecionada);
+        contaSelecionada.setRegistrarExtrato(valorDeposito, "depósito", contaSelecionada);
+        Escrita.escreverContas(listaContas, baseContas);
+        this.CaixaDeposito.setText("");
     }//GEN-LAST:event_BtnDepositarMouseClicked
 
     /**

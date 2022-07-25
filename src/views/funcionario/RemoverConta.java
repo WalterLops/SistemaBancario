@@ -6,12 +6,11 @@ package views.funcionario;
 
 import contas.Conta;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import jsonOperations.Escrita;
 import jsonOperations.Leitura;
-import org.json.simple.parser.ParseException;
+import usuarios.Administrador;
+import usuarios.Cliente;
 import usuarios.Funcionario;
 import views.ApenasNumeros;
 
@@ -22,9 +21,17 @@ import views.ApenasNumeros;
 public class RemoverConta extends javax.swing.JInternalFrame {
 
     private List<Conta> listaContas;
-    private Funcionario funcionarioLogado;
+    private Funcionario funcionarioLogado = null;
+    private Administrador administradorLogado = null;
     private String baseContas;
 
+    private List<Cliente> listaCliente;
+    private Funcionario[] listaFuncionario;
+    private Administrador[] listaAdministrador;
+    private String baseCliente = "./src/baseDeDados/clientes.json";
+    private String baseFuncionario = "./src/baseDeDados/funcionarios.json";
+    private String baseAdministrador = "./src/baseDeDados/administradores.json";
+    
     public String getBaseContas() {
         return baseContas;
     }
@@ -41,12 +48,48 @@ public class RemoverConta extends javax.swing.JInternalFrame {
         this.funcionarioLogado = funcionarioLogado;
     }
 
+    public Administrador getAdministradorLogado() {
+        return administradorLogado;
+    }
+
+    public void setAdministradorLogado(Administrador administradorLogado) {
+        this.administradorLogado = administradorLogado;
+    }
+
     private void setListaContas() {
-        try {
-            this.listaContas = Leitura.lerContas(baseContas);
-        } catch (ParseException ex) {
-            Logger.getLogger(AdicionarConta.class.getName()).log(Level.SEVERE, null, ex);
+        this.listaContas = Leitura.lerContas(baseContas);
+    }
+
+    public void setAtualizarRefConta(int idCconta) {
+        
+        listaCliente = Leitura.lerClientes(baseCliente);
+        listaFuncionario = Leitura.lerFuncionarios(baseFuncionario);
+        listaAdministrador = Leitura.lerAdministradores(baseAdministrador);
+        int index = 0;
+        for (Cliente c : listaCliente) {
+            if (c.setRemoverIdConta(idCconta)){
+                index = 1;
+            }
+            break;
         }
+        for (Funcionario f : listaFuncionario) {
+            if (f.setRemoverIdConta(idCconta)){
+                index = 2;
+            }
+            break;
+        }
+        for (Administrador a : listaAdministrador) {
+            if (a.setRemoverIdConta(idCconta)){
+                index = 3;
+            }
+            break;
+        }
+        switch (index) {
+            case 1 -> Escrita.escreverCliente(listaCliente, baseCliente);
+            case 2 -> Escrita.escreverFuncionario(listaFuncionario, baseFuncionario);
+            case 3 -> Escrita.escreverAdmin(listaAdministrador, baseAdministrador);
+        }
+
     }
 
     /**
@@ -161,7 +204,15 @@ public class RemoverConta extends javax.swing.JInternalFrame {
             int idConta = Integer.parseInt(this.cxID.getText());
             int numeroConta = Integer.parseInt(this.cxNumeroConta.getText());
 
-            listaContas = funcionarioLogado.removerConta(idConta, numeroConta, agencia, listaContas);
+            if (funcionarioLogado != null) {
+                listaContas = funcionarioLogado.removerConta(idConta, numeroConta, agencia, listaContas);
+            }
+
+            if (administradorLogado != null) {
+                listaContas = administradorLogado.removerConta(idConta, numeroConta, agencia, listaContas);
+            }
+            
+            setAtualizarRefConta(idConta);
             Escrita.escreverContas(listaContas, baseContas);
 
         } catch (Exception e) {

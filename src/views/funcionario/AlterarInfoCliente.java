@@ -4,7 +4,6 @@
  */
 package views.funcionario;
 
-import contas.Conta;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,13 +34,7 @@ public class AlterarInfoCliente extends javax.swing.JInternalFrame {
     }
 
     private void setListaCliente() {
-        try {
-            
-            this.listaCliente = Leitura.lerClientes(baseClientes);
-        
-        } catch (ParseException ex) {
-            Logger.getLogger(AlterarInfoCliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.listaCliente = Leitura.lerClientes(baseClientes);
     }
 
     public String getBaseClientes() {

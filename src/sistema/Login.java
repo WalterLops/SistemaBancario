@@ -30,6 +30,7 @@ public class Login {
     private String baseClientes = "./src/baseDeDados/clientes.json";
     
     private Cliente usuarioLogado;
+    private Funcionario funcionarioLogado;
 
     public Cliente getUsuarioLogado() {
         return usuarioLogado;
@@ -37,6 +38,14 @@ public class Login {
 
     public void setUsuarioLogado(Cliente usuarioLogado) {
         this.usuarioLogado = usuarioLogado;
+    }
+
+    public Funcionario getFuncionarioLogado() {
+        return funcionarioLogado;
+    }
+
+    public void setFuncionarioLogado(Funcionario funcionarioLogado) {
+        this.funcionarioLogado = funcionarioLogado;
     }
 
     public int Logar(String id, String senha) throws ParseException {
@@ -56,7 +65,7 @@ public class Login {
         if (listaFuncionarios != null) {
             for (Funcionario c : listaFuncionarios) {
                 if (id.equals(c.getId()) && senha.equals(c.getSenha())) {
-                    usuarioLogado = c;
+                    funcionarioLogado = c;
                     return 2;
                 }
             }
@@ -65,7 +74,7 @@ public class Login {
         if (administradores != null) {
             for (Administrador c : administradores) {
                 if (id.equals(c.getId()) && senha.equals(c.getSenha())) {
-                    usuarioLogado = c;
+                    funcionarioLogado = c;
                     return 3;
                 }
             }

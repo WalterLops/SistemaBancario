@@ -11,6 +11,7 @@ import contas.ContaPoupanca;
 import contas.ContaSalario;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.JOptionPane;
 import org.json.simple.JSONArray;
@@ -27,6 +28,7 @@ public class Escrita {
 
     private static JSONArray array = new JSONArray();
     private static JSONArray arrayContas = new JSONArray();
+    private static JSONArray arrayExtratos = new JSONArray();
     private static JSONObject jsonObject = new JSONObject();
 
     private static void escreverJSON(String caminho) {
@@ -53,15 +55,24 @@ public class Escrita {
                 jsonObject.put("nome", f.getNome());
                 jsonObject.put("endereco", f.getEndereco());
                 jsonObject.put("telefone", f.getTelefone());
+                jsonObject.put("extratos", f.getExtratos());
                 for (Integer i : f.getsetIdConta()) {
                     arrayContas.add(i);
                 }
-                jsonObject.put("nContas", f.getsetIdConta().size());
+                
                 jsonObject.put("ContasAssociadas", arrayContas);
+                
+                if(f.getExtratos() != null){
+                    for (String e : f.getExtratos()) {
+                            arrayExtratos.add(e);
+                    }
+                }
+                jsonObject.put("extratos", arrayExtratos);
 
                 array.add(jsonObject);
                 jsonObject = new JSONObject();
                 arrayContas = new JSONArray();
+                arrayExtratos = new JSONArray();
                 System.gc();
             }
         }
@@ -70,26 +81,36 @@ public class Escrita {
     }
 
     public static void escreverFuncionario(Funcionario funcionarios[], String caminho) {
-
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         for (Funcionario f : funcionarios) {
             if (f != null) {
-                /*jsonObject.put("dataAdmissao", f.getDataAdmissao());
-                jsonObject.put("dataDemissao", f.getDataDemissao());*/
+                jsonObject.put("dataAdmissao", f.getDataAdmissao());
+                jsonObject.put("dataDemissao", f.getDataDemissao());
                 jsonObject.put("ID", f.getId());
                 jsonObject.put("senha", f.getSenha());
                 jsonObject.put("nome", f.getNome());
                 jsonObject.put("endereco", f.getEndereco());
                 jsonObject.put("telefone", f.getTelefone());
+                jsonObject.put("extratos", f.getExtratos());
                 for (Integer i : f.getsetIdConta()) {
                     arrayContas.add(i);
                 }
-                jsonObject.put("nContas", f.getsetIdConta().size());
+                
                 jsonObject.put("ContasAssociadas", arrayContas);
-
+                
+                if(f.getExtratos() != null){
+                    for (String e : f.getExtratos()) {
+                            arrayExtratos.add(e);
+                    }
+                }
+                jsonObject.put("extratos", arrayExtratos);
+                
                 array.add(jsonObject);
                 jsonObject = new JSONObject();
                 arrayContas = new JSONArray();
+                arrayExtratos = new JSONArray();
                 System.gc();
+                
             }
         }
         System.gc();
@@ -100,20 +121,32 @@ public class Escrita {
 
         for (Administrador f : administradores) {
             if (f != null) {
+                jsonObject.put("dataAdmissao", f.getDataAdmissao());
+                jsonObject.put("dataDemissao", f.getDataDemissao());
                 jsonObject.put("ID", f.getId());
                 jsonObject.put("senha", f.getSenha());
                 jsonObject.put("nome", f.getNome());
                 jsonObject.put("endereco", f.getEndereco());
                 jsonObject.put("telefone", f.getTelefone());
+                jsonObject.put("extratos", f.getExtratos());
+                
                 for (Integer i : f.getsetIdConta()) {
                     arrayContas.add(i);
                 }
-                jsonObject.put("nContas", f.getsetIdConta().size());
+                
                 jsonObject.put("ContasAssociadas", arrayContas);
+                
+                if(f.getExtratos() != null){
+                    for (String e : f.getExtratos()) {
+                            arrayExtratos.add(e);
+                    }
+                }
+                jsonObject.put("extratos", arrayExtratos);
 
                 array.add(jsonObject);
                 jsonObject = new JSONObject();
                 arrayContas = new JSONArray();
+                arrayExtratos = new JSONArray();
                 System.gc();
             }
         }

@@ -19,6 +19,9 @@ public class Cliente {
     private String endereco;
     private String telefone;
     private final List<Integer> contasAssociadas = new ArrayList<>();
+    private List<String> extratos = new ArrayList<>();
+    private static int instanciasP;
+    protected static int instanciasS;
 
     public Cliente(String id, String senha, String nome, String endereco, String telefone) {
         this.id = id;
@@ -26,6 +29,8 @@ public class Cliente {
         this.nome = nome;
         this.endereco = endereco;
         this.telefone = telefone;
+        instanciasP += 1;
+        instanciasS += 1;
     }
 
     public String getId() {
@@ -74,6 +79,40 @@ public class Cliente {
 
     public void setIdConta(Integer contasAssociadas) {
         this.contasAssociadas.add(contasAssociadas);
+    }
+
+    public List<String> getExtratos() {
+        return extratos;
+    }
+
+    public void setExtratos(String extratos) {
+        this.extratos.add(extratos);
+    }
+
+    public static int getInstanciasP() {
+        return instanciasP;
+    }
+
+    public static void setInstanciasP(int instanciasP) {
+        Cliente.instanciasP = instanciasP;
+    }
+
+    public static int getInstanciasS() {
+        return instanciasS;
+    }
+
+    public static void setInstanciasS(int instanciasS) {
+        Cliente.instanciasS = instanciasS;
+    }
+    
+    public boolean setRemoverIdConta(int id){
+        for (Integer c : contasAssociadas){
+            if (c == id){
+                contasAssociadas.remove(c);
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

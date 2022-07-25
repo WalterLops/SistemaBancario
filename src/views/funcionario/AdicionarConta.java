@@ -4,7 +4,10 @@
  */
 package views.funcionario;
 
+import agencia.Agencia;
 import contas.Conta;
+import contas.ContaPoupanca;
+import java.awt.HeadlessException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,6 +15,8 @@ import javax.swing.JOptionPane;
 import jsonOperations.Escrita;
 import jsonOperations.Leitura;
 import org.json.simple.parser.ParseException;
+import usuarios.Administrador;
+import usuarios.Cliente;
 import usuarios.Funcionario;
 import views.ApenasNumeros;
 import views.FuncionarioUI;
@@ -23,10 +28,30 @@ import views.FuncionarioUI;
 public class AdicionarConta extends javax.swing.JInternalFrame {
 
     private List<Conta> listaContas;
-    private Funcionario funcionarioLogado;
+    private Funcionario funcionarioLogado = null;
     private String baseContas;
-    
-    
+
+    private List<Cliente> listaCliente;
+    private Funcionario[] listaFuncionarios;
+    private Administrador[] listaAdministradors;
+    private String baseClientes = "./src/baseDeDados/clientes.json";
+    private String baseFuncionarios = "./src/baseDeDados/funcionarios.json";
+    private String baseAdministradores = "./src/baseDeDados/administradores.json";
+    private String baseAgencias = "./src/baseDeDados/listaAgencias.json";
+
+    private Cliente clienteProprietario = null;
+    private Funcionario funcionarioProprietario = null;
+    private Administrador administradorProprietario = null;
+
+    private Administrador administradorLogado = null;
+
+    public Administrador getAdministradorLogado() {
+        return administradorLogado;
+    }
+
+    public void setAdministradorLogado(Administrador administradorLogado) {
+        this.administradorLogado = administradorLogado;
+    }
 
     public String getBaseContas() {
         return baseContas;
@@ -44,11 +69,74 @@ public class AdicionarConta extends javax.swing.JInternalFrame {
         this.funcionarioLogado = funcionarioLogado;
     }
 
+    public String getBaseClientes() {
+        return baseClientes;
+    }
+
+    public void setBaseClientes(String baseClientes) {
+        this.baseClientes = baseClientes;
+    }
+
+    public String getBaseAdministradores() {
+        return baseAdministradores;
+    }
+
+    public void setBaseAdministradores(String baseAdministradores) {
+        this.baseAdministradores = baseAdministradores;
+    }
+
+    public Administrador getAdministradorProprietario() {
+        return administradorProprietario;
+    }
+
+    public void setAdministradorProprietario(Administrador administradorProprietario) {
+        this.administradorProprietario = administradorProprietario;
+    }
+
+    public String getBaseAgencias() {
+        return baseAgencias;
+    }
+
+    public void setBaseAgencias(String baseAgencias) {
+        this.baseAgencias = baseAgencias;
+    }
+    
+    
+
     private void setListaContas() {
-        try {
-            this.listaContas = Leitura.lerContas(baseContas);
-        } catch (ParseException ex) {
-            Logger.getLogger(AdicionarConta.class.getName()).log(Level.SEVERE, null, ex);
+        this.listaContas = Leitura.lerContas(baseContas);
+    }
+
+    private void setAssociarContaProprietario(Conta novaConta) {
+
+        if (listaCliente != null) {
+            for (Cliente c : listaCliente) {
+                if (clienteProprietario.getId().equals(c.getId())) {
+                    c.setIdConta(novaConta.getIdConta());
+                }
+            }
+            Escrita.escreverCliente(listaCliente, baseClientes);
+        } else if (listaFuncionarios != null) {
+            for (Funcionario c : listaFuncionarios) {
+                if (funcionarioProprietario.getId().equals(c.getId())) {
+                    c.setIdConta(novaConta.getIdConta());
+                }
+            }
+            Escrita.escreverFuncionario(listaFuncionarios, baseFuncionarios);
+        } else {
+            for (Administrador c : listaAdministradors) {
+                if (administradorProprietario.getId().equals(c.getId())) {
+                    c.setIdConta(novaConta.getIdConta());
+                }
+            }
+            Escrita.escreverAdmin(listaAdministradors, baseAdministradores);
+        }
+    }
+    
+    public void setInicializarAgencias(){
+        List<Agencia> listaAgencias = Leitura.lerAgencias(baseAgencias);
+        for (Agencia a : listaAgencias){
+            this.cxAgencia.addItem(Integer.toString(a.getCodigo()));
         }
     }
 
@@ -90,6 +178,9 @@ public class AdicionarConta extends javax.swing.JInternalFrame {
         cxAgencia = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
         cxNumeroConta = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        cxIDProprietario = new javax.swing.JTextField();
+        addID = new javax.swing.JButton();
 
         setTitle("Adicionar Conta");
         setMaximumSize(new java.awt.Dimension(700, 495));
@@ -131,8 +222,6 @@ public class AdicionarConta extends javax.swing.JInternalFrame {
             }
         });
 
-        cxAgencia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "709" }));
-
         jLabel8.setText("Número da conta");
 
         cxNumeroConta.addActionListener(new java.awt.event.ActionListener() {
@@ -141,59 +230,80 @@ public class AdicionarConta extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel9.setText("ID do proprietário da conta");
+
+        cxIDProprietario.setMaximumSize(new java.awt.Dimension(385, 2147483647));
+        cxIDProprietario.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cxIDProprietarioMouseClicked(evt);
+            }
+        });
+
+        addID.setText("Adicionar ID");
+        addID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addIDActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(313, 313, 313)
-                .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(67, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cxNumeroConta, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cxID, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cxTipoConta, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel4))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(cxSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(cxCNPJ)
-                                    .addComponent(cxLimiteSaque)
-                                    .addComponent(cxTaxa, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(41, 41, 41)
-                                .addComponent(cxAgencia, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(63, 63, 63))
+                .addGap(57, 57, 57)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel8)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cxNumeroConta, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel2)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cxID, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(jLabel1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(cxTipoConta, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel5)
+                                .addComponent(jLabel6)
+                                .addComponent(jLabel3)
+                                .addComponent(jLabel7)
+                                .addComponent(jLabel4)
+                                .addComponent(jLabel9))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cxSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(41, 41, 41)
+                                    .addComponent(cxAgencia, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(cxCNPJ, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(cxLimiteSaque, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(cxTaxa, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(cxIDProprietario, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(31, 31, 31)
+                                            .addComponent(addID)))))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(210, 210, 210)))
+                .addContainerGap(65, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(112, 112, 112)
+                .addGap(47, 47, 47)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cxTipoConta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(cxAgencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -223,12 +333,17 @@ public class AdicionarConta extends javax.swing.JInternalFrame {
                     .addComponent(jLabel6)
                     .addComponent(cxTaxa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(cxLimiteSaque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
+                .addGap(11, 11, 11)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(cxIDProprietario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addID))
+                .addGap(28, 28, 28)
                 .addComponent(btnSalvar)
-                .addGap(45, 45, 45))
+                .addGap(88, 88, 88))
         );
 
         pack();
@@ -256,12 +371,12 @@ public class AdicionarConta extends javax.swing.JInternalFrame {
                     limiteSaque = Double.parseDouble(this.cxLimiteSaque.getText());
 
                 }
-                case 205 -> { // Conta corrente
-                    taxaManutenção = Double.parseDouble(this.cxTaxa.getText());
+                case 205 -> { // Conta salário
+                    CNPJ = this.cxCNPJ.getText();
 
                 }
-                case 209 -> { // Conta salário
-                    CNPJ = this.cxCNPJ.getText();
+                case 209 -> { // Conta corrente
+                    taxaManutenção = Double.parseDouble(this.cxTaxa.getText());
 
                 }
                 default -> {
@@ -269,13 +384,28 @@ public class AdicionarConta extends javax.swing.JInternalFrame {
 
                 }
             }
-            listaContas.add(this.funcionarioLogado.adicionarConta(
-                    tipoConta, idConta, agencia, numeroConta, saldo, 
-                    limiteSaque, taxaManutenção, CNPJ));
+
+            Conta novaConta = null;
+
+            if (funcionarioLogado != null) {
+                novaConta = funcionarioLogado.adicionarConta(
+                        tipoConta, idConta, agencia, numeroConta, saldo,
+                        limiteSaque, taxaManutenção, CNPJ);
+
+                listaContas.add(novaConta);
+            }
+
+            if (administradorLogado != null) {
+                novaConta = administradorLogado.adicionarConta(
+                        tipoConta, idConta, agencia, numeroConta, saldo,
+                        limiteSaque, taxaManutenção, CNPJ);
+                listaContas.add(novaConta);
+            }
+            setAssociarContaProprietario(novaConta);
             Escrita.escreverContas(listaContas, baseContas);
             JOptionPane.showMessageDialog(null, "Nova conta adicionada com sucesso!");
 
-        } catch (Exception e) {
+        } catch (HeadlessException | NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Digite todos os dados");
         }
 
@@ -290,12 +420,61 @@ public class AdicionarConta extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cxNumeroContaActionPerformed
 
+    private void cxIDProprietarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cxIDProprietarioMouseClicked
+        JOptionPane.showMessageDialog(null, "Digite as contas associadas separando por vírgula caso o cliente tenha mais de 1."
+                + "\n Ex.: 00000, 00000");
+    }//GEN-LAST:event_cxIDProprietarioMouseClicked
+
+    private void addIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addIDActionPerformed
+        listaCliente = Leitura.lerClientes(baseClientes);
+        listaFuncionarios = Leitura.lerFuncionarios(baseFuncionarios);
+        listaAdministradors = Leitura.lerAdministradores(baseAdministradores);
+        for (Cliente c : listaCliente) {
+            if (this.cxIDProprietario.getText().equals(c.getId())) {
+                clienteProprietario = c;
+            }
+        }
+        for (Funcionario c : listaFuncionarios) {
+            if (this.cxIDProprietario.getText().equals(c.getId())) {
+                funcionarioProprietario = c;
+            }
+        }
+        for (Administrador c : listaAdministradors) {
+            if (this.cxIDProprietario.getText().equals(c.getId())) {
+                administradorProprietario = c;
+            }
+        }
+        int cont = 0;
+        if (clienteProprietario == null) {
+            listaCliente.clear();
+            listaCliente = null;
+            cont++;
+        }
+        if (funcionarioProprietario == null) {
+            listaFuncionarios = null;
+            cont++;
+        }
+        if (administradorProprietario == null) {
+            listaAdministradors = null;
+            cont++;
+        }
+        System.gc();
+        if (cont == 3) {
+            JOptionPane.showMessageDialog(null, "Usuário proprietário  não encontrado!");
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "ID do Usuário proprietário adicionado com sucesso!!");
+        }
+    }//GEN-LAST:event_addIDActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addID;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JComboBox<String> cxAgencia;
     private javax.swing.JTextField cxCNPJ;
     private javax.swing.JTextField cxID;
+    private javax.swing.JTextField cxIDProprietario;
     private javax.swing.JTextField cxLimiteSaque;
     private javax.swing.JTextField cxNumeroConta;
     private javax.swing.JTextField cxSaldo;
@@ -309,5 +488,6 @@ public class AdicionarConta extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     // End of variables declaration//GEN-END:variables
 }

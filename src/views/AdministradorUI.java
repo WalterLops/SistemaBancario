@@ -4,10 +4,28 @@
  */
 package views;
 
+import views.FA.InfoFA;
+import views.FA.InfoAgenciaFA;
+import views.FA.AlterarInfoFA;
+import views.FA.RemoverFA;
+import contas.Conta;
+import java.util.List;
+import jsonOperations.Leitura;
+import usuarios.Administrador;
+import usuarios.Cliente;
+import usuarios.Funcionario;
+import views.administrador.AdicionarAdmin;
+import views.administrador.AdicionarAgencia;
+import views.administrador.AdicionarCliente;
+import views.administrador.AdicionarFuncionario;
+import views.administrador.AlterarConta;
+import views.administrador.PesquisarAgencia;
+import views.administrador.RemoverAgencia;
+import views.administrador.RemoverCliente;
+import views.cliente.ValidarConta;
 import views.funcionario.AdicionarConta;
 import views.funcionario.AlterarInfoCliente;
 import views.funcionario.AlterarSenha;
-import views.funcionario.ClientesCadastrados;
 import views.funcionario.ContasCadastradas;
 import views.funcionario.InfoCliente;
 import views.funcionario.MeusDados;
@@ -19,6 +37,102 @@ import views.funcionario.RemoverConta;
  */
 public class AdministradorUI extends javax.swing.JFrame {
 
+    private Administrador administradorLogado;
+    
+    private String baseClientes = "./src/baseDeDados/clientes.json";
+    private String baseFuncionarios = "./src/baseDeDados/funcionarios.json";
+    private String baseAdministradores = "./src/baseDeDados/administradores.json";
+    private String baseContas = "./src/baseDeDados/listaContas.json";
+    private String baseAgencias = "./src/baseDeDados/listaAgencias.json";
+    
+    private Cliente clienteSelecionado = null;
+
+    public String getBaseAdministradores() {
+        return baseAdministradores;
+    }
+
+    public void setBaseAdministradores(String baseAdministradores) {
+        this.baseAdministradores = baseAdministradores;
+    }
+
+    public Cliente getClienteSelecionado() {
+        return clienteSelecionado;
+    }
+
+    public void setClienteSelecionado(Cliente clienteSelecionado) {
+        this.clienteSelecionado = clienteSelecionado;
+    }
+
+    public String getBaseContas() {
+        return baseContas;
+    }
+
+    public void setBaseContas(String baseContas) {
+        this.baseContas = baseContas;
+    }
+
+    public String getBaseFuncionarios() {
+        return baseFuncionarios;
+    }
+
+    public void setBaseFuncionarios(String baseFuncionarios) {
+        this.baseFuncionarios = baseFuncionarios;
+    }
+
+    public Administrador getAdministradorLogado() {
+        return administradorLogado;
+    }
+
+    public void setAdministradorLogado(Administrador administradorLogado) {
+        this.administradorLogado = administradorLogado;
+    }
+
+    public String getBaseAgencias() {
+        return baseAgencias;
+    }
+
+    public void setBaseAgencias(String baseAgencias) {
+        this.baseAgencias = baseAgencias;
+    }
+    
+    public void setLimparAreaDeTrabalho() {
+        this.AreaDeTrabalho.removeAll();
+    }
+
+    public void setAlterarCliente(AlterarInfoCliente alterarInfoCliente) {
+        this.AreaDeTrabalho.add(alterarInfoCliente);
+    }
+
+    public void setInfoCliente(InfoCliente infoCliente) {
+        this.AreaDeTrabalho.add(infoCliente);
+    }
+
+    public void setInfoFA(InfoFA infoFA){
+        this.AreaDeTrabalho.add(infoFA);
+    }
+    
+    public void setAlterarInfoFA(AlterarInfoFA alterarInfoFA){
+        this.AreaDeTrabalho.add(alterarInfoFA);
+    }
+    
+    public void setRemoverCliente(RemoverCliente removerCliente){
+        this.AreaDeTrabalho.removeAll();
+        this.AreaDeTrabalho.add(removerCliente);
+    }
+    
+    public void setRemoverFA(RemoverFA removerFA){
+        this.AreaDeTrabalho.add(removerFA);
+    }
+    
+    public void setAlterarConta(AlterarConta alterarConta){
+        this.AreaDeTrabalho.removeAll();
+        this.AreaDeTrabalho.add(alterarConta);
+    }
+    
+    public void setRemoverAgencia(RemoverAgencia removerAgencia){
+        this.AreaDeTrabalho.add(removerAgencia);
+    }
+    
     /**
      * Creates new form AdministradorUI
      */
@@ -38,37 +152,58 @@ public class AdministradorUI extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         AreaDeTrabalho = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        mMinhaConta = new javax.swing.JMenu();
+        MeusDados = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        AlterarSenha = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem8 = new javax.swing.JMenuItem();
-        jMenu6 = new javax.swing.JMenu();
+        Sair = new javax.swing.JMenuItem();
+        mContas = new javax.swing.JMenu();
+        contasCadastradas = new javax.swing.JMenuItem();
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        adicionarConta = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItem9 = new javax.swing.JMenuItem();
+        alterarConta = new javax.swing.JMenuItem();
+        jSeparator19 = new javax.swing.JPopupMenu.Separator();
+        removerConta = new javax.swing.JMenuItem();
+        jSeparator7 = new javax.swing.JPopupMenu.Separator();
+        irParaMinhaConta = new javax.swing.JMenuItem();
+        mClientes = new javax.swing.JMenu();
+        clientesCadastrados = new javax.swing.JMenuItem();
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem6 = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem7 = new javax.swing.JMenuItem();
+        acessarInfoCliente = new javax.swing.JMenuItem();
+        Separator = new javax.swing.JPopupMenu.Separator();
+        alterarInfoCliente = new javax.swing.JMenuItem();
+        jSeparator9 = new javax.swing.JPopupMenu.Separator();
+        AdicionarCliente = new javax.swing.JMenuItem();
+        jSeparator8 = new javax.swing.JPopupMenu.Separator();
+        RemoverCliente = new javax.swing.JMenuItem();
+        mFuncionarios = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
+        jSeparator17 = new javax.swing.JPopupMenu.Separator();
+        addFuncionario = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        acessarInfoFuncionario = new javax.swing.JMenuItem();
+        jSeparator10 = new javax.swing.JPopupMenu.Separator();
+        alterarInfoFuncionario = new javax.swing.JMenuItem();
+        jSeparator11 = new javax.swing.JPopupMenu.Separator();
+        removerFuncionario = new javax.swing.JMenuItem();
+        mAdministradores = new javax.swing.JMenu();
         jMenuItem11 = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
-        jMenuItem12 = new javax.swing.JMenuItem();
-        jMenuItem13 = new javax.swing.JMenuItem();
-        jMenuItem14 = new javax.swing.JMenuItem();
-        jMenuItem15 = new javax.swing.JMenuItem();
-        jMenu5 = new javax.swing.JMenu();
-        jMenuItem16 = new javax.swing.JMenuItem();
-        jMenuItem17 = new javax.swing.JMenuItem();
-        jMenuItem18 = new javax.swing.JMenuItem();
-        jMenuItem19 = new javax.swing.JMenuItem();
+        jSeparator18 = new javax.swing.JPopupMenu.Separator();
+        addAdmin = new javax.swing.JMenuItem();
+        jSeparator12 = new javax.swing.JPopupMenu.Separator();
+        acessarInfoAdmin = new javax.swing.JMenuItem();
+        jSeparator13 = new javax.swing.JPopupMenu.Separator();
+        alterarInfoAdmin = new javax.swing.JMenuItem();
+        jSeparator14 = new javax.swing.JPopupMenu.Separator();
+        RemoverAdmin = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        addAgencia = new javax.swing.JMenuItem();
+        jSeparator15 = new javax.swing.JPopupMenu.Separator();
+        visualizarAgencia = new javax.swing.JMenuItem();
+        jSeparator16 = new javax.swing.JPopupMenu.Separator();
+        removerAgencia = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Interface Administrador - WWBanck");
@@ -78,8 +213,8 @@ public class AdministradorUI extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(0, 20, 73));
         jPanel1.setMinimumSize(new java.awt.Dimension(600, 400));
 
-        AreaDeTrabalho.setMaximumSize(new java.awt.Dimension(500, 350));
-        AreaDeTrabalho.setMinimumSize(new java.awt.Dimension(500, 350));
+        AreaDeTrabalho.setMaximumSize(new java.awt.Dimension(700, 495));
+        AreaDeTrabalho.setMinimumSize(new java.awt.Dimension(700, 495));
 
         javax.swing.GroupLayout AreaDeTrabalhoLayout = new javax.swing.GroupLayout(AreaDeTrabalho);
         AreaDeTrabalho.setLayout(AreaDeTrabalhoLayout);
@@ -96,165 +231,296 @@ public class AdministradorUI extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(76, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(31, 31, 31)
                 .addComponent(AreaDeTrabalho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(59, 59, 59))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(31, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
                 .addComponent(AreaDeTrabalho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
-        jMenu1.setText("Minha Conta");
-        jMenu1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jMenu1.setMaximumSize(new java.awt.Dimension(100, 22));
-        jMenu1.setMinimumSize(new java.awt.Dimension(100, 22));
-        jMenu1.setPreferredSize(new java.awt.Dimension(100, 22));
+        mMinhaConta.setText("Minha Conta");
+        mMinhaConta.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        mMinhaConta.setMaximumSize(new java.awt.Dimension(100, 22));
+        mMinhaConta.setMinimumSize(new java.awt.Dimension(100, 22));
+        mMinhaConta.setPreferredSize(new java.awt.Dimension(100, 22));
+        mMinhaConta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mMinhaContaActionPerformed(evt);
+            }
+        });
 
-        jMenuItem1.setText("Meus dados");
-        jMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
+        MeusDados.setText("Meus dados");
+        MeusDados.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenuItem1MouseClicked(evt);
+                MeusDadosMouseClicked(evt);
             }
         });
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        MeusDados.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                MeusDadosActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
-        jMenu1.add(jSeparator2);
+        mMinhaConta.add(MeusDados);
+        mMinhaConta.add(jSeparator2);
 
-        jMenuItem2.setText("Alterar senha");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        AlterarSenha.setText("Alterar senha");
+        AlterarSenha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                AlterarSenhaActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
-        jMenu1.add(jSeparator4);
+        mMinhaConta.add(AlterarSenha);
+        mMinhaConta.add(jSeparator4);
 
-        jMenuItem3.setText("Sair");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        Sair.setText("Sair");
+        Sair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                SairActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem3);
+        mMinhaConta.add(Sair);
+
+        jMenuBar1.add(mMinhaConta);
+
+        mContas.setText("Contas");
+        mContas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        mContas.setMaximumSize(new java.awt.Dimension(100, 22));
+        mContas.setMinimumSize(new java.awt.Dimension(100, 22));
+        mContas.setPreferredSize(new java.awt.Dimension(100, 22));
+        mContas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mContasActionPerformed(evt);
+            }
+        });
+
+        contasCadastradas.setText("Contas cadastradas");
+        contasCadastradas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                contasCadastradasActionPerformed(evt);
+            }
+        });
+        mContas.add(contasCadastradas);
+        mContas.add(jSeparator5);
+
+        adicionarConta.setText("Adicionar conta");
+        adicionarConta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                adicionarContaActionPerformed(evt);
+            }
+        });
+        mContas.add(adicionarConta);
+        mContas.add(jSeparator3);
+
+        alterarConta.setText("Alterar conta");
+        alterarConta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                alterarContaActionPerformed(evt);
+            }
+        });
+        mContas.add(alterarConta);
+        mContas.add(jSeparator19);
+
+        removerConta.setText("Remover conta");
+        removerConta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removerContaActionPerformed(evt);
+            }
+        });
+        mContas.add(removerConta);
+        mContas.add(jSeparator7);
+
+        irParaMinhaConta.setText("Ir para minha conta bancária");
+        irParaMinhaConta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                irParaMinhaContaActionPerformed(evt);
+            }
+        });
+        mContas.add(irParaMinhaConta);
+
+        jMenuBar1.add(mContas);
+
+        mClientes.setText("Clientes");
+        mClientes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        mClientes.setMaximumSize(new java.awt.Dimension(100, 22));
+        mClientes.setPreferredSize(new java.awt.Dimension(100, 22));
+
+        clientesCadastrados.setText("Clientes cadastrados");
+        clientesCadastrados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clientesCadastradosActionPerformed(evt);
+            }
+        });
+        mClientes.add(clientesCadastrados);
+        mClientes.add(jSeparator6);
+
+        acessarInfoCliente.setText("Acessar informações do cliente");
+        acessarInfoCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                acessarInfoClienteActionPerformed(evt);
+            }
+        });
+        mClientes.add(acessarInfoCliente);
+        mClientes.add(Separator);
+
+        alterarInfoCliente.setText("Alterar informações do cliente");
+        alterarInfoCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                alterarInfoClienteActionPerformed(evt);
+            }
+        });
+        mClientes.add(alterarInfoCliente);
+        mClientes.add(jSeparator9);
+
+        AdicionarCliente.setText("Adicionar Cliente");
+        AdicionarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AdicionarClienteActionPerformed(evt);
+            }
+        });
+        mClientes.add(AdicionarCliente);
+        mClientes.add(jSeparator8);
+
+        RemoverCliente.setText("Remover Cliente");
+        RemoverCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RemoverClienteActionPerformed(evt);
+            }
+        });
+        mClientes.add(RemoverCliente);
+
+        jMenuBar1.add(mClientes);
+
+        mFuncionarios.setText("Funcionários");
+
+        jMenuItem10.setText("Funcionarios cadastrados");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
+        mFuncionarios.add(jMenuItem10);
+        mFuncionarios.add(jSeparator17);
+
+        addFuncionario.setText("Adicionar Funcionário");
+        addFuncionario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addFuncionarioActionPerformed(evt);
+            }
+        });
+        mFuncionarios.add(addFuncionario);
+        mFuncionarios.add(jSeparator1);
+
+        acessarInfoFuncionario.setText("Acessar informações do funcionário");
+        acessarInfoFuncionario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                acessarInfoFuncionarioActionPerformed(evt);
+            }
+        });
+        mFuncionarios.add(acessarInfoFuncionario);
+        mFuncionarios.add(jSeparator10);
+
+        alterarInfoFuncionario.setText("Alterar informações do funcionário");
+        alterarInfoFuncionario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                alterarInfoFuncionarioActionPerformed(evt);
+            }
+        });
+        mFuncionarios.add(alterarInfoFuncionario);
+        mFuncionarios.add(jSeparator11);
+
+        removerFuncionario.setText("Remover funcionário");
+        removerFuncionario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removerFuncionarioActionPerformed(evt);
+            }
+        });
+        mFuncionarios.add(removerFuncionario);
+
+        jMenuBar1.add(mFuncionarios);
+
+        mAdministradores.setText("Administradores");
+
+        jMenuItem11.setText("Administradores cadastrados");
+        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem11ActionPerformed(evt);
+            }
+        });
+        mAdministradores.add(jMenuItem11);
+        mAdministradores.add(jSeparator18);
+
+        addAdmin.setText("Adicionar administrador");
+        addAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addAdminActionPerformed(evt);
+            }
+        });
+        mAdministradores.add(addAdmin);
+        mAdministradores.add(jSeparator12);
+
+        acessarInfoAdmin.setText("Acessar informações do administrador");
+        acessarInfoAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                acessarInfoAdminActionPerformed(evt);
+            }
+        });
+        mAdministradores.add(acessarInfoAdmin);
+        mAdministradores.add(jSeparator13);
+
+        alterarInfoAdmin.setText("Alterar informações do administrador");
+        alterarInfoAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                alterarInfoAdminActionPerformed(evt);
+            }
+        });
+        mAdministradores.add(alterarInfoAdmin);
+        mAdministradores.add(jSeparator14);
+
+        RemoverAdmin.setText("Remover administrador");
+        RemoverAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RemoverAdminActionPerformed(evt);
+            }
+        });
+        mAdministradores.add(RemoverAdmin);
+
+        jMenuBar1.add(mAdministradores);
+
+        jMenu1.setText("Agências");
+
+        addAgencia.setText("Adicionar");
+        addAgencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addAgenciaActionPerformed(evt);
+            }
+        });
+        jMenu1.add(addAgencia);
+        jMenu1.add(jSeparator15);
+
+        visualizarAgencia.setText("Visualizar");
+        visualizarAgencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                visualizarAgenciaActionPerformed(evt);
+            }
+        });
+        jMenu1.add(visualizarAgencia);
+        jMenu1.add(jSeparator16);
+
+        removerAgencia.setText("Remover");
+        removerAgencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removerAgenciaActionPerformed(evt);
+            }
+        });
+        jMenu1.add(removerAgencia);
 
         jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Contas");
-        jMenu2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jMenu2.setMaximumSize(new java.awt.Dimension(100, 22));
-        jMenu2.setMinimumSize(new java.awt.Dimension(100, 22));
-        jMenu2.setPreferredSize(new java.awt.Dimension(100, 22));
-
-        jMenuItem8.setText("Contas cadastradas");
-        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem8ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem8);
-
-        jMenu6.setText("Alterar Conta");
-        jMenu2.add(jMenu6);
-        jMenu2.add(jSeparator5);
-
-        jMenuItem4.setText("Adicionar conta");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem4);
-        jMenu2.add(jSeparator3);
-
-        jMenuItem5.setText("Remover conta");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem5);
-
-        jMenuBar1.add(jMenu2);
-
-        jMenu3.setText("Clientes");
-        jMenu3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jMenu3.setMaximumSize(new java.awt.Dimension(100, 22));
-        jMenu3.setPreferredSize(new java.awt.Dimension(100, 22));
-
-        jMenuItem9.setText("Clientes cadastrados");
-        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem9ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem9);
-        jMenu3.add(jSeparator6);
-
-        jMenuItem6.setText("Acessar informações do cliente");
-        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem6ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem6);
-        jMenu3.add(jSeparator1);
-
-        jMenuItem7.setText("Alterar informações do cliente");
-        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem7ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem7);
-
-        jMenuItem10.setText("Adicionar Cliente");
-        jMenu3.add(jMenuItem10);
-
-        jMenuItem11.setText("Remover Cliente");
-        jMenu3.add(jMenuItem11);
-
-        jMenuBar1.add(jMenu3);
-
-        jMenu4.setText("Funcionários");
-
-        jMenuItem12.setText("Adicionar Funcionário");
-        jMenu4.add(jMenuItem12);
-
-        jMenuItem13.setText("Acessar informações do funcionário");
-        jMenu4.add(jMenuItem13);
-
-        jMenuItem14.setText("Alterar informações do funcionário");
-        jMenu4.add(jMenuItem14);
-
-        jMenuItem15.setText("Remover funcionário");
-        jMenu4.add(jMenuItem15);
-
-        jMenuBar1.add(jMenu4);
-
-        jMenu5.setText("Administradores");
-
-        jMenuItem16.setText("Adicionar administrador");
-        jMenu5.add(jMenuItem16);
-
-        jMenuItem17.setText("Acessar informações do administrador");
-        jMenu5.add(jMenuItem17);
-
-        jMenuItem18.setText("Remover administrador");
-        jMenu5.add(jMenuItem18);
-
-        jMenuItem19.setText("Alterar informações do administrador");
-        jMenu5.add(jMenuItem19);
-
-        jMenuBar1.add(jMenu5);
 
         setJMenuBar(jMenuBar1);
 
@@ -276,69 +542,292 @@ public class AdministradorUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem1MouseClicked
-        
-    }//GEN-LAST:event_jMenuItem1MouseClicked
+    private void MeusDadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MeusDadosMouseClicked
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_MeusDadosMouseClicked
+
+    private void MeusDadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MeusDadosActionPerformed
         MeusDados show = new MeusDados();
+        show.setShowMeusDados(administradorLogado.toString());
         this.AreaDeTrabalho.removeAll();
         this.AreaDeTrabalho.add(show);
         show.setVisible(true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_MeusDadosActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void AlterarSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AlterarSenhaActionPerformed
         AlterarSenha show = new AlterarSenha();
+        show.setAdministradorUI(this);
+        show.setBaseAdministradores(baseAdministradores);
+        show.setAdministradorLogado(administradorLogado);
         this.AreaDeTrabalho.removeAll();
         this.AreaDeTrabalho.add(show);
         show.setVisible(true);
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_AlterarSenhaActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void SairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SairActionPerformed
         System.exit(0);
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }//GEN-LAST:event_SairActionPerformed
 
-    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
-        ClientesCadastrados show = new ClientesCadastrados();
-        this.AreaDeTrabalho.removeAll();
-        this.AreaDeTrabalho.add(show);
-        show.setVisible(true);
-    }//GEN-LAST:event_jMenuItem9ActionPerformed
-
-    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        InfoCliente show = new InfoCliente();
-        this.AreaDeTrabalho.removeAll();
-        this.AreaDeTrabalho.add(show);
-        show.setVisible(true);
-    }//GEN-LAST:event_jMenuItem6ActionPerformed
-
-    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        AlterarInfoCliente show = new AlterarInfoCliente();
-        this.AreaDeTrabalho.removeAll();
-        this.AreaDeTrabalho.add(show);
-        show.setVisible(true);
-    }//GEN-LAST:event_jMenuItem7ActionPerformed
-
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        RemoverConta show = new RemoverConta();
-        this.AreaDeTrabalho.removeAll();
-        this.AreaDeTrabalho.add(show);
-        show.setVisible(true);
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
-
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        AdicionarConta show = new AdicionarConta();
-        this.AreaDeTrabalho.removeAll();
-        this.AreaDeTrabalho.add(show);
-        show.setVisible(true);
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
-
-    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+    private void contasCadastradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contasCadastradasActionPerformed
+        List<Conta> listaContas = Leitura.lerContas(baseContas);
+        StringBuilder sb = new StringBuilder();
+        int linhas = 7;
+        for (Conta c : listaContas) {
+            sb.append(c.infoConta());
+            linhas += linhas;
+        }
         ContasCadastradas show = new ContasCadastradas();
+        show.setShowContas(sb.toString(), linhas);
         this.AreaDeTrabalho.removeAll();
         this.AreaDeTrabalho.add(show);
         show.setVisible(true);
-    }//GEN-LAST:event_jMenuItem8ActionPerformed
+    }//GEN-LAST:event_contasCadastradasActionPerformed
+
+    private void adicionarContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adicionarContaActionPerformed
+        AdicionarConta show = new AdicionarConta();
+        show.setAdministradorLogado(administradorLogado);
+        show.setBaseContas(baseContas);
+        show.setInicializarAgencias();
+        this.AreaDeTrabalho.removeAll();
+        this.AreaDeTrabalho.add(show);
+        show.setVisible(true);
+    }//GEN-LAST:event_adicionarContaActionPerformed
+
+    private void removerContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerContaActionPerformed
+        RemoverConta show = new RemoverConta();
+        show.setAdministradorLogado(administradorLogado);
+        show.setBaseContas(baseContas);
+        this.AreaDeTrabalho.removeAll();
+        this.AreaDeTrabalho.add(show);
+        show.setVisible(true);
+    }//GEN-LAST:event_removerContaActionPerformed
+
+    private void clientesCadastradosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientesCadastradosActionPerformed
+        List<Cliente> listaClientes = Leitura.lerClientes(baseClientes);
+        StringBuilder sb = new StringBuilder();
+        int linhas = 7;
+        for (Cliente c : listaClientes) {
+            sb.append(c.toString());
+            linhas += linhas;
+        }
+        UsuariosCadastrados show = new UsuariosCadastrados();
+        show.setShowContas(sb.toString(), linhas);
+        this.AreaDeTrabalho.removeAll();
+        this.AreaDeTrabalho.add(show);
+        show.setVisible(true);
+
+    }//GEN-LAST:event_clientesCadastradosActionPerformed
+
+    private void acessarInfoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acessarInfoClienteActionPerformed
+        ValidarUsuariosUI show = new ValidarUsuariosUI();
+        show.setAdministradorLogado(administradorLogado);
+        show.setInfoCliente(new InfoCliente());
+        show.setAdministradorUI(this);
+        this.AreaDeTrabalho.removeAll();
+        show.setVisible(true);
+    }//GEN-LAST:event_acessarInfoClienteActionPerformed
+
+    private void alterarInfoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarInfoClienteActionPerformed
+        ValidarUsuariosUI show = new ValidarUsuariosUI();
+        show.setAdministradorLogado(administradorLogado);
+        show.setAlterarInfoCliente(new AlterarInfoCliente());
+        show.setAdministradorUI(this);
+        this.AreaDeTrabalho.removeAll();
+        show.setVisible(true);
+    }//GEN-LAST:event_alterarInfoClienteActionPerformed
+
+    private void mMinhaContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mMinhaContaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mMinhaContaActionPerformed
+
+    private void mContasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mContasActionPerformed
+        
+    }//GEN-LAST:event_mContasActionPerformed
+
+    private void irParaMinhaContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_irParaMinhaContaActionPerformed
+        ValidarConta show = new ValidarConta();
+        this.AreaDeTrabalho.removeAll();
+        show.setAdministradorUI(this);
+        show.setAdministradorLogado(administradorLogado);
+        show.setContasCliente(administradorLogado.getsetIdConta());
+        show.setVisible(true);
+    }//GEN-LAST:event_irParaMinhaContaActionPerformed
+
+    private void AdicionarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdicionarClienteActionPerformed
+        AdicionarCliente show = new AdicionarCliente();
+        show.setAdministradorLogado(administradorLogado);
+        show.setBaseClientes(baseClientes);
+        show.setVisible(true);
+        this.AreaDeTrabalho.removeAll();
+        this.AreaDeTrabalho.add(show); 
+    }//GEN-LAST:event_AdicionarClienteActionPerformed
+
+    private void RemoverClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoverClienteActionPerformed
+        ValidarUsuariosUI show = new ValidarUsuariosUI();
+        show.setAdministradorLogado(administradorLogado);
+        show.setRemoverCliente(new RemoverCliente());
+        show.setAdministradorUI(this);
+        this.AreaDeTrabalho.removeAll();
+        show.setVisible(true);
+    }//GEN-LAST:event_RemoverClienteActionPerformed
+
+    private void addAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addAdminActionPerformed
+        AdicionarAdmin show = new AdicionarAdmin();
+        show.setAdministradorLogado(administradorLogado);
+        show.setBaseAdministradores(baseAdministradores);
+        show.setVisible(true);
+        this.AreaDeTrabalho.removeAll();
+        this.AreaDeTrabalho.add(show); 
+    }//GEN-LAST:event_addAdminActionPerformed
+
+    private void addFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addFuncionarioActionPerformed
+        AdicionarFuncionario show = new AdicionarFuncionario();
+        show.setAdministradorLogado(administradorLogado);
+        show.setBaseFuncionarios(baseFuncionarios);
+        show.setVisible(true);
+        this.AreaDeTrabalho.removeAll();
+        this.AreaDeTrabalho.add(show);
+    }//GEN-LAST:event_addFuncionarioActionPerformed
+
+    private void acessarInfoFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acessarInfoFuncionarioActionPerformed
+        ValidarUsuariosUI show = new ValidarUsuariosUI();
+        show.setAdministradorUI(this);
+        show.setAdministradorLogado(administradorLogado);
+        show.setInfoFA(new InfoFA());
+        show.setVisible(true);
+        this.AreaDeTrabalho.removeAll();
+    }//GEN-LAST:event_acessarInfoFuncionarioActionPerformed
+
+    private void acessarInfoAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acessarInfoAdminActionPerformed
+       
+        ValidarUsuariosUI show = new ValidarUsuariosUI();
+        show.setAdministradorUI(this);
+        show.setAdministradorLogado(administradorLogado);
+        show.setInfoFA(new InfoFA());
+        show.setVisible(true);
+        this.AreaDeTrabalho.removeAll();
+        
+    }//GEN-LAST:event_acessarInfoAdminActionPerformed
+
+    private void alterarInfoFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarInfoFuncionarioActionPerformed
+        
+        ValidarUsuariosUI show = new ValidarUsuariosUI();
+        show.setAdministradorUI(this);
+        show.setAdministradorLogado(administradorLogado);
+        show.setAlterarInfoFA(new AlterarInfoFA());
+        show.setVisible(true);
+        this.AreaDeTrabalho.removeAll();
+        
+    }//GEN-LAST:event_alterarInfoFuncionarioActionPerformed
+
+    private void alterarInfoAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarInfoAdminActionPerformed
+       
+        ValidarUsuariosUI show = new ValidarUsuariosUI();
+        show.setAdministradorUI(this);
+        show.setAdministradorLogado(administradorLogado);
+        show.setAlterarInfoFA(new AlterarInfoFA());
+        show.setVisible(true);
+        this.AreaDeTrabalho.removeAll();
+        
+    }//GEN-LAST:event_alterarInfoAdminActionPerformed
+
+    private void removerFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerFuncionarioActionPerformed
+        
+        ValidarUsuariosUI show = new ValidarUsuariosUI();
+        show.setAdministradorUI(this);
+        show.setAdministradorLogado(administradorLogado);
+        show.setRemoverFA(new RemoverFA());
+        show.setVisible(true);
+        this.AreaDeTrabalho.removeAll();
+        
+    }//GEN-LAST:event_removerFuncionarioActionPerformed
+
+    private void RemoverAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoverAdminActionPerformed
+        
+        ValidarUsuariosUI show = new ValidarUsuariosUI();
+        show.setAdministradorUI(this);
+        show.setAdministradorLogado(administradorLogado);
+        show.setRemoverFA(new RemoverFA());
+        show.setVisible(true);
+        this.AreaDeTrabalho.removeAll();
+        
+    }//GEN-LAST:event_RemoverAdminActionPerformed
+
+    private void visualizarAgenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visualizarAgenciaActionPerformed
+        
+       InfoAgenciaFA show = new InfoAgenciaFA();
+       show.setBaseAgencias(baseAgencias);
+       show.setShowDadosAgencia();
+       show.setVisible(true);
+       this.AreaDeTrabalho.removeAll();
+       this.AreaDeTrabalho.add(show);
+        
+    }//GEN-LAST:event_visualizarAgenciaActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        
+        Funcionario[] listaFuncionarios = Leitura.lerFuncionarios(baseFuncionarios);
+        StringBuilder sb = new StringBuilder();
+        int linhas = 7;
+        for (Funcionario f : listaFuncionarios) {
+            sb.append(f.toString());
+            linhas += linhas;
+        }
+        UsuariosCadastrados show = new UsuariosCadastrados();
+        show.setShowContas(sb.toString(), linhas);
+        this.AreaDeTrabalho.removeAll();
+        this.AreaDeTrabalho.add(show);
+        show.setVisible(true);
+        
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
+        
+        Administrador[] listaAdministradores = Leitura.lerAdministradores(baseAdministradores);
+        StringBuilder sb = new StringBuilder();
+        int linhas = 7;
+        for (Administrador a : listaAdministradores) {
+            sb.append(a.toString());
+            linhas += linhas;
+        }
+        UsuariosCadastrados show = new UsuariosCadastrados();
+        show.setShowContas(sb.toString(), linhas);
+        this.AreaDeTrabalho.removeAll();
+        this.AreaDeTrabalho.add(show);
+        show.setVisible(true);
+        
+    }//GEN-LAST:event_jMenuItem11ActionPerformed
+
+    private void alterarContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarContaActionPerformed
+        
+        ValidarConta show = new ValidarConta();
+        show.setAdministradorLogado(administradorLogado);
+        show.setBaseContas(baseContas);
+        show.setAlterarConta(new AlterarConta());
+        show.setAdministradorUI(this);
+        show.setVisible(true);
+        this.AreaDeTrabalho.removeAll();
+    }//GEN-LAST:event_alterarContaActionPerformed
+
+    private void addAgenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addAgenciaActionPerformed
+        AdicionarAgencia show = new AdicionarAgencia();
+        show.setAdministradorLogado(administradorLogado);
+        show.setBaseAgencias(baseAgencias);
+        show.setBaseContas(baseContas);
+        show.setVisible(true);
+        this.AreaDeTrabalho.removeAll();
+        this.AreaDeTrabalho.add(show);
+    }//GEN-LAST:event_addAgenciaActionPerformed
+
+    private void removerAgenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerAgenciaActionPerformed
+        PesquisarAgencia show = new PesquisarAgencia();
+        show.setAdministradorLogado(administradorLogado);
+        show.setBaseAgencias(baseAgencias);
+        show.setBaseContas(baseContas);
+        show.setAdministradorUI(this);
+        show.setVisible(true);
+        this.AreaDeTrabalho.removeAll();
+    }//GEN-LAST:event_removerAgenciaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -379,39 +868,60 @@ public class AdministradorUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem AdicionarCliente;
+    private javax.swing.JMenuItem AlterarSenha;
     private javax.swing.JPanel AreaDeTrabalho;
+    private javax.swing.JMenuItem MeusDados;
+    private javax.swing.JMenuItem RemoverAdmin;
+    private javax.swing.JMenuItem RemoverCliente;
+    private javax.swing.JMenuItem Sair;
+    private javax.swing.JPopupMenu.Separator Separator;
+    private javax.swing.JMenuItem acessarInfoAdmin;
+    private javax.swing.JMenuItem acessarInfoCliente;
+    private javax.swing.JMenuItem acessarInfoFuncionario;
+    private javax.swing.JMenuItem addAdmin;
+    private javax.swing.JMenuItem addAgencia;
+    private javax.swing.JMenuItem addFuncionario;
+    private javax.swing.JMenuItem adicionarConta;
+    private javax.swing.JMenuItem alterarConta;
+    private javax.swing.JMenuItem alterarInfoAdmin;
+    private javax.swing.JMenuItem alterarInfoCliente;
+    private javax.swing.JMenuItem alterarInfoFuncionario;
+    private javax.swing.JMenuItem clientesCadastrados;
+    private javax.swing.JMenuItem contasCadastradas;
+    private javax.swing.JMenuItem irParaMinhaConta;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
-    private javax.swing.JMenu jMenu6;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
-    private javax.swing.JMenuItem jMenuItem12;
-    private javax.swing.JMenuItem jMenuItem13;
-    private javax.swing.JMenuItem jMenuItem14;
-    private javax.swing.JMenuItem jMenuItem15;
-    private javax.swing.JMenuItem jMenuItem16;
-    private javax.swing.JMenuItem jMenuItem17;
-    private javax.swing.JMenuItem jMenuItem18;
-    private javax.swing.JMenuItem jMenuItem19;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JMenuItem jMenuItem8;
-    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator10;
+    private javax.swing.JPopupMenu.Separator jSeparator11;
+    private javax.swing.JPopupMenu.Separator jSeparator12;
+    private javax.swing.JPopupMenu.Separator jSeparator13;
+    private javax.swing.JPopupMenu.Separator jSeparator14;
+    private javax.swing.JPopupMenu.Separator jSeparator15;
+    private javax.swing.JPopupMenu.Separator jSeparator16;
+    private javax.swing.JPopupMenu.Separator jSeparator17;
+    private javax.swing.JPopupMenu.Separator jSeparator18;
+    private javax.swing.JPopupMenu.Separator jSeparator19;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JPopupMenu.Separator jSeparator6;
+    private javax.swing.JPopupMenu.Separator jSeparator7;
+    private javax.swing.JPopupMenu.Separator jSeparator8;
+    private javax.swing.JPopupMenu.Separator jSeparator9;
+    private javax.swing.JMenu mAdministradores;
+    private javax.swing.JMenu mClientes;
+    private javax.swing.JMenu mContas;
+    private javax.swing.JMenu mFuncionarios;
+    private javax.swing.JMenu mMinhaConta;
+    private javax.swing.JMenuItem removerAgencia;
+    private javax.swing.JMenuItem removerConta;
+    private javax.swing.JMenuItem removerFuncionario;
+    private javax.swing.JMenuItem visualizarAgencia;
     // End of variables declaration//GEN-END:variables
 }

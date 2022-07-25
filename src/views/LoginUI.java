@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import org.json.simple.parser.ParseException;
 import sistema.Login;
+import usuarios.Administrador;
 import usuarios.Cliente;
 import usuarios.Funcionario;
 
@@ -22,6 +23,7 @@ public class LoginUI extends javax.swing.JFrame {
 
     private Login login = new Login();
     private Cliente usuarioLogado;
+    private Funcionario funcionarioLogado;
     private ExemploUsuarios exp = new ExemploUsuarios();
     private String baseFuncionarios;
     private String baseContas;
@@ -29,6 +31,16 @@ public class LoginUI extends javax.swing.JFrame {
     private String baseAgencias;
     private String baseClientes;
 
+    public Funcionario getFuncionarioLogado() {
+        return funcionarioLogado;
+    }
+
+    public void setFuncionarioLogado(Funcionario funcionarioLogado) {
+        this.funcionarioLogado = funcionarioLogado;
+    }
+
+    
+    
     public String getBaseClientes() {
         return baseClientes;
     }
@@ -86,20 +98,25 @@ public class LoginUI extends javax.swing.JFrame {
                 cliente.setVisible(true);
             }
             case 2 -> { // Funcionario fez login
-                usuarioLogado = login.getUsuarioLogado();
+                funcionarioLogado = login.getFuncionarioLogado();
                 this.setVisible(false);
                 exp.setVisible(false);
                 FuncionarioUI show = new FuncionarioUI();
-                show.setFuncionarioLogado((Funcionario) usuarioLogado);
+                show.setFuncionarioLogado(funcionarioLogado);
                 show.setBaseFuncionarios(baseFuncionarios);
                 show.setBaseContas(baseContas);
                 show.setVisible(true);
             }
             case 3 -> { // Administrador fez login
-                usuarioLogado = login.getUsuarioLogado();
-                this.setVisible(false);
-                exp.setVisible(false);
-                new AdministradorUI().setVisible(true);
+                funcionarioLogado = login.getFuncionarioLogado();
+                AdministradorUI show = new AdministradorUI();
+                show.setAdministradorLogado((Administrador) funcionarioLogado);
+                show.setBaseAdministradores(baseAdministradores);
+                show.setBaseFuncionarios(baseFuncionarios);
+                show.setBaseContas(baseContas);
+                show.setVisible(true);
+                this.dispose();
+                exp.dispose();
             }
             default -> JOptionPane.showMessageDialog(null, "Dados incorretos!");
         }

@@ -4,17 +4,60 @@
  */
 package views.administrador;
 
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import jsonOperations.Escrita;
+import jsonOperations.Leitura;
+import org.json.simple.parser.ParseException;
+import usuarios.Administrador;
+import usuarios.Cliente;
+import views.ApenasNumeros;
+
 /**
  *
  * @author Walter
  */
 public class AdicionarCliente extends javax.swing.JInternalFrame {
 
+    private Administrador administradorLogado;
+    private String baseClientes = "./src/baseDeDados/clientes.json";
+
+    public Administrador getAdministradorLogado() {
+        return administradorLogado;
+    }
+
+    public void setAdministradorLogado(Administrador administradorLogado) {
+        this.administradorLogado = administradorLogado;
+    }
+
+    public String getBaseClientes() {
+        return baseClientes;
+    }
+
+    public void setBaseClientes(String baseClientes) {
+        this.baseClientes = baseClientes;
+    }
+    
+    
+
+    private void limparCX() {
+        this.cxID.setText("");
+        this.cxSenha.setText("");
+        this.cxNome.setText("");
+        this.cxEndereco.setText("");
+        this.cxTelefone.setText("");
+    }
+
     /**
      * Creates new form AdicionarCliente
      */
     public AdicionarCliente() {
         initComponents();
+        //this.cxContas.setDocument(new ApenasNumeros());
     }
 
     /**
@@ -27,18 +70,125 @@ public class AdicionarCliente extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        cxNome = new javax.swing.JTextField();
+        cxSenha = new javax.swing.JTextField();
+        cxEndereco = new javax.swing.JTextField();
+        cxTelefone = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        cxContas = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        cxID = new javax.swing.JTextField();
+        btnAdd = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(700, 495));
+
+        jLabel1.setText("Nome");
+
+        jLabel2.setText("Senha");
+
+        jLabel3.setText("Endereço");
+
+        jLabel4.setText("Telefone");
+
+        cxNome.setMaximumSize(new java.awt.Dimension(385, 2147483647));
+
+        cxSenha.setMaximumSize(new java.awt.Dimension(385, 2147483647));
+
+        cxEndereco.setMaximumSize(new java.awt.Dimension(385, 2147483647));
+
+        cxTelefone.setMaximumSize(new java.awt.Dimension(385, 2147483647));
+        cxTelefone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cxTelefoneActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Contas Associadas");
+
+        cxContas.setMaximumSize(new java.awt.Dimension(385, 2147483647));
+        cxContas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cxContasMouseClicked(evt);
+            }
+        });
+        cxContas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cxContasActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("ID");
+
+        cxID.setMaximumSize(new java.awt.Dimension(385, 2147483647));
+
+        btnAdd.setText("Adicionar novo cliente");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 388, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(65, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel6))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(cxID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cxContas, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
+                    .addComponent(cxTelefone, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
+                    .addComponent(cxEndereco, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cxSenha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cxNome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(110, 110, 110))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnAdd)
+                .addGap(251, 251, 251))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 268, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(75, 75, 75)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cxID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(cxNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(cxSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(cxEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(cxTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(cxContas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(56, 56, 56)
+                .addComponent(btnAdd)
+                .addContainerGap(78, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -46,6 +196,7 @@ public class AdicionarCliente extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -59,8 +210,52 @@ public class AdicionarCliente extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cxTelefoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cxTelefoneActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cxTelefoneActionPerformed
+
+    private void cxContasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cxContasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cxContasActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        List<Cliente> listaCliente = Leitura.lerClientes(baseClientes);
+        String id = this.cxID.getText();
+        String senha = this.cxSenha.getText();
+        String nome = this.cxNome.getText();
+        String endereco = this.cxEndereco.getText();
+        String telefone = this.cxTelefone.getText();
+        String[] sContas = this.cxContas.getText().split(",");
+        Cliente novoCliente = administradorLogado.adicionarCliente(id, senha, nome, endereco, telefone);
+        for (String c : sContas) {
+            novoCliente.setIdConta((Integer.parseInt(c.replaceAll("[^0-9]", ""))));
+        }
+        listaCliente.add(novoCliente);
+        Escrita.escreverCliente(listaCliente, baseClientes);
+        JOptionPane.showMessageDialog(null, "Cliente adicionado com sucesso!");
+        limparCX();
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void cxContasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cxContasMouseClicked
+        JOptionPane.showMessageDialog(null, "Digite as contas associadas separando por vírgula caso o cliente tenha mais de 1."
+                + "\n Ex.: 00000, 00000");
+    }//GEN-LAST:event_cxContasMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JTextField cxContas;
+    private javax.swing.JTextField cxEndereco;
+    private javax.swing.JTextField cxID;
+    private javax.swing.JTextField cxNome;
+    private javax.swing.JTextField cxSenha;
+    private javax.swing.JTextField cxTelefone;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

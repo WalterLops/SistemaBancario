@@ -10,6 +10,7 @@ import contas.ContaPoupanca;
 import contas.ContaSalario;
 import interfaces_e_Login.InterfaceFuncionario;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -19,8 +20,15 @@ import javax.swing.JOptionPane;
  *
  * @author Walter
  */
-public class Funcionario extends Cliente implements InterfaceFuncionario {
-
+public class Funcionario implements InterfaceFuncionario {
+    
+    private String id; 
+    private String senha; 
+    private String nome;
+    private String endereco;
+    private String telefone;
+    private final List<Integer> contasAssociadas = new ArrayList<>();
+    private List<String> extratos = new ArrayList<>();
     private Date dataAdmissao;
     private Date dataDemissao;
     public static int numeroFuncionarios;
@@ -28,14 +36,79 @@ public class Funcionario extends Cliente implements InterfaceFuncionario {
     protected final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
     public Funcionario(Date dataAdmissao, Date dataDemissao, String id, String senha, String nome, String endereco, String telefone) {
-        super(id, senha, nome, endereco, telefone);
+        this.id = id;
+        this.senha = senha;
+        this.nome = nome;
+        this.endereco = endereco;
+        this.telefone = telefone;
         this.dataAdmissao = dataAdmissao;
         this.dataDemissao = dataDemissao;
-        Funcionario.numeroFuncionarios += 1;
+    }
+
+    
+    
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public List<Integer> getsetIdConta() {
+        return contasAssociadas;
+    }
+
+    public void setIdConta(Integer contasAssociadas) {
+        this.contasAssociadas.add(contasAssociadas);
+    }
+
+    public List<String> getExtratos() {
+        return extratos;
+    }
+
+    public void setExtratos(String extratos) {
+        this.extratos.add(extratos);
     }
 
     public String getDataAdmissao() {
-        return sdf.format(dataAdmissao);
+        if (dataAdmissao != null) {
+            return sdf.format(dataAdmissao);
+        } else {
+            return "null";
+        }
     }
 
     public void setDataAdmissao(Date dataAdmissao) {
@@ -43,23 +116,53 @@ public class Funcionario extends Cliente implements InterfaceFuncionario {
     }
 
     public String getDataDemissao() {
-        return sdf.format(dataDemissao);
+        if (dataDemissao != null) {
+            return sdf.format(dataDemissao);
+        } else {
+            return "null";
+        }
     }
 
     public void setDataDemissao(Date dataDemissao) {
         this.dataDemissao = dataDemissao;
     }
+    
+    public boolean setRemoverIdConta(int id){
+        for (Integer c : contasAssociadas){
+            if (c == id){
+                contasAssociadas.remove(c);
+                return true;
+            }
+        }
+        return false;
+    }
 
     //----------Definição dos métodos do funcionário-----------
     @Override
     public String toString() {
+        String msg;
         if (dataDemissao == null) {
-            return super.toString()
-                    + "\nData de admissao: " + dataAdmissao;
+            
+            return "\n===============================================\n"
+             + "ID: " + getId()
+             + "\nNome: " + getNome()
+             + "\nSenha: " + getSenha()
+             + "\nEndereco: " + getEndereco()
+             + "\nTelefone: " + getTelefone()
+             + "\nContasAssociadas: " + getsetIdConta()
+             + "\nData de admissao: " + getDataAdmissao()
+             +"\n===============================================\n";
         }
-        return super.toString()
-                + "\nData de admissao: " + dataAdmissao
-                + "\nData de demissao: " + dataDemissao;
+        return "\n===============================================\n"
+             + "ID: " + getId()
+             + "\nNome: " + getNome()
+             + "\nSenha: " + getSenha()
+             + "\nEndereco: " + getEndereco()
+             + "\nTelefone: " + getTelefone()
+             + "\nContasAssociadas: " + getsetIdConta()
+             + "\nData de admissao: " + getDataAdmissao()
+             + "\nData de demissao: " + getDataDemissao()
+             +"\n===============================================\n";
     }
 
     @Override
@@ -79,9 +182,7 @@ public class Funcionario extends Cliente implements InterfaceFuncionario {
                 return new ContaPoupanca(idConta, agencia, numeroConta, saldo, "Conta Poupança");
             }
             case 205 -> {
-                System.out.print("Digite o CNPJ da empresa: ");
-                String cnpjEmpresa = sc.next();
-                return new ContaSalario(cnpjEmpresa, idConta, agencia, numeroConta, saldo, "Conta Salário");
+                return new ContaSalario(CNPJ, idConta, agencia, numeroConta, saldo, "Conta Salário");
             }
             case 209 -> {
                 return new ContaCorrente(idConta, agencia, numeroConta, saldo, "Conta Corrente");
@@ -93,7 +194,7 @@ public class Funcionario extends Cliente implements InterfaceFuncionario {
     @Override
     public List<Conta> removerConta(int idConta, int numeroConta, int agencia, List<Conta> listaConta) {
         int cont = listaConta.size();
-        for (int i = 0; i < listaConta.size(); i++) {
+        for (int i = 0; i < 2; i++) {
             for (Conta c : listaConta) {
                 if (c.getIdConta() == idConta && c.getNumeroConta() == numeroConta && c.getAgencia() == agencia) {
                     listaConta.remove(c);
@@ -120,7 +221,7 @@ public class Funcionario extends Cliente implements InterfaceFuncionario {
     @Override
     public Cliente alterarCliente(Cliente cliente) {
 
-        Object[] itens = {"1 - alterar senha", "2 - alterar nome", "3 - alterar endereco", "4 - alterar telefone"};//QUESTION_MESSAGE
+        Object[] itens = {"1 - alterar senha", "2 - alterar nome", "3 - alterar endereco", "4 - alterar telefone"};
         String listaResult = JOptionPane.showInputDialog(null,
                 "Escolha um item", "Opçao",
                 JOptionPane.QUESTION_MESSAGE, null,

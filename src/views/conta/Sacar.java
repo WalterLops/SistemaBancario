@@ -181,15 +181,13 @@ public class Sacar extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSacarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSacarActionPerformed
-        try {
-            listaContas = Leitura.lerContas(baseContas);
-            removerConta();
-            contaSelecionada.sacar(Double.parseDouble(this.cxSaque.getText()));
-            listaContas.add(contaSelecionada);
-            Escrita.escreverContas(listaContas, baseContas);
-        } catch (ParseException ex) {
-            Logger.getLogger(Sacar.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        listaContas = Leitura.lerContas(baseContas);
+        removerConta();
+        double valorSaque = Double.parseDouble(this.cxSaque.getText());
+        contaSelecionada.sacar(valorSaque);
+        listaContas.add(contaSelecionada);
+        contaSelecionada.setRegistrarExtrato(valorSaque, "saque", contaSelecionada);
+        Escrita.escreverContas(listaContas, baseContas);
     }//GEN-LAST:event_btnSacarActionPerformed
 
     private void clickTelaInicial(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickTelaInicial

@@ -4,6 +4,7 @@
  */
 package usuarios;
 
+import agencia.Agencia;
 import contas.Conta;
 import contas.ContaCorrente;
 import contas.ContaPoupanca;
@@ -13,6 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -27,7 +29,7 @@ public class Administrador extends Funcionario implements InterfaceAdmin {
         super(dataAdmissao, dataDemissao, id, senha, nome, endereco, telefone);
         Administrador.numeroAdministradores += 1;
     }
-   
+
     //----------Definição dos métodos do Administrador-----------
     @Override
     public void acessarInfoConta(int idConta, List<Conta> listaConta) {
@@ -42,49 +44,72 @@ public class Administrador extends Funcionario implements InterfaceAdmin {
     public List<Conta> alterarConta(int idConta, List<Conta> listaConta) {
         for (Conta conta : listaConta) {
             if (idConta == conta.getIdConta()) {
-                System.out.println("""
-                                   Digite o código da operação:
-                                   \n 1 - alterar agencia
-                                   """);
-                if ("Conta Poupança".equals(conta.getTipoConta())) {
-                    System.out.println("2 - Alterar limite de saque");
+
+                String[] itens = new String[2];
+
+                itens[0] = "1 - alterar agencia";
+                if (null != conta.getTipoConta()) {
+                    switch (conta.getTipoConta()) {
+                        case "Conta Poupança":
+                            itens[1] = "2 - Alterar limite de saque";
+                            break;
+                        case "Conta Salário":
+                            itens[1] = "2 - Alterar CNPJ da empresa";
+                            break;
+                        case "Conta Corrente":
+                            itens[1] = "2 - Alterar taxa de manutencao";
+                            break;
+                        default:
+                            break;
+                    }
                 }
-                if ("Conta Salário".equals(conta.getTipoConta())) {
-                    System.out.println("2 - Alterar CNPJ da empresa");
-                }
-                if ("Conta Corrente".equals(conta.getTipoConta())) {
-                    System.out.println("2 - Alterar taxa de manutencao");
-                }
-                System.out.print("Opção desejada: ");
-                int option = sc.nextInt();
+
+                String valor;
+                String listaResult = JOptionPane.showInputDialog(null,
+                        "Escolha a ação desejada", "Ação",
+                        JOptionPane.QUESTION_MESSAGE, null,
+                        itens, itens[0]).toString();
+                int option = Integer.parseInt(listaResult.replaceAll("[^0-9]", ""));
 
                 // Trabalhando as opções
                 if (option == 1) {
-                    System.out.print("Digite o código da nova agência: ");
-                    conta.setAgencia(sc.nextInt());
+                    valor = JOptionPane.showInputDialog(null,
+                            "Digite o código da nova agência:", "Alterar agência",
+                            JOptionPane.QUESTION_MESSAGE);
+                    if (valor != null) {
+                        conta.setAgencia(Integer.parseInt(valor));
+                    }
                 }
                 if (option == 2) {
 
                     if ("Conta Poupança".equals(conta.getTipoConta())) {
-                        System.out.print("Digite o novo limite de saque");
-                        double limite = sc.nextDouble();
-                        if (conta instanceof ContaPoupanca contaPoupanca) {
-                            contaPoupanca.setLimiteSaque(limite);
+                        valor = JOptionPane.showInputDialog(null,
+                                "Digite o novo limite de saque:", "Alterar limite de saque",
+                                JOptionPane.QUESTION_MESSAGE);
+                        if (valor != null) {
+                            if (conta instanceof ContaPoupanca contaPoupanca) {
+                                contaPoupanca.setLimiteSaque(Double.parseDouble(valor));
+                            }
                         }
 
                     }
                     if ("Conta Salário".equals(conta.getTipoConta())) {
-                        System.out.println("Digite o novo CNPJ da empresa: ");
-                        String cnpj = sc.next();
+                        valor = JOptionPane.showInputDialog(null,
+                                "Digite o novo CNPJ da empresa:", "Alterar CNPJ da empresa",
+                                JOptionPane.QUESTION_MESSAGE);
+                        if (valor != null);
                         if (conta instanceof ContaSalario contaSalario) {
-                            contaSalario.setCnpjEmpresa(cnpj);
+                            contaSalario.setCnpjEmpresa(valor);
                         }
                     }
-                    if (conta.getTipoConta() == "Conta Corrente") {
-                        System.out.println("Digite a nova taxa de manutencao: ");
-                        double taxa = sc.nextDouble();
-                        if (conta instanceof ContaCorrente contaCorrente) {
-                            contaCorrente.setTaxaManutencao(taxa);
+                    if ("Conta Corrente".equals(conta.getTipoConta())) {
+                        valor = JOptionPane.showInputDialog(null,
+                                "Digite a nova taxa de manutencao:", "Alterar taxa de manutencao",
+                                JOptionPane.QUESTION_MESSAGE);
+                        if (valor != null) {
+                            if (conta instanceof ContaCorrente contaCorrente) {
+                                contaCorrente.setTaxaManutencao(Double.parseDouble(valor));
+                            }
                         }
                     }
 
@@ -94,7 +119,7 @@ public class Administrador extends Funcionario implements InterfaceAdmin {
         }
         return listaConta;
     }
-    
+
     @Override
     public void acessarInfoAdmin(String idAdmin, Administrador[] administrador) {
         for (Administrador admin : administrador) {
@@ -103,238 +128,317 @@ public class Administrador extends Funcionario implements InterfaceAdmin {
             }
         }
     }
-    
+
     @Override
     public Administrador[] alterarAdmin(String idAdmin, Administrador[] administrador) throws ParseException {
+
+        String valor = null;
+
         for (Administrador admin : administrador) {
-            if (admin.getId() == idAdmin) {
-                System.out.print("Digite o código da operação desejada: "
-                        + "\n 1 - alterar senha"
-                        + "\n 2 - alterar nome"
-                        + "\n 3 - alterar endereco"
-                        + "\n 4 - alterar telefone"
-                        + "\n 5 - alterar data de admição"
-                        + "\n 6 - adicionar data de demição");
-                int option = sc.nextInt();
+            if (admin.getId().equals(idAdmin)) { //admin
+                Object[] itens = {"1 - alterar senha",
+                    "2 - alterar nome",
+                    "3 - alterar endereco",
+                    "4 - alterar telefone",
+                    "5 - alterar data de admição",
+                    "6 - adicionar data de demição"};
+                String listaResult = JOptionPane.showInputDialog(null,
+                        "Escolha a ação desejada", "Ação",
+                        JOptionPane.QUESTION_MESSAGE, null,
+                        itens, itens[0]).toString();
+                int option = Integer.parseInt(listaResult.replaceAll("[^0-9]", ""));
+
                 switch (option) {
                     case 1 -> {
-                        System.out.print("Digite a nova senha: ");
-                        admin.setSenha(sc.next());
+                        valor = JOptionPane.showInputDialog(null,
+                                "Digite a nova senha:", "Alterar senha",
+                                JOptionPane.QUESTION_MESSAGE);
+                        if (valor != null) {
+                            admin.setSenha(valor);
+                        }
                     }
                     case 2 -> {
-                        System.out.print("Digite o novo nome: ");
-                        admin.setNome(sc.nextLine());
+                        valor = JOptionPane.showInputDialog(null,
+                                "Digite o novo nome: ", "Alterar nome",
+                                JOptionPane.QUESTION_MESSAGE);
+                        if (valor != null) {
+                            admin.setNome(valor);
+                        }
                     }
                     case 3 -> {
-                        System.out.print("Digite o novo endereco: ");
-                        admin.setEndereco(sc.nextLine());
+                        valor = JOptionPane.showInputDialog(null,
+                                "Digite o novo endereco: ", "Alterar endereco",
+                                JOptionPane.QUESTION_MESSAGE);
+                        if (valor != null) {
+                            admin.setEndereco(valor);
+                        }
                     }
                     case 4 -> {
-                        System.out.print("Digite o novo telefone: ");
-                        admin.setEndereco(sc.next());
+                        valor = JOptionPane.showInputDialog(null,
+                                "Digite o novo telefone: ", "Alterar telefone",
+                                JOptionPane.QUESTION_MESSAGE);
+                        if (valor != null) {
+                            admin.setEndereco(valor);
+                        }
                     }
                     case 5 -> {
-                        System.out.print("Digite a nova data de admição no formato dd/mm/aaaa: ");
-                        admin.setDataAdmissao(sdf.parse(sc.next()));
+                        valor = JOptionPane.showInputDialog(null,
+                                "Digite a nova data de admição no formato dd/mm/aaaa: ", "Alterar senha",
+                                JOptionPane.QUESTION_MESSAGE);
+                        if (valor != null) {
+                            admin.setDataAdmissao(sdf.parse(valor));
+                        }
                     }
                     case 6 -> {
-                        System.out.print("Digite a data de demição no formato dd/mm/aaaa: ");
-                        admin.setDataDemissao(sdf.parse(sc.next()));
+                        valor = JOptionPane.showInputDialog(null,
+                                "Digite a data de demição no formato dd/mm/aaaa: ", "Alterar senha",
+                                JOptionPane.QUESTION_MESSAGE);
+                        if (valor != null) {
+                            admin.setDataDemissao(sdf.parse(valor));
+                        }
                     }
-                    default ->
-                        throw new AssertionError();
-                } 
-            }
-        }
-        return administrador;
-    }
-    
-    @Override
-    public Administrador[] adcionarAdmin(Administrador[] listaAdministrador) throws ParseException {
-
-        int cont = 0;
-        for (Administrador listaAdministrador1 : listaAdministrador) {
-            if (listaAdministrador1 == null) {
-                cont++;
-            }
-        }
-        if (listaAdministrador[0].numeroAdministradores == cont) {
-            System.out.println("Não é´possível adcionar mais administradores");
-        } else {
-            System.out.println("Preencha os dados do novo Administrador: ");
-            System.out.print("ID: ");
-            String id = sc.next();
-            System.out.print("Senha: ");
-            String senha = sc.next();
-            System.out.print("Nome: ");
-            String nome = sc.nextLine();
-            System.out.print("Endereco: ");
-            String endereco = sc.nextLine();
-            System.out.print("Telefone: ");
-            String telefone = sc.next();
-            System.out.print("Data de admição no formato dd/mm/aaaa: ");
-            Date dataAdmissao = sdf.parse(sc.next());
-            Date dataDemissao = null;
-
-            for (int i = 0; i < listaAdministrador.length; i++) {
-                if (listaAdministrador[i] == null) {
-                    listaAdministrador[i] = new Administrador(dataAdmissao, dataDemissao, id, senha, nome, endereco, telefone);
-                    break;
                 }
             }
         }
-        return listaAdministrador;
-    }
-    
-    @Override
-    public Administrador[] removerAdmin(String idAdmin, Administrador[] administrador) {
-
-        int cont = 0;
-        for (int i = 0; i < administrador.length; i++) {
-            if (administrador[i] == null) {
-                cont++;
-            }
-        }
-        if (cont < 2) {
-            System.out.println("Não é possível remover mais administradores.");
-        } else {
-            for (int i = 0; i < administrador.length; i++) {
-                if (administrador[i].getId() == idAdmin) {
-                    administrador[i] = null;
-                }
-            }
+        if (valor != null) {
+            JOptionPane.showMessageDialog(null, "Informações alteradas com sucesso!");
         }
         return administrador;
     }
-    
+
     @Override
-    public List<Cliente> adicionarCliente(List<Cliente> listaCliente) {
-        System.out.println("Preencha os dados do novo cliente: ");
-        System.out.print("ID: ");
-        String id = sc.next();
-        System.out.print("Senha: ");
-        String senha = sc.next();
-        System.out.print("Nome: ");
-        String nome = sc.nextLine();
-        System.out.print("Endereco: ");
-        String endereco = sc.nextLine();
-        System.out.print("Telefone: ");
-        String telefone = sc.next();
-        listaCliente.add(new Cliente(id, senha, nome, endereco, telefone));
-        return listaCliente;
+    public Administrador adicionarAdmin(Date dataAdmissao, Date dataDemissao,
+            String id, String senha, String nome,
+            String endereco, String telefone) throws ParseException {
+
+        return new Administrador(dataAdmissao, dataDemissao, id, senha, nome, endereco, telefone);
+
     }
-    
+
     @Override
-    public List<Cliente> removerCliente(String idCliente, List<Cliente> listaCliente){
-        for (Cliente cliente : listaCliente){
-            if (cliente.getId() == idCliente){
+    public Administrador[] removerAdmin(String idAdmin, Administrador administrador, Administrador[] listaAdministradores) {
+
+        if (listaAdministradores.length < 2) {
+
+            JOptionPane.showMessageDialog(null, "Não é possível remover mais administradores.");
+
+        } else if (idAdmin.equals(administrador.getId())) {
+
+            JOptionPane.showMessageDialog(null, "Não é possível remover a sua própria conta.");
+
+        } else {
+
+            Administrador[] novaLista = new Administrador[listaAdministradores.length - 1];
+
+            int j = 0; // indice j para não acessar posição indevida
+            for (int i = 0; i < listaAdministradores.length; i++) {
+
+                if (!listaAdministradores[i].getId().equals(idAdmin)) {
+                    novaLista[j++] = listaAdministradores[i];
+                }
+
+            }
+            return novaLista;
+        }
+
+        return null;
+    }
+
+    @Override
+    public Cliente adicionarCliente(String id, String senha, String nome, String endereco, String telefone) {
+        return new Cliente(id, senha, nome, endereco, telefone);
+    }
+
+    @Override
+    public List<Cliente> removerCliente(String idCliente, List<Cliente> listaCliente) {
+        int tamanhoInicial = listaCliente.size();
+        for (Cliente cliente : listaCliente) {
+            if (cliente.getId().equals(idCliente)) {
                 listaCliente.remove(cliente);
+                break;
             }
+        }
+        if (tamanhoInicial > listaCliente.size()) {
+            JOptionPane.showMessageDialog(null, "Cliente removido com sucesso!");
         }
         return listaCliente;
     }
-    
+
     @Override
     public Funcionario[] alterarFuncionario(String idFuncionario, Funcionario[] listaFuncionario) throws ParseException {
+
+        String valor = null;
+
         for (Funcionario funcionario : listaFuncionario) {
-            if (funcionario.getId() == idFuncionario) {
-                System.out.print("Digite o código da operação desejada: "
-                        + "\n 1 - alterar senha"
-                        + "\n 2 - alterar nome"
-                        + "\n 3 - alterar endereco"
-                        + "\n 4 - alterar telefone"
-                        + "\n 5 - alterar data de admição"
-                        + "\n 6 - adicionar data de demição");
-                int option = sc.nextInt();
+            if (funcionario.getId().equals(idFuncionario)) {
+
+                Object[] itens = {"1 - alterar senha",
+                    "2 - alterar nome",
+                    "3 - alterar endereco",
+                    "4 - alterar telefone",
+                    "5 - alterar data de admição",
+                    "6 - adicionar data de demição"};
+                String listaResult = JOptionPane.showInputDialog(null,
+                        "Escolha a ação desejada", "Ação",
+                        JOptionPane.QUESTION_MESSAGE, null,
+                        itens, itens[0]).toString();
+                int option = Integer.parseInt(listaResult.replaceAll("[^0-9]", ""));
+
                 switch (option) {
                     case 1 -> {
-                        System.out.print("Digite a nova senha: ");
-                        funcionario.setSenha(sc.next());
+                        valor = JOptionPane.showInputDialog(null,
+                                "Digite a nova senha:", "Alterar senha",
+                                JOptionPane.QUESTION_MESSAGE);
+                        if (valor != null) {
+                            funcionario.setSenha(valor);
+                        }
                     }
                     case 2 -> {
-                        System.out.print("Digite o novo nome: ");
-                        funcionario.setNome(sc.nextLine());
+                        valor = JOptionPane.showInputDialog(null,
+                                "Digite o novo nome: ", "Alterar nome",
+                                JOptionPane.QUESTION_MESSAGE);
+                        if (valor != null) {
+                            funcionario.setNome(valor);
+                        }
                     }
                     case 3 -> {
-                        System.out.print("Digite o novo endereco: ");
-                        funcionario.setEndereco(sc.nextLine());
+                        valor = JOptionPane.showInputDialog(null,
+                                "Digite o novo endereco: ", "Alterar endereco",
+                                JOptionPane.QUESTION_MESSAGE);
+                        if (valor != null) {
+                            funcionario.setEndereco(valor);
+                        }
                     }
                     case 4 -> {
-                        System.out.print("Digite o novo telefone: ");
-                        funcionario.setEndereco(sc.next());
+                        valor = JOptionPane.showInputDialog(null,
+                                "Digite o novo telefone: ", "Alterar telefone",
+                                JOptionPane.QUESTION_MESSAGE);
+                        if (valor != null) {
+                            funcionario.setEndereco(valor);
+                        }
                     }
                     case 5 -> {
-                        System.out.print("Digite a nova data de admição no formato dd/mm/aaaa: ");
-                        funcionario.setDataAdmissao(sdf.parse(sc.next()));
+                        valor = JOptionPane.showInputDialog(null,
+                                "Digite a nova data de admição no formato dd/mm/aaaa: ", "Alterar senha",
+                                JOptionPane.QUESTION_MESSAGE);
+                        if (valor != null) {
+                            funcionario.setDataAdmissao(sdf.parse(valor));
+                        }
                     }
                     case 6 -> {
-                        System.out.print("Digite a data de demição no formato dd/mm/aaaa: ");
-                        funcionario.setDataDemissao(sdf.parse(sc.next()));
+                        valor = JOptionPane.showInputDialog(null,
+                                "Digite a data de demição no formato dd/mm/aaaa: ", "Alterar senha",
+                                JOptionPane.QUESTION_MESSAGE);
+                        if (valor != null) {
+                            funcionario.setDataDemissao(sdf.parse(valor));
+                        }
                     }
-                    default ->
-                        throw new AssertionError();
-                } 
-            }
-        }
-        return listaFuncionario;
-    }
-    
-    @Override
-    public Funcionario[] adicionarFuncionario(Funcionario[] listaFuncionario) throws ParseException {
-
-        int cont = 0;
-        for (Funcionario funcionario : listaFuncionario) {
-            if (funcionario == null) {
-                cont++;
-            }
-        }
-        if (listaFuncionario[0].numeroFuncionarios == cont) {
-            System.out.println("Não é´possível adcionar mais funcionarios");
-        } else {
-            System.out.println("Preencha os dados do novo funcionario: ");
-            System.out.print("ID: ");
-            String id = sc.next();
-            System.out.print("Senha: ");
-            String senha = sc.next();
-            System.out.print("Nome: ");
-            String nome = sc.nextLine();
-            System.out.print("Endereco: ");
-            String endereco = sc.nextLine();
-            System.out.print("Telefone: ");
-            String telefone = sc.next();
-            System.out.print("Data de admição no formato dd/mm/aaaa: ");
-            Date dataAdmissao = sdf.parse(sc.next());
-            Date dataDemissao = null;
-
-            for (int i = 0; i < listaFuncionario.length; i++) {
-                if (listaFuncionario[i] == null) {
-                    listaFuncionario[i] = new Administrador(dataAdmissao, dataDemissao, id, senha, nome, endereco, telefone);
-                    break;
                 }
             }
         }
+        if (valor != null) {
+            JOptionPane.showMessageDialog(null, "Informações alteradas com sucesso!");
+        }
         return listaFuncionario;
+    }
+
+    @Override
+    public Funcionario adicionarFuncionario(Date dataAdmissao, Date dataDemissao, String id, String senha, String nome, String endereco, String telefone) throws ParseException {
+
+        return new Funcionario(dataAdmissao, dataDemissao, id, senha, nome, endereco, telefone);
+
+    }
+
+    @Override
+    public Funcionario[] removerFuncionario(String idFuncionario, Funcionario[] listaFuncionario) {
+
+        if (listaFuncionario.length < 2) {
+
+            JOptionPane.showMessageDialog(null, "Não é possível remover mais funcionarios.");
+
+        } else {
+
+            Funcionario[] novaLista = new Funcionario[listaFuncionario.length - 1];
+
+            int j = 0;  // indice j para não acessar posição indevida
+            for (int i = 0; i < listaFuncionario.length; i++) {
+
+                if (!listaFuncionario[i].getId().equals(idFuncionario)) {
+                    novaLista[j++] = listaFuncionario[i];
+                }
+
+            }
+            JOptionPane.showMessageDialog(null, "Funcionáro removido com sucesso!");
+            return novaLista;
+        }
+
+        return null;
     }
     
     @Override
-    public Funcionario[] removerFuncionario(String idFuncionario, Funcionario[] listaFuncionario){
-        int cont = 0;
-        for (int i = 0; i < listaFuncionario.length; i++) {
-            if (listaFuncionario[i] == null) {
-                cont++;
-            }
-        }
-        if (cont < 5) {
-            System.out.println("Não é possível remover mais funcionarios.");
-        } else {
-            for (int i = 0; i < listaFuncionario.length; i++) {
-                if (listaFuncionario[i].getId() == idFuncionario) {
-                    listaFuncionario[i] = null;
+    public Agencia adicionarAgencia(String nome, int codigo, String cidade, String endereco) {
+        return new Agencia(nome, codigo, cidade, endereco);
+    }
+    
+    @Override
+    public List<Agencia> alterarAgencia(int codigo, List<Agencia> listaAgencia) {
+
+        String valor = null;
+        for (Agencia a : listaAgencia) {
+            if (codigo == a.getCodigo()) {
+
+                Object[] itens = {"1 - alterar nome",
+                    "2 - alterar cidade",
+                    "3 - alterar endereco"};
+                String listaResult = JOptionPane.showInputDialog(null,
+                        "Escolha a ação desejada", "Ação",
+                        JOptionPane.QUESTION_MESSAGE, null,
+                        itens, itens[0]).toString();
+                int option = Integer.parseInt(listaResult.replaceAll("[^0-9]", ""));
+
+                switch (option) {
+                    case 1 -> {
+                        valor = JOptionPane.showInputDialog(null,
+                                "Digite o novo nome:", "Alterar nome",
+                                JOptionPane.QUESTION_MESSAGE);
+                        if (valor != null) {
+                            a.setNome(valor);
+                        }
+                    }
+                    case 2 -> {
+                        valor = JOptionPane.showInputDialog(null,
+                                "Digite a nova cidade: ", "Alterar cidade",
+                                JOptionPane.QUESTION_MESSAGE);
+                        if (valor != null) {
+                            a.setCidade(valor);
+                        }
+                    }
+                    case 3 -> {
+                        valor = JOptionPane.showInputDialog(null,
+                                "Digite o novo endereco: ", "Alterar endereco",
+                                JOptionPane.QUESTION_MESSAGE);
+                        if (valor != null) {
+                            a.setEndereco(valor);
+                        }
+                    }
                 }
             }
         }
-        return listaFuncionario;
+        if (valor != null) {
+            JOptionPane.showMessageDialog(null, "Informações alteradas com sucesso!");
+        }
+        return listaAgencia;
     }
-    
 
+    @Override
+    public List<Agencia> removerAgencia(int codigo, List<Agencia> listaAgencia) {
+        
+        for (Agencia a : listaAgencia){
+            if (codigo == a.getCodigo()){
+                listaAgencia.remove(a);
+                break;
+            }
+        }
+        return listaAgencia;
+    }
 }

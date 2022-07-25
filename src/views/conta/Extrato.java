@@ -33,7 +33,8 @@ public class Extrato extends javax.swing.JFrame {
         this.contaUI = contaUI;
     }
     
-    public void setShowExtrato(String msg){
+    public void setShowExtrato(String msg, int linhas){
+        showExtrato.setRows(linhas);
         showExtrato.setText(msg);
     }
     

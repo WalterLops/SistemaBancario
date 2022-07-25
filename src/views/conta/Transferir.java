@@ -286,6 +286,8 @@ public class Transferir extends javax.swing.JFrame {
                 listaContas.remove(contaDestino);
                 contaDestino = contaSelecionada.transferir(valorTransferencia, contaDestino);
                 listaContas.add(contaDestino);
+                contaSelecionada.setRegistrarExtrato(valorTransferencia, "transferência enviada", contaSelecionada);
+                contaDestino.setRegistrarExtrato(valorTransferencia, "transferência recebida", contaDestino);
             }
             else if(contaDestino == null)
                 JOptionPane.showMessageDialog(null, "Desculpe, não foi possível depositar! Conta não encontrada.");
