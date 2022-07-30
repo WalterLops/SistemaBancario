@@ -5,16 +5,14 @@
 package views.administrador;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import jsonOperations.Escrita;
 import jsonOperations.Leitura;
-import org.json.simple.parser.ParseException;
 import usuarios.Administrador;
 import usuarios.Cliente;
 
 /**
- *
+ * Remove clientes
+ * 
  * @author Walter
  */
 public class RemoverCliente extends javax.swing.JInternalFrame {
@@ -46,14 +44,17 @@ public class RemoverCliente extends javax.swing.JInternalFrame {
     public void setBaseClientes(String baseClientes) {
         this.baseClientes = baseClientes;
     }
-    
-    public void setInfoCliente(){
+
+    /**
+     * Preenche as informacoes do cliente aos campos de texto
+     */
+    public void setInfoCliente() {
         this.cxID.setText(clienteSelecionado.getId());
         this.cxNome.setText(clienteSelecionado.getNome());
         this.cxSenha.setText(clienteSelecionado.getSenha());
         this.cxEndereco.setText(clienteSelecionado.getEndereco());
         this.cxTelefone.setText(clienteSelecionado.getTelefone());
-        this.cxContas.setText(clienteSelecionado.getsetIdConta().toString()); 
+        this.cxContas.setText(clienteSelecionado.getsetIdConta().toString());
     }
 
     /**
@@ -220,9 +221,9 @@ public class RemoverCliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cxContasActionPerformed
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
-        List<Cliente>  listaCliente = Leitura.lerClientes(baseClientes);
-        listaCliente = adiministradorLogado.removerCliente(clienteSelecionado.getId(), listaCliente);
-        Escrita.escreverCliente(listaCliente, baseClientes);
+        List<Cliente> listaCliente = Leitura.lerClientes(baseClientes);
+        listaCliente = adiministradorLogado.removerCliente(clienteSelecionado.getId(), listaCliente); // o administrador remove e retorna a lista atualizada
+        Escrita.escreverCliente(listaCliente, baseClientes); // salvando as alteracoes
         this.dispose();
     }//GEN-LAST:event_btnRemoverActionPerformed
 

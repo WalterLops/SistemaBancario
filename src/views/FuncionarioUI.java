@@ -62,6 +62,7 @@ public class FuncionarioUI extends javax.swing.JFrame {
         return funcionarioLogado;
     }
 
+    
     public void setFuncionarioLogado(Funcionario funcionarioLogado) {
         this.funcionarioLogado = funcionarioLogado;
     }
@@ -70,18 +71,31 @@ public class FuncionarioUI extends javax.swing.JFrame {
         return baseAgencias;
     }
 
+    
     public void setBaseAgencias(String baseAgencias) {
         this.baseAgencias = baseAgencias;
     }
 
+    /**
+     * Remove todas as janelas do painel interno.
+     */
     public void setLimparAreaDeTrabalho() {
         this.AreaDeTrabalho.removeAll();
     }
 
+    /**
+     * Adiciona ao painel interno uma janela do tipo AlterarInfoCliente
+     * 
+     * @param alterarInfoCliente 
+     */
     public void setAlterarCliente(AlterarInfoCliente alterarInfoCliente) {
         this.AreaDeTrabalho.add(alterarInfoCliente);
     }
 
+    /**
+     * Adiciona ao painel interno uma janela do tipo InfoCliente
+     * @param infoCliente 
+     */
     public void setInfoCliente(InfoCliente infoCliente) {
         this.AreaDeTrabalho.add(infoCliente);
     }
@@ -365,7 +379,7 @@ public class FuncionarioUI extends javax.swing.JFrame {
         StringBuilder sb = new StringBuilder();
         int linhas = 7;
         for (Conta c : listaContas) {
-            sb.append(c.infoConta());
+            sb.append(c.toString());
             linhas += linhas;
         }
         ContasCadastradas show = new ContasCadastradas();
@@ -395,8 +409,8 @@ public class FuncionarioUI extends javax.swing.JFrame {
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
         List<Cliente> listaClientes = Leitura.lerClientes(baseClientes);
-        StringBuilder sb = new StringBuilder();
-        int linhas = 7;
+        StringBuilder sb = new StringBuilder(); // stringBuilder para armazenar as informacoes da Cliente
+        int linhas = 7; // quantidade de linhas a ser exibida no text area da nova janela
         for (Cliente c : listaClientes) {
             sb.append(c.toString());
             linhas += linhas;

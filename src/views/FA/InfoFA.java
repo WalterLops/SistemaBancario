@@ -4,20 +4,12 @@
  */
 package views.FA;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import jsonOperations.Escrita;
-import jsonOperations.Leitura;
 import usuarios.Administrador;
 import usuarios.Funcionario;
 import views.ApenasNumeros;
-import views.ApenasNumeros;
 
 /**
+ * Exibe as informacoes do funcionario ou adminstrador.
  *
  * @author Walter
  */
@@ -41,12 +33,16 @@ public class InfoFA extends javax.swing.JInternalFrame {
     public void setFuncionarioSelecionado(Funcionario funcionarioSelecionado) {
         this.funcionarioSelecionado = funcionarioSelecionado;
     }
-    
+
+    /**
+     * Preenche as informacoes do usuario selecionado aos campos de texto.
+     */
     public void setShowDados() {
-        
-        if (administradorSelecionado != null)
+
+        if (administradorSelecionado != null) {
             funcionarioSelecionado = (Funcionario) administradorSelecionado;
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        }
+
         this.cxID.setText(funcionarioSelecionado.getId());
         this.cxSenha.setText(funcionarioSelecionado.getSenha());
         this.cxNome.setText(funcionarioSelecionado.getNome());
@@ -55,9 +51,7 @@ public class InfoFA extends javax.swing.JInternalFrame {
         this.cxContas.setText(funcionarioSelecionado.getsetIdConta().toString());
         this.cxDataA.setText(funcionarioSelecionado.getDataAdmissao());
         this.cxDataD.setText(funcionarioSelecionado.getDataDemissao());
-        
-        
-                
+
     }
 
     /**
@@ -274,11 +268,11 @@ public class InfoFA extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cxContasActionPerformed
 
     private void cxContasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cxContasMouseClicked
-        
+
     }//GEN-LAST:event_cxContasMouseClicked
 
     private void cxDataDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cxDataDMouseClicked
-       
+
     }//GEN-LAST:event_cxDataDMouseClicked
 
     private void cxDataAMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cxDataAMouseClicked

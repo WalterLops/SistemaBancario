@@ -15,7 +15,8 @@ import jsonOperations.Leitura;
 import usuarios.Administrador;
 
 /**
- *
+ * Altera as informacoes da conta
+ * 
  * @author Walter
  */
 public class AlterarConta extends javax.swing.JInternalFrame {
@@ -48,6 +49,9 @@ public class AlterarConta extends javax.swing.JInternalFrame {
         this.baseContas = baseContas;
     }
     
+    /**
+     * Preenche os campos de texto com as informacoes da contaSelecionada
+     */
     public void setShowDados(){
         this.cxTipoConta.setText(contaSelecionada.getTipoConta());
         this.cxAgencia.setText(Integer.toString(contaSelecionada.getAgencia()));
@@ -65,6 +69,12 @@ public class AlterarConta extends javax.swing.JInternalFrame {
         }
     }
     
+    /**
+     * Pesquisa um objeto na lista em que for igual ao objeto contaSelecionada e 
+     * preeche os campos de texto da interface
+     * 
+     * @param listaContas 
+     */
     private void setAtualizarInfo(List<Conta> listaContas){
         for (Conta conta : listaContas) {
             if (contaSelecionada.getIdConta() == conta.getIdConta()) {
@@ -241,14 +251,12 @@ public class AlterarConta extends javax.swing.JInternalFrame {
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
 
-        
-
         if (administradorLogado != null) {
             List<Conta> listaContas;
             listaContas = Leitura.lerContas(baseContas);
-            listaContas = administradorLogado.alterarConta(contaSelecionada.getIdConta(), listaContas);
-            Escrita.escreverContas(listaContas, baseContas);
-            setAtualizarInfo(listaContas);
+            listaContas = administradorLogado.alterarConta(contaSelecionada.getIdConta(), listaContas); // alterando informacoes da conta
+            Escrita.escreverContas(listaContas, baseContas); // slavando alteracoes
+            setAtualizarInfo(listaContas); // mostrando as alteracoes na tela
             JOptionPane.showMessageDialog(null, "Informações alteradas com sucesso!");
         } else {
             JOptionPane.showMessageDialog(null, "Nenhum administrador logado");

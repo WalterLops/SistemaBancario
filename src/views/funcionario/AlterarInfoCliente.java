@@ -5,17 +5,15 @@
 package views.funcionario;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import jsonOperations.Escrita;
 import jsonOperations.Leitura;
-import org.json.simple.parser.ParseException;
 import usuarios.Cliente;
 import usuarios.Funcionario;
 
 /**
- *
+ * Altera as informacoes do cliente
+ * 
  * @author Walter
  */
 public class AlterarInfoCliente extends javax.swing.JInternalFrame {
@@ -53,6 +51,9 @@ public class AlterarInfoCliente extends javax.swing.JInternalFrame {
         this.clienteSelecionado = clienteSelecionado;
     }
     
+    /**
+     * Preenche as informacoes do clienteSelecionado ao campos da interface
+     */
     private void preencherCX(){
         this.cxNome.setText(clienteSelecionado.getNome());
         this.cxSenha.setText(clienteSelecionado.getSenha());
@@ -60,16 +61,9 @@ public class AlterarInfoCliente extends javax.swing.JInternalFrame {
         this.cxTelefone.setText(clienteSelecionado.getTelefone());
     }
     
-    /*private int contarClientes() {
-        int cont = 0;
-        for (Cliente c : listaCliente) {
-            if (c.getId() == clienteSelecionado.getId() && c.getNome().equals(clienteSelecionado.getNome())) {
-                    cont++;
-            }
-        }
-        return cont;
-    }*/
-
+   /**
+    * Remove da lista clienteSelecionado
+    */
     private void removerCliente() {
         
         for (int i = 0; i < 2; i++) {

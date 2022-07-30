@@ -7,7 +7,8 @@ package views;
 import javax.swing.plaf.ProgressBarUI;
 
 /**
- *
+ * Classe responsavel por fazer a animacao inicial do aplicativo.
+ * 
  * @author Walter
  */
 public class SplashUI extends javax.swing.JFrame {
@@ -21,7 +22,9 @@ public class SplashUI extends javax.swing.JFrame {
     
     
     
-    // função para executar o preenchimento da ProgressBar
+    /**
+     * metodo para executar o preenchimento da ProgressBar
+     */
     public void eventoCarregando()
     {
         int i = 0;

@@ -6,16 +6,14 @@ package views.administrador;
 
 import agencia.Agencia;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import jsonOperations.Leitura;
-import org.json.simple.parser.ParseException;
 import usuarios.Administrador;
 import views.AdministradorUI;
 
 /**
- *
+ * Pesquisa agencias para redirecionar a tela de RemoverAgencia
+ * 
  * @author Walter
  */
 public class PesquisarAgencia extends javax.swing.JFrame {

@@ -6,23 +6,19 @@ package views.funcionario;
 
 import agencia.Agencia;
 import contas.Conta;
-import contas.ContaPoupanca;
 import java.awt.HeadlessException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import jsonOperations.Escrita;
 import jsonOperations.Leitura;
-import org.json.simple.parser.ParseException;
 import usuarios.Administrador;
 import usuarios.Cliente;
 import usuarios.Funcionario;
 import views.ApenasNumeros;
-import views.FuncionarioUI;
 
 /**
- *
+ * Adiciona uma nova conta bancaria
+ * 
  * @author Walter
  */
 public class AdicionarConta extends javax.swing.JInternalFrame {
@@ -106,7 +102,14 @@ public class AdicionarConta extends javax.swing.JInternalFrame {
     private void setListaContas() {
         this.listaContas = Leitura.lerContas(baseContas);
     }
-
+    
+    /**
+     * Associando a nova conta bancaria criada ao Cliente, Funcionario
+     * ou Adminstrador. O ID da conta e adicionado as contas associadas do
+     * usuario.
+     * 
+     * @param novaConta 
+     */
     private void setAssociarContaProprietario(Conta novaConta) {
 
         if (listaCliente != null) {
@@ -133,6 +136,9 @@ public class AdicionarConta extends javax.swing.JInternalFrame {
         }
     }
     
+    /**
+     * Metodo para preencher o comboBox com os codigos das agencias existentes
+     */
     public void setInicializarAgencias(){
         List<Agencia> listaAgencias = Leitura.lerAgencias(baseAgencias);
         for (Agencia a : listaAgencias){
@@ -429,6 +435,7 @@ public class AdicionarConta extends javax.swing.JInternalFrame {
         listaCliente = Leitura.lerClientes(baseClientes);
         listaFuncionarios = Leitura.lerFuncionarios(baseFuncionarios);
         listaAdministradors = Leitura.lerAdministradores(baseAdministradores);
+        // procurando o proprietario da conta
         for (Cliente c : listaCliente) {
             if (this.cxIDProprietario.getText().equals(c.getId())) {
                 clienteProprietario = c;
@@ -444,6 +451,8 @@ public class AdicionarConta extends javax.swing.JInternalFrame {
                 administradorProprietario = c;
             }
         }
+        
+        // liberando a memoria com base nas listas lidas e o usuario proprietario encontrado
         int cont = 0;
         if (clienteProprietario == null) {
             listaCliente.clear();

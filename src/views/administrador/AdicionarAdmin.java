@@ -4,11 +4,6 @@
  */
 package views.administrador;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import jsonOperations.Escrita;
 import jsonOperations.Leitura;
@@ -16,6 +11,7 @@ import usuarios.Administrador;
 import views.ApenasNumeros;
 
 /**
+ * Adiciona novos administradores
  *
  * @author Walter
  */
@@ -39,7 +35,10 @@ public class AdicionarAdmin extends javax.swing.JInternalFrame {
     public void setBaseAdministradores(String baseAdministradores) {
         this.baseAdministradores = baseAdministradores;
     }
-    
+
+    /**
+     * Limpa os campos de texto
+     */
     private void limparCX() {
         this.cxID.setText("");
         this.cxSenha.setText("");
@@ -47,7 +46,7 @@ public class AdicionarAdmin extends javax.swing.JInternalFrame {
         this.cxEndereco.setText("");
         this.cxTelefone.setText("");
         this.cxData.setText("");
-        this.cxContas.setText(""); 
+        this.cxContas.setText("");
     }
 
     /**
@@ -257,46 +256,32 @@ public class AdicionarAdmin extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cxContasActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            
-            String id = this.cxID.getText();
-            String senha = this.cxSenha.getText();
-            String nome = this.cxNome.getText();
-            Date dataAdimissao = sdf.parse(this.cxData.getText());
-            String endereco = this.cxEndereco.getText();
-            String telefone = this.cxTelefone.getText();
-            
-            String[] sContas = this.cxContas.getText().split(",");
-            Administrador novoAdministrador = administradorLogado.adicionarAdmin(
-                    dataAdimissao, null, id, senha, nome, endereco, telefone);
-            
-            for (String c : sContas) {
-                novoAdministrador.setIdConta((Integer.parseInt(c.replaceAll("[^0-9]", ""))));
-            }
-            
-            Administrador[] listaAdministradores = Leitura.lerAdministradores(baseAdministradores);
-            
-            int tamLista = listaAdministradores.length + 1;
-            Administrador[] novaListaAdministradores = new Administrador[tamLista];
-           
-            for (int i = 0; i < tamLista; i++) {
-                
-                if (i < tamLista - 1) {
-                    novaListaAdministradores[i] = listaAdministradores[i];
-                }
-                else {
-                    novaListaAdministradores[i] = novoAdministrador;
-                }
-            }
-            Escrita.escreverAdmin(novaListaAdministradores, baseAdministradores);
-            
-            JOptionPane.showMessageDialog(null, "Administrador adicionado com sucesso!");
-            limparCX();
-            
-        } catch (ParseException ex) {
-            JOptionPane.showMessageDialog(null, "Você digitou uma data inválida!");
+        String id = this.cxID.getText();
+        String senha = this.cxSenha.getText();
+        String nome = this.cxNome.getText();
+        String dataAdimissao = this.cxData.getText();
+        String endereco = this.cxEndereco.getText();
+        String telefone = this.cxTelefone.getText();
+        String[] sContas = this.cxContas.getText().split(",");
+        Administrador novoAdministrador = administradorLogado.adicionarAdmin(
+                dataAdimissao, null, id, senha, nome, endereco, telefone); // criando novo admistrador
+        for (String c : sContas) {
+            novoAdministrador.setIdConta((Integer.parseInt(c.replaceAll("[^0-9]", "")))); //recuperando as informacoes de contas associadas
         }
+        Administrador[] listaAdministradores = Leitura.lerAdministradores(baseAdministradores); //lista original
+        int tamLista = listaAdministradores.length + 1; // definindo o tamanho da nova lista para adicionar um novo objeto
+        Administrador[] novaListaAdministradores = new Administrador[tamLista]; // instanciando a nova lista
+        for (int i = 0; i < tamLista; i++) {
+
+            if (i < tamLista - 1) { // preenchendo a nova lista com objetos ja existentes
+                novaListaAdministradores[i] = listaAdministradores[i];
+            } else { // adicionando o novo objeto
+                novaListaAdministradores[i] = novoAdministrador;
+            }
+        }
+        Escrita.escreverAdmin(novaListaAdministradores, baseAdministradores); // salvando as informacoes
+        JOptionPane.showMessageDialog(null, "Administrador adicionado com sucesso!");
+        limparCX();
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void cxContasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cxContasMouseClicked

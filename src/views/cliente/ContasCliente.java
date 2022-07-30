@@ -8,7 +8,8 @@ import contas.Conta;
 import java.util.List;
 
 /**
- *
+ * Exibe as informacoes de contas do cliente
+ * 
  * @author Walter
  */
 public class ContasCliente extends javax.swing.JInternalFrame {
@@ -20,11 +21,16 @@ public class ContasCliente extends javax.swing.JInternalFrame {
         initComponents();
     }
 
+    /**
+     * Pesquisa e mostra o resultado das informacoes das contas do cliente
+     * 
+     * @param listaContas 
+     */
     public void setContasCliente(List<Conta> listaContas) {
         if (listaContas != null) {
             for (Conta conta : listaContas) {
                 if (conta != null) {
-                    ShowContas.setText(conta.infoConta());
+                    ShowContas.setText(conta.toString());
                 }
             }
         }

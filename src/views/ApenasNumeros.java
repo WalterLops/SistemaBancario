@@ -9,7 +9,10 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 /**
- *
+ * Classe responsavel por aplicar restricao de digitacao nos campos de entrada 
+ * de texto da inteface grafica. Com esta classe aplicada ao campo nao e 
+ * possivel digitar letras e somente possivel numeros.
+ * 
  * @author Walter
  */
 public class ApenasNumeros extends PlainDocument{

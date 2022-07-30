@@ -11,15 +11,14 @@ import java.util.List;
  *
  * @author Walter
  */
-public class Cliente {
-   
-    private String id; 
-    private String senha; 
+public class Cliente implements Comparable<Cliente> {
+
+    private String id;
+    private String senha;
     private String nome;
     private String endereco;
     private String telefone;
     private final List<Integer> contasAssociadas = new ArrayList<>();
-    private List<String> extratos = new ArrayList<>();
     private static int instanciasP;
     protected static int instanciasS;
 
@@ -81,14 +80,6 @@ public class Cliente {
         this.contasAssociadas.add(contasAssociadas);
     }
 
-    public List<String> getExtratos() {
-        return extratos;
-    }
-
-    public void setExtratos(String extratos) {
-        this.extratos.add(extratos);
-    }
-
     public static int getInstanciasP() {
         return instanciasP;
     }
@@ -104,10 +95,10 @@ public class Cliente {
     public static void setInstanciasS(int instanciasS) {
         Cliente.instanciasS = instanciasS;
     }
-    
-    public boolean setRemoverIdConta(int id){
-        for (Integer c : contasAssociadas){
-            if (c == id){
+
+    public boolean setRemoverIdConta(int id) {
+        for (Integer c : contasAssociadas) {
+            if (c == id) {
                 contasAssociadas.remove(c);
                 return true;
             }
@@ -115,18 +106,40 @@ public class Cliente {
         return false;
     }
 
+    /**
+     * Metodo de comparacao entre objetos da classe cliente.
+     * 
+     * @param outroCli
+     * @return numero inteiro positivo ou negativo de se a ordem do otro 
+     * objeto for de uma ordem menor ou negativo caso o outro objeto esteja em 
+     * uma posicao menor. Retorna 0 caso os objetos sejam iguais.
+     */
+    @Override
+    public int compareTo(Cliente outroCli) {
+
+        int compareNome = nome.compareTo(outroCli.getNome());
+        if (compareNome != 0) {
+            return compareNome;
+        }
+
+        int compareSaldo = id.compareTo(outroCli.getId());
+        return compareSaldo;
+    }
+
+    /**
+     * 
+     * @return todas as informacoes desse objeto.
+     */
     @Override
     public String toString() {
         return "\n===============================================\n"
-             + "ID: " + id
-             + "\nNome: " + nome
-             + "\nSenha: " + senha 
-             + "\nEndereco: " + endereco
-             + "\nTelefone: " + telefone
-             + "\nContasAssociadas: " + contasAssociadas
-             +"\n===============================================\n";
+                + "ID: " + id
+                + "\nNome: " + nome
+                + "\nSenha: " + senha
+                + "\nEndereco: " + endereco
+                + "\nTelefone: " + telefone
+                + "\nContasAssociadas: " + contasAssociadas
+                + "\n===============================================\n";
     }
-    
-    
-    
+
 }

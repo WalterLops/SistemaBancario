@@ -6,9 +6,11 @@ package agencia;
 
 /**
  *
+ * Agencias. Possui a interface <code> Comparable &lt; Agencia &gt; </code> inplementado.
+ * 
  * @author Walter
  */
-public class Agencia {
+public class Agencia implements Comparable<Agencia>{
     private String nome;
     private int codigo;
     private String cidade;
@@ -61,7 +63,31 @@ public class Agencia {
     public void setMontanteTotal(double montanteTotal) {
         this.montanteTotal += montanteTotal;
     }
+    
+    /**
+     * * Compara duas agencias. Se os nomes forem iguais e feito a comparacao por
+     * montante total. Se o retorno for 0 quer dizer que os objetos sao iguais.
+     * 
+     * @param outraAgencia
+     * @return int compareTo.
+     *
+     */
+    @Override
+    public int compareTo(Agencia outraAgencia) {
 
+        int compareNome = nome.compareTo(outraAgencia.getNome());
+        if (compareNome != 0) {
+            return compareNome;
+        }
+        
+        int compareCidade = cidade.compareTo(outraAgencia.getCidade());
+        return compareCidade;
+    } 
+    
+    /**
+     * 
+     * @return todas informacoes da agencia.
+     */
     @Override
     public String toString() {
         return "\n======================================"

@@ -5,22 +5,14 @@
 package views.conta;
 
 import contas.Conta;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import jsonOperations.Escrita;
-import static jsonOperations.Escrita.escreverAdmin;
-import static jsonOperations.Escrita.escreverCliente;
-import static jsonOperations.Escrita.escreverFuncionario;
 import jsonOperations.Leitura;
-import usuarios.Administrador;
-import usuarios.Cliente;
-import usuarios.Funcionario;
 import views.ContaUI;
 
 /**
- *
+ * Faz o deposito em uma conta
+ * 
  * @author Walter
  */
 public class Depositar extends javax.swing.JFrame {
@@ -54,7 +46,9 @@ public class Depositar extends javax.swing.JFrame {
         this.contaUI = contaUI;
     }
 
-    
+    /**
+     * Remove da lista a conta ao qual foi feito o deposito
+     */
     private void removerConta() {
         for (int i = 0; i < 2; i++) {
             for (Conta c : listaContas) {
@@ -192,13 +186,12 @@ public class Depositar extends javax.swing.JFrame {
     }//GEN-LAST:event_clickTelaInicial
 
     private void BtnDepositarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BtnDepositarMouseClicked
-        listaContas = Leitura.lerContas(baseContas);
-        removerConta();
+        listaContas = Leitura.lerContas(baseContas); // lista original
+        removerConta(); //remover da lista a conta que foi recibida nessa classe
         double valorDeposito = Double.parseDouble(this.CaixaDeposito.getText());
-        contaSelecionada.depositar(valorDeposito);
-        listaContas.add(contaSelecionada);
-        contaSelecionada.setRegistrarExtrato(valorDeposito, "depósito", contaSelecionada);
-        Escrita.escreverContas(listaContas, baseContas);
+        contaSelecionada.depositar(valorDeposito); // realizando o deposito na conta que foi recibida nessa classe
+        listaContas.add(contaSelecionada); // adicionando a conta atualizada
+        Escrita.escreverContas(listaContas, baseContas); // salvando as alteracoes
         this.CaixaDeposito.setText("");
     }//GEN-LAST:event_BtnDepositarMouseClicked
 

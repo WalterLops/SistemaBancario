@@ -4,11 +4,6 @@
  */
 package views.administrador;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import jsonOperations.Escrita;
 import jsonOperations.Leitura;
@@ -17,6 +12,7 @@ import usuarios.Funcionario;
 import views.ApenasNumeros;
 
 /**
+ * Adiciona novos funcionarios
  *
  * @author Walter
  */
@@ -41,6 +37,9 @@ public class AdicionarFuncionario extends javax.swing.JInternalFrame {
         this.baseFuncionarios = baseFuncionarios;
     }
 
+    /**
+     * Limpa todas os campos de texto
+     */
     private void limparCX() {
         this.cxID.setText("");
         this.cxSenha.setText("");
@@ -48,7 +47,7 @@ public class AdicionarFuncionario extends javax.swing.JInternalFrame {
         this.cxEndereco.setText("");
         this.cxTelefone.setText("");
         this.cxData.setText("");
-        this.cxContas.setText("");     
+        this.cxContas.setText("");
     }
 
     /**
@@ -258,47 +257,34 @@ public class AdicionarFuncionario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cxContasActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
-            String id = this.cxID.getText();
-            String senha = this.cxSenha.getText();
-            String nome = this.cxNome.getText();
-            Date dataAdimissao = sdf.parse(this.cxData.getText());
-            String endereco = this.cxEndereco.getText();
-            String telefone = this.cxTelefone.getText();
-
-            String[] sContas = this.cxContas.getText().split(",");
-            Funcionario novoFuncionario = administradorLogado.adicionarFuncionario(
-                    dataAdimissao, null, id, senha, nome,
-                    endereco, telefone);
-
-            for (String c : sContas) {
-                novoFuncionario.setIdConta((Integer.parseInt(c.replaceAll("[^0-9]", ""))));
-            }
-
-            Funcionario[] listaFuncionarios = Leitura.lerFuncionarios(baseFuncionarios);
-            int tamLista = listaFuncionarios.length + 1;
-            Funcionario[] novaListaFuncionarios = new Funcionario[tamLista];
-            for (int i = 0; i < tamLista; i++) {
-                
-                if (i < tamLista - 1) {
-                    novaListaFuncionarios[i] = listaFuncionarios[i];
-                }
-                else {
-                    novaListaFuncionarios[i] = novoFuncionario;
-                }
-                
-            }
-
-            Escrita.escreverFuncionario(novaListaFuncionarios, baseFuncionarios);
-
-            JOptionPane.showMessageDialog(null, "Funcionário adicionado com sucesso!");
-            limparCX();
-
-        } catch (ParseException ex) {
-            JOptionPane.showMessageDialog(null, "Você digitou uma data inválida!");
+        String id = this.cxID.getText();
+        String senha = this.cxSenha.getText();
+        String nome = this.cxNome.getText();
+        String dataAdimissao = this.cxData.getText();
+        String endereco = this.cxEndereco.getText();
+        String telefone = this.cxTelefone.getText();
+        String[] sContas = this.cxContas.getText().split(",");
+        Funcionario novoFuncionario = administradorLogado.adicionarFuncionario(
+                dataAdimissao, null, id, senha, nome,
+                endereco, telefone); // criando novo funcionario
+        for (String c : sContas) {
+            novoFuncionario.setIdConta((Integer.parseInt(c.replaceAll("[^0-9]", "")))); //recuperando as informacoes de contas associadas
         }
+        Funcionario[] listaFuncionarios = Leitura.lerFuncionarios(baseFuncionarios); //lista original
+        int tamLista = listaFuncionarios.length + 1; // definindo o tamanho da nova lista para adicionar um novo objeto
+        Funcionario[] novaListaFuncionarios = new Funcionario[tamLista]; // instanciando a nova lista
+        for (int i = 0; i < tamLista; i++) {
+
+            if (i < tamLista - 1) { // preenchendo a nova lista com objetos ja existentes
+                novaListaFuncionarios[i] = listaFuncionarios[i];
+            } else { // adicionando o novo objeto
+                novaListaFuncionarios[i] = novoFuncionario;
+            }
+
+        }
+        Escrita.escreverFuncionario(novaListaFuncionarios, baseFuncionarios); // salvando as informacoes
+        JOptionPane.showMessageDialog(null, "Funcionário adicionado com sucesso!");
+        limparCX();
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void cxContasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cxContasMouseClicked

@@ -5,19 +5,16 @@
 package views.FA;
 
 import agencia.Agencia;
-import contas.Conta;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import jsonOperations.Leitura;
-import org.json.simple.parser.ParseException;
 
 /**
- *
+ * Exibe as informacoes da agencia.
+ * 
  * @author Walter
  */
 public class InfoAgenciaFA extends javax.swing.JInternalFrame {
-    
+
     private String baseAgencias = "./src/baseDeDados/listaAgencias.json";
 
     public String getBaseAgencias() {
@@ -27,19 +24,22 @@ public class InfoAgenciaFA extends javax.swing.JInternalFrame {
     public void setBaseAgencias(String baseAgencias) {
         this.baseAgencias = baseAgencias;
     }
-    
-    public void setShowDadosAgencia(){
+
+    /**
+     * Exibe as informacoes das agencias.
+     */
+    public void setShowDadosAgencia() {
         List<Agencia> listaAgencias = Leitura.lerAgencias(baseAgencias);
         StringBuilder sb = new StringBuilder();
-        int linhas = 6;
-        for (Agencia agencia : listaAgencias){
+        int linhas = 6; // numero de linhas a ser motradas com base no tamanho das informacoes.
+        for (Agencia agencia : listaAgencias) {
             sb.append(agencia.toString());
             linhas += linhas;
         }
         this.ShowDados.setRows(linhas);
         this.ShowDados.setText(sb.toString());
     }
-    
+
     /**
      * Creates new form InfoAgenciaFA
      */

@@ -6,16 +6,14 @@ package views.conta;
 
 import contas.Conta;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import jsonOperations.Escrita;
 import jsonOperations.Leitura;
-import org.json.simple.parser.ParseException;
 import views.ContaUI;
 
 /**
- *
+ * Realiza transferencia entre as contas
+ * 
  * @author Walter
  */
 public class Transferir extends javax.swing.JFrame {
@@ -49,7 +47,15 @@ public class Transferir extends javax.swing.JFrame {
         this.listaContas = listaContas;
     }
     
-    private Conta autenticarConta(int idConta, int agencia, int numeroConta) throws ParseException{
+    /**
+     * Metodo para autenticar se a conta destino existe
+     * 
+     * @param idConta
+     * @param agencia
+     * @param numeroConta
+     * @return Conta se ela for encontrada ou null caso nao 
+     */
+    private Conta autenticarConta(int idConta, int agencia, int numeroConta){
         listaContas = Leitura.lerContas(baseContas);
         listaContas.remove(contaSelecionada);
         for (Conta c : listaContas){
@@ -60,6 +66,12 @@ public class Transferir extends javax.swing.JFrame {
         return null;
     }
     
+    /**
+     * Valida se tem saldo suficiente para transferencia
+     * 
+     * @param valor
+     * @return valor do deposito a ser feito ou 0 caso o saldo seja insuficiente
+     */
     private double autenticarTransferencia(double valor){
         if (contaSelecionada.getSaldo() > valor){
             return valor;
@@ -67,7 +79,13 @@ public class Transferir extends javax.swing.JFrame {
         else
             return 0;
     }
-            
+    
+    /**
+     * atualiza a lista de contas removendo a contaSelecionada desatualizada 
+     * e insere a contaSelecionada atualizadana lista.
+     * 
+     * @param contaSelecionada 
+     */
     private void atualizarListaContas(Conta contaSelecionada){
         Conta remover = null;
         for (Conta c : listaContas){
@@ -273,29 +291,21 @@ public class Transferir extends javax.swing.JFrame {
     }//GEN-LAST:event_cxValorActionPerformed
 
     private void btnTransferirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransferirActionPerformed
-        try {
-            int idConta = Integer.parseInt(this.cxIDConta.getText());
-            int agencia = Integer.parseInt(this.cxAgencia.getText());
-            int numeroConta = Integer.parseInt(this.cxNumeroConta.getText());
-            double valorTransferencia = Double.parseDouble(this.cxValor.getText());
-            
-            Conta contaDestino = autenticarConta(idConta, agencia, numeroConta);
-            valorTransferencia = autenticarTransferencia(valorTransferencia);
-            
-            if (contaDestino != null && valorTransferencia > 0){
-                listaContas.remove(contaDestino);
-                contaDestino = contaSelecionada.transferir(valorTransferencia, contaDestino);
-                listaContas.add(contaDestino);
-                contaSelecionada.setRegistrarExtrato(valorTransferencia, "transferência enviada", contaSelecionada);
-                contaDestino.setRegistrarExtrato(valorTransferencia, "transferência recebida", contaDestino);
-            }
-            else if(contaDestino == null)
-                JOptionPane.showMessageDialog(null, "Desculpe, não foi possível depositar! Conta não encontrada.");
-            else
-                JOptionPane.showMessageDialog(null, "Desculpe, não foi possível depositar! Valor insuficiente para operação.");
-        } catch (ParseException ex) {
-            Logger.getLogger(Transferir.class.getName()).log(Level.SEVERE, null, ex);
+        int idConta = Integer.parseInt(this.cxIDConta.getText());
+        int agencia = Integer.parseInt(this.cxAgencia.getText());
+        int numeroConta = Integer.parseInt(this.cxNumeroConta.getText());
+        double valorTransferencia = Double.parseDouble(this.cxValor.getText());
+        Conta contaDestino = autenticarConta(idConta, agencia, numeroConta);
+        valorTransferencia = autenticarTransferencia(valorTransferencia);
+        if (contaDestino != null && valorTransferencia > 0){
+            listaContas.remove(contaDestino);
+            contaDestino = contaSelecionada.transferir(valorTransferencia, contaDestino);
+            listaContas.add(contaDestino);
         }
+        else if(contaDestino == null)
+            JOptionPane.showMessageDialog(null, "Desculpe, não foi possível depositar! Conta não encontrada.");
+        else
+            JOptionPane.showMessageDialog(null, "Desculpe, não foi possível depositar! Valor insuficiente para operação.");
             
     }//GEN-LAST:event_btnTransferirActionPerformed
 

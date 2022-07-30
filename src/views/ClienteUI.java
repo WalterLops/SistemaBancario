@@ -17,7 +17,8 @@ import views.cliente.DadosCliente;
 import views.cliente.ValidarConta;
 
 /**
- *
+ * Interface do cliente
+ * 
  * @author Walter
  */
 public class ClienteUI extends javax.swing.JFrame {
@@ -44,6 +45,13 @@ public class ClienteUI extends javax.swing.JFrame {
         return contasCliente;
     }
 
+    /**
+     * Este metodo presquisa e adiciona a <code> List &lt;Conta&gt;  contasCliente </code> 
+     * as contas associadas ao cliente para as operacoes da interface.
+     * 
+     * @param contasAssociadas
+     * @throws ParseException 
+     */
     public void setContasCliente(List<Integer> contasAssociadas) throws ParseException {
         String baseContas = "./src/baseDeDados/listaContas.json";
         List<Conta> listaContas = Leitura.lerContas(baseContas);

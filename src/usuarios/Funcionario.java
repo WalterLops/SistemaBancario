@@ -8,34 +8,26 @@ import contas.Conta;
 import contas.ContaCorrente;
 import contas.ContaPoupanca;
 import contas.ContaSalario;
-import interfaces_e_Login.InterfaceFuncionario;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author Walter
  */
-public class Funcionario implements InterfaceFuncionario {
-    
-    private String id; 
-    private String senha; 
+public class Funcionario {
+
+    private String id;
+    private String senha;
     private String nome;
     private String endereco;
     private String telefone;
+    private String dataAdmissao;
+    private String dataDemissao;
     private final List<Integer> contasAssociadas = new ArrayList<>();
-    private List<String> extratos = new ArrayList<>();
-    private Date dataAdmissao;
-    private Date dataDemissao;
-    public static int numeroFuncionarios;
-    protected final Scanner sc = new Scanner(System.in);
-    protected final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-    public Funcionario(Date dataAdmissao, Date dataDemissao, String id, String senha, String nome, String endereco, String telefone) {
+    public Funcionario(String dataAdmissao, String dataDemissao, String id, String senha, String nome, String endereco, String telefone) {
         this.id = id;
         this.senha = senha;
         this.nome = nome;
@@ -45,8 +37,6 @@ public class Funcionario implements InterfaceFuncionario {
         this.dataDemissao = dataDemissao;
     }
 
-    
-    
     public String getId() {
         return id;
     }
@@ -95,41 +85,25 @@ public class Funcionario implements InterfaceFuncionario {
         this.contasAssociadas.add(contasAssociadas);
     }
 
-    public List<String> getExtratos() {
-        return extratos;
-    }
-
-    public void setExtratos(String extratos) {
-        this.extratos.add(extratos);
-    }
-
     public String getDataAdmissao() {
-        if (dataAdmissao != null) {
-            return sdf.format(dataAdmissao);
-        } else {
-            return "null";
-        }
+        return dataAdmissao;
     }
 
-    public void setDataAdmissao(Date dataAdmissao) {
+    public void setDataAdmissao(String dataAdmissao) {
         this.dataAdmissao = dataAdmissao;
     }
 
     public String getDataDemissao() {
-        if (dataDemissao != null) {
-            return sdf.format(dataDemissao);
-        } else {
-            return "null";
-        }
+        return dataDemissao;
     }
 
-    public void setDataDemissao(Date dataDemissao) {
+    public void setDataDemissao(String dataDemissao) {
         this.dataDemissao = dataDemissao;
     }
-    
-    public boolean setRemoverIdConta(int id){
-        for (Integer c : contasAssociadas){
-            if (c == id){
+
+    public boolean setRemoverIdConta(int id) {
+        for (Integer c : contasAssociadas) {
+            if (c == id) {
                 contasAssociadas.remove(c);
                 return true;
             }
@@ -137,41 +111,65 @@ public class Funcionario implements InterfaceFuncionario {
         return false;
     }
 
-    //----------Definição dos métodos do funcionário-----------
+    /**
+     * 
+     * @return todas as informacoes desse objeto.
+     */
     @Override
     public String toString() {
-        String msg;
-        if (dataDemissao == null) {
-            
+        if ("null".equals(dataDemissao)) {
+
             return "\n===============================================\n"
-             + "ID: " + getId()
-             + "\nNome: " + getNome()
-             + "\nSenha: " + getSenha()
-             + "\nEndereco: " + getEndereco()
-             + "\nTelefone: " + getTelefone()
-             + "\nContasAssociadas: " + getsetIdConta()
-             + "\nData de admissao: " + getDataAdmissao()
-             +"\n===============================================\n";
+                    + "ID: " + getId()
+                    + "\nNome: " + getNome()
+                    + "\nSenha: " + getSenha()
+                    + "\nEndereco: " + getEndereco()
+                    + "\nTelefone: " + getTelefone()
+                    + "\nContasAssociadas: " + getsetIdConta()
+                    + "\nData de admissao: " + getDataAdmissao()
+                    + "\n===============================================\n";
         }
         return "\n===============================================\n"
-             + "ID: " + getId()
-             + "\nNome: " + getNome()
-             + "\nSenha: " + getSenha()
-             + "\nEndereco: " + getEndereco()
-             + "\nTelefone: " + getTelefone()
-             + "\nContasAssociadas: " + getsetIdConta()
-             + "\nData de admissao: " + getDataAdmissao()
-             + "\nData de demissao: " + getDataDemissao()
-             +"\n===============================================\n";
+                + "ID: " + getId()
+                + "\nNome: " + getNome()
+                + "\nSenha: " + getSenha()
+                + "\nEndereco: " + getEndereco()
+                + "\nTelefone: " + getTelefone()
+                + "\nContasAssociadas: " + getsetIdConta()
+                + "\nData de admissao: " + getDataAdmissao()
+                + "\nData de demissao: " + getDataDemissao()
+                + "\n===============================================\n";
     }
 
-    @Override
+    /**
+     * Altera a senha de acesso
+     * 
+     * @param senha 
+     */
     public void alterarSenhaAcesso(String senha) {
         setSenha(senha);
         JOptionPane.showMessageDialog(null, "Senha alterada com sucesso!");
     }
-
-    @Override
+    
+    /**
+     * adiciona a conta com base no codigo passado para o parametro 
+     * <code>tipoConta</code>: 
+     * <ul>
+     * <li> 201 = ContaPoupanca;
+     * <li> 205 = ContaSalario;
+     * <li> 209 = ContaCorrente.
+     * </ul>
+     * 
+     * @param tipoConta
+     * @param idConta
+     * @param agencia
+     * @param numeroConta
+     * @param saldo
+     * @param limiteSaque
+     * @param taxaManutenção
+     * @param CNPJ
+     * @return conta criada com base no codigo fornecido.
+     */
     public Conta adicionarConta(int tipoConta, int idConta, int agencia,
             int numeroConta, double saldo, double limiteSaque,
             double taxaManutenção, String CNPJ) {
@@ -191,7 +189,17 @@ public class Funcionario implements InterfaceFuncionario {
         return null;
     }
 
-    @Override
+    /**
+     * Remove a conta cujo os dados foram passados por parametros. E retorna uma
+     * lista atualizada. Se a conta nao for encontrada a lista e retornada da 
+     * mesama maneira que foi recebida(sem nehuma alteracao).
+     * 
+     * @param idConta
+     * @param numeroConta
+     * @param agencia
+     * @param listaConta
+     * @return List &lt;Conta&gt;
+     */
     public List<Conta> removerConta(int idConta, int numeroConta, int agencia, List<Conta> listaConta) {
         int cont = listaConta.size();
         for (int i = 0; i < 2; i++) {
@@ -209,16 +217,12 @@ public class Funcionario implements InterfaceFuncionario {
         return listaConta;
     }
 
-    @Override
-    public void acessarInfoCliente(String idCliente, List<Cliente> listaCleinte) {
-        for (Cliente cliente : listaCleinte) {
-            if (idCliente.equals(cliente.getId())) {
-                System.out.println(cliente.toString());
-            }
-        }
-    }
-
-    @Override
+    /**
+     * Altera os dados do cliente.
+     * 
+     * @param cliente
+     * @return objeto do tipo Cliente com as informacoes alteradas.
+     */
     public Cliente alterarCliente(Cliente cliente) {
 
         Object[] itens = {"1 - alterar senha", "2 - alterar nome", "3 - alterar endereco", "4 - alterar telefone"};

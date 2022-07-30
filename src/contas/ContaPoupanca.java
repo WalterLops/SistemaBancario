@@ -7,7 +7,8 @@ package contas;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * Classe que herda da classe conta.
+ * 
  * @author Walter
  */
 public class ContaPoupanca extends Conta {
@@ -25,7 +26,14 @@ public class ContaPoupanca extends Conta {
     public void setLimiteSaque(double limiteSaque) {
         this.limiteSaque = limiteSaque;
     }
-
+    
+    /**
+     *
+     * @param valorSaque
+     * @return true se o saque foi realizado com sucesso ou false se o saque não
+     * puder ser efetuado. Registra na conta atual o extrato das operacoes
+     * realizadas.
+     */
     @Override
     public boolean sacar(double valorSaque) {
         if (valorSaque <= getSaldo() && limiteSaque <= valorSaque) {
@@ -34,6 +42,9 @@ public class ContaPoupanca extends Conta {
             JOptionPane.showMessageDialog(null, """
                                                 Operação realizada com sucesso. 
                                                 Novo valor da conta: """ + getSaldo());
+            
+            setRegistrarExtrato(valorSaque, "saque");
+            
             return true;
         } else if (limiteSaque > valorSaque) {
             JOptionPane.showMessageDialog(null, "Limite de saque insuficiente para essa operação.");
@@ -45,6 +56,10 @@ public class ContaPoupanca extends Conta {
         return false;
     }
 
+    /**
+     *
+     * @return todas as informacoes da conta.
+     */
     @Override
     public String toString() {
         return super.toString() + "\nlimiteSaque: " + limiteSaque

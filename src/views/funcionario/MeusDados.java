@@ -5,11 +5,17 @@
 package views.funcionario;
 
 /**
- *
+ * Mostra as informacoes de um usuario
+ * 
  * @author Walter
  */
 public class MeusDados extends javax.swing.JInternalFrame {
 
+    /**
+     * Metodo para mostrar as informacoes de um usuario
+     * 
+     * @param msg 
+     */
     public void setShowMeusDados(String msg){
         this.ShowMeusDados.setText(msg);
     }

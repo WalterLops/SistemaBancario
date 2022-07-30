@@ -7,16 +7,14 @@ package views.administrador;
 import agencia.Agencia;
 import contas.Conta;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import jsonOperations.Escrita;
 import jsonOperations.Leitura;
-import org.json.simple.parser.ParseException;
 import usuarios.Administrador;
 
 /**
- *
+ * Adiciona uma nova agencia
+ * 
  * @author Walter
  */
 public class AdicionarAgencia extends javax.swing.JInternalFrame {
@@ -48,8 +46,6 @@ public class AdicionarAgencia extends javax.swing.JInternalFrame {
     public void setBaseContas(String baseContas) {
         this.baseContas = baseContas;
     }
-    
-    
     
     /**
      * Creates new form InfoAgenciaFA
@@ -149,17 +145,16 @@ public class AdicionarAgencia extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+        
         String nome = this.cxNome.getText();
         int codigo = Integer.parseInt(this.cxCodigo.getText());
         String cidade = this.cxCidade.getText();
         String endereco = this.cxEndereco.getText();
         List<Agencia> listaaAgencias = Leitura.lerAgencias(baseAgencias);
         List<Conta> listaContas = Leitura.lerContas(baseContas);
-        listaaAgencias.add(administradorLogado.adicionarAgencia(nome, codigo, cidade, endereco));
-        Escrita.escreverAgencia(listaaAgencias, listaContas, baseAgencias);
+        listaaAgencias.add(administradorLogado.adicionarAgencia(nome, codigo, cidade, endereco)); // adicionando nova agencia
+        Escrita.escreverAgencia(listaaAgencias, listaContas, baseAgencias); // salvando alteracoes
         JOptionPane.showMessageDialog(null, "Agencia adicionada com sucesso!");
-        
-        
         
     }//GEN-LAST:event_btnCadastrarActionPerformed
 

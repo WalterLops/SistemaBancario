@@ -4,21 +4,16 @@
  */
 package views.administrador;
 
-import java.util.AbstractList;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import jsonOperations.Escrita;
 import jsonOperations.Leitura;
-import org.json.simple.parser.ParseException;
 import usuarios.Administrador;
 import usuarios.Cliente;
-import views.ApenasNumeros;
 
 /**
- *
+ * Classe responsavel por adiconar clientes
+ * 
  * @author Walter
  */
 public class AdicionarCliente extends javax.swing.JInternalFrame {
@@ -43,7 +38,9 @@ public class AdicionarCliente extends javax.swing.JInternalFrame {
     }
     
     
-
+    /**
+     * limpa todos os campos de texto
+     */
     private void limparCX() {
         this.cxID.setText("");
         this.cxSenha.setText("");
@@ -226,12 +223,12 @@ public class AdicionarCliente extends javax.swing.JInternalFrame {
         String endereco = this.cxEndereco.getText();
         String telefone = this.cxTelefone.getText();
         String[] sContas = this.cxContas.getText().split(",");
-        Cliente novoCliente = administradorLogado.adicionarCliente(id, senha, nome, endereco, telefone);
+        Cliente novoCliente = administradorLogado.adicionarCliente(id, senha, nome, endereco, telefone); // instanciado o novo cliente
         for (String c : sContas) {
-            novoCliente.setIdConta((Integer.parseInt(c.replaceAll("[^0-9]", ""))));
+            novoCliente.setIdConta((Integer.parseInt(c.replaceAll("[^0-9]", "")))); // recuperando contas associadas
         }
-        listaCliente.add(novoCliente);
-        Escrita.escreverCliente(listaCliente, baseClientes);
+        listaCliente.add(novoCliente); //atualizando a lista 
+        Escrita.escreverCliente(listaCliente, baseClientes); // salvando as alteracoes
         JOptionPane.showMessageDialog(null, "Cliente adicionado com sucesso!");
         limparCX();
     }//GEN-LAST:event_btnAddActionPerformed

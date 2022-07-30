@@ -6,17 +6,16 @@ package views;
 
 import java.awt.event.KeyEvent;
 import views.login.ExemploUsuarios;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import org.json.simple.parser.ParseException;
 import sistema.Login;
 import usuarios.Administrador;
 import usuarios.Cliente;
 import usuarios.Funcionario;
 
 /**
- *
+ * Classe interface grafica responsavel por selecionar e logar um usuario. 
+ * Utiliza a classe Login para validar as informacoes de um usuario.
+ * 
  * @author Walter
  */
 public class LoginUI extends javax.swing.JFrame {
@@ -81,13 +80,13 @@ public class LoginUI extends javax.swing.JFrame {
         this.baseAgencias = baseAgencias;
     }
     
+    /**
+     * Metodo responsavel por fazer o login do usuario com base nas informacoes 
+     * retornadas pela classe Login.
+     */
     private void entrar(){
         int response = 0;
-        try {
-            response = login.Logar(Usuario.getText(), Senha.getText());
-        } catch (ParseException ex) {
-            Logger.getLogger(LoginUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        response = login.Logar(Usuario.getText(), Senha.getText());
         switch (response) {
             case 1 -> { // Cliente fez login
                 usuarioLogado = login.getUsuarioLogado();

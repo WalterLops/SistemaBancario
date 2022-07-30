@@ -15,7 +15,8 @@ import views.conta.Extrato;
 import views.conta.Sacar;
 
 /**
- *
+ * Interface da conta bancaria
+ * 
  * @author Walter
  */
 public class ContaUI extends javax.swing.JFrame {
@@ -97,8 +98,29 @@ public class ContaUI extends javax.swing.JFrame {
     public void setAdministradorLogado(Administrador administradorLogado) {
         this.administradorLogado = administradorLogado;
     }
-    
-    
+        
+    /**
+     * Metodo reponsavel por processar o extrato bancario da conta selecionada
+     * para interagir com essa interface.
+     * 
+     * @param retornarLinhas
+     * @return String com os extratos se o parametro retornarLinhas == false ou 
+     * se o se o parametro retornarLinhas == true return String com o numero 
+     * de linhas a ser exibido no text area da nova janela.
+     * 
+     */
+    private String setExtrato(boolean retornarLinhas) {
+        StringBuilder sb = new StringBuilder();
+
+        if (retornarLinhas == false) {
+            for (String extrato : contaSelecionada.getExtratos()) {
+                sb.append(extrato);
+            }
+            return sb.toString();
+        } else {
+            return Integer.toString(contaSelecionada.getExtratos().size() + 20);
+        }
+    }
 
     /**
      * Creates new form ContaCorrenteUI
@@ -287,44 +309,6 @@ public class ContaUI extends javax.swing.JFrame {
         show.setVisible(true);
     }//GEN-LAST:event_clickTransferir
 
-    private String setExtrato(boolean nlinhas){
-        StringBuilder sb = new StringBuilder();
-        
-        int index = 0;
-        if (clienteLogado != null){
-            index = 1;
-        }else if(funcionarioLogado != null){
-            index = 2;
-        }else if (administradorLogado != null){
-            index = 3;
-        }
-        
-        if (nlinhas == false){
-        if (index == 1){
-            for (String e : clienteLogado.getExtratos())
-                sb.append(e);
-        }else if (index == 2){
-            for (String e : funcionarioLogado.getExtratos())
-                sb.append(e);
-        }else if (index == 3){
-            for (String e : administradorLogado.getExtratos())
-                sb.append(e);
-        }
-        
-        sb.append(contaSelecionada.toString());
-        return sb.toString();
-        }
-        
-        if (index == 1){
-                return Integer.toString(clienteLogado.getExtratos().size()+70);
-        }else if (index == 2){
-                return Integer.toString(funcionarioLogado.getExtratos().size()+70);
-        }else if (index == 3){
-                return Integer.toString(administradorLogado.getExtratos().size()+70);
-        }
-        return "0";
-    }
-    
     private void clickExtrato(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickExtrato
         Extrato show = new Extrato();
         show.setContaUI(this);
@@ -358,7 +342,6 @@ public class ContaUI extends javax.swing.JFrame {
 
     private void telaInicialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_telaInicialActionPerformed
 
-        
     }//GEN-LAST:event_telaInicialActionPerformed
 
     /**

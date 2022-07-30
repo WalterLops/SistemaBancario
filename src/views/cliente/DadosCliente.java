@@ -7,7 +7,8 @@ package views.cliente;
 import usuarios.Cliente;
 
 /**
- *
+ * Exibe as informacoes do cliente
+ * 
  * @author Walter
  */
 public class DadosCliente extends javax.swing.JInternalFrame {
@@ -29,6 +30,11 @@ public class DadosCliente extends javax.swing.JInternalFrame {
         this.clienteLogado = clienteLogado;
     }
     
+    /**
+     * Exibe as informacoes do cliente
+     * 
+     * @param clienteLogado 
+     */
     public void setDadosCliente(Cliente clienteLogado){
         this.ShowDados.setText(clienteLogado.toString());
     }

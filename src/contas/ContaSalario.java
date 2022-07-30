@@ -5,7 +5,8 @@
 package contas;
 
 /**
- *
+ * Classe que herda da classe conta.
+ * 
  * @author Walter
  */
 public class ContaSalario extends Conta {
@@ -24,7 +25,11 @@ public class ContaSalario extends Conta {
     public void setCnpjEmpresa(String  cnpjEmpresa) {
         this.cnpjEmpresa = cnpjEmpresa;
     }
-
+    
+    /**
+     *
+     * @return todas as informacoes da conta.
+     */
     @Override
     public String toString() {
         return super.toString() + "\n cnpjEmpresa=" + cnpjEmpresa

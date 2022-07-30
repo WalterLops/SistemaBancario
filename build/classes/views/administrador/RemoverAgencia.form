@@ -59,7 +59,7 @@
           </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="293" max="-2" attributes="0"/>
-              <Component id="btnCadastrar" min="-2" max="-2" attributes="0"/>
+              <Component id="btnRemover" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -93,7 +93,7 @@
                   <Component id="cxMontante" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
-              <Component id="btnCadastrar" min="-2" max="-2" attributes="0"/>
+              <Component id="btnRemover" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="57" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -140,12 +140,12 @@
         <Property name="editable" type="boolean" value="false"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="btnCadastrar">
+    <Component class="javax.swing.JButton" name="btnRemover">
       <Properties>
         <Property name="text" type="java.lang.String" value="Remover"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCadastrarActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRemoverActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel5">

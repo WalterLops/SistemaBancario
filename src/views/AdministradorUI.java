@@ -32,7 +32,8 @@ import views.funcionario.MeusDados;
 import views.funcionario.RemoverConta;
 
 /**
- *
+ * Interface do administrador.
+ * 
  * @author Walter
  */
 public class AdministradorUI extends javax.swing.JFrame {
@@ -111,24 +112,50 @@ public class AdministradorUI extends javax.swing.JFrame {
         this.AreaDeTrabalho.add(infoFA);
     }
     
+    /**
+     * Adiciona ao painel interno uma janela do tipo jInternalFrame AlterarInfoFA
+     * 
+     * @param alterarInfoFA 
+     */
     public void setAlterarInfoFA(AlterarInfoFA alterarInfoFA){
         this.AreaDeTrabalho.add(alterarInfoFA);
     }
     
+    /**
+     * Remove todas as janelas jInternalFrame do painel interno e adiciona 
+     * uma janela do tipo RemoverCliente
+     * 
+     * @param removerCliente 
+     */
     public void setRemoverCliente(RemoverCliente removerCliente){
         this.AreaDeTrabalho.removeAll();
         this.AreaDeTrabalho.add(removerCliente);
     }
     
+    /**
+     * Adiciona ao painel interno uma janela do tipo RemoverFA
+     * 
+     * @param removerFA 
+     */
     public void setRemoverFA(RemoverFA removerFA){
         this.AreaDeTrabalho.add(removerFA);
     }
     
+    /**
+     * Adiciona ao painel interno uma janela do tipo AlterarConta
+     * 
+     * @param alterarConta 
+     */
     public void setAlterarConta(AlterarConta alterarConta){
         this.AreaDeTrabalho.removeAll();
         this.AreaDeTrabalho.add(alterarConta);
     }
     
+    /**
+     * Remove todas as janelas jInternalFrame do painel interno
+     * 
+     * @param removerAgencia 
+     */
     public void setRemoverAgencia(RemoverAgencia removerAgencia){
         this.AreaDeTrabalho.add(removerAgencia);
     }
@@ -179,7 +206,7 @@ public class AdministradorUI extends javax.swing.JFrame {
         jSeparator8 = new javax.swing.JPopupMenu.Separator();
         RemoverCliente = new javax.swing.JMenuItem();
         mFuncionarios = new javax.swing.JMenu();
-        jMenuItem10 = new javax.swing.JMenuItem();
+        funcionariosCadastrados = new javax.swing.JMenuItem();
         jSeparator17 = new javax.swing.JPopupMenu.Separator();
         addFuncionario = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
@@ -189,7 +216,7 @@ public class AdministradorUI extends javax.swing.JFrame {
         jSeparator11 = new javax.swing.JPopupMenu.Separator();
         removerFuncionario = new javax.swing.JMenuItem();
         mAdministradores = new javax.swing.JMenu();
-        jMenuItem11 = new javax.swing.JMenuItem();
+        administradoresCadastrados = new javax.swing.JMenuItem();
         jSeparator18 = new javax.swing.JPopupMenu.Separator();
         addAdmin = new javax.swing.JMenuItem();
         jSeparator12 = new javax.swing.JPopupMenu.Separator();
@@ -398,13 +425,13 @@ public class AdministradorUI extends javax.swing.JFrame {
 
         mFuncionarios.setText("Funcionários");
 
-        jMenuItem10.setText("Funcionarios cadastrados");
-        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+        funcionariosCadastrados.setText("Funcionarios cadastrados");
+        funcionariosCadastrados.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem10ActionPerformed(evt);
+                funcionariosCadastradosActionPerformed(evt);
             }
         });
-        mFuncionarios.add(jMenuItem10);
+        mFuncionarios.add(funcionariosCadastrados);
         mFuncionarios.add(jSeparator17);
 
         addFuncionario.setText("Adicionar Funcionário");
@@ -446,13 +473,13 @@ public class AdministradorUI extends javax.swing.JFrame {
 
         mAdministradores.setText("Administradores");
 
-        jMenuItem11.setText("Administradores cadastrados");
-        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
+        administradoresCadastrados.setText("Administradores cadastrados");
+        administradoresCadastrados.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem11ActionPerformed(evt);
+                administradoresCadastradosActionPerformed(evt);
             }
         });
-        mAdministradores.add(jMenuItem11);
+        mAdministradores.add(administradoresCadastrados);
         mAdministradores.add(jSeparator18);
 
         addAdmin.setText("Adicionar administrador");
@@ -547,10 +574,10 @@ public class AdministradorUI extends javax.swing.JFrame {
     }//GEN-LAST:event_MeusDadosMouseClicked
 
     private void MeusDadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MeusDadosActionPerformed
-        MeusDados show = new MeusDados();
-        show.setShowMeusDados(administradorLogado.toString());
-        this.AreaDeTrabalho.removeAll();
-        this.AreaDeTrabalho.add(show);
+        MeusDados show = new MeusDados(); // nova interna janela a ser inicializada
+        show.setShowMeusDados(administradorLogado.toString()); // metodo mostrar informacoes em text area da nova janela
+        this.AreaDeTrabalho.removeAll(); 
+        this.AreaDeTrabalho.add(show); // Adiciona a nova janela ao painel dessa janela
         show.setVisible(true);
     }//GEN-LAST:event_MeusDadosActionPerformed
 
@@ -570,10 +597,10 @@ public class AdministradorUI extends javax.swing.JFrame {
 
     private void contasCadastradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contasCadastradasActionPerformed
         List<Conta> listaContas = Leitura.lerContas(baseContas);
-        StringBuilder sb = new StringBuilder();
-        int linhas = 7;
+        StringBuilder sb = new StringBuilder(); // stringBuilder para armazenar as informacoes da conta
+        int linhas = 7; // quantidade de linhas a ser exibida no text area da nova janela
         for (Conta c : listaContas) {
-            sb.append(c.infoConta());
+            sb.append(c.toString());
             linhas += linhas;
         }
         ContasCadastradas show = new ContasCadastradas();
@@ -604,8 +631,8 @@ public class AdministradorUI extends javax.swing.JFrame {
 
     private void clientesCadastradosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientesCadastradosActionPerformed
         List<Cliente> listaClientes = Leitura.lerClientes(baseClientes);
-        StringBuilder sb = new StringBuilder();
-        int linhas = 7;
+        StringBuilder sb = new StringBuilder(); // stringBuilder para armazenar as informacoes da Cliente
+        int linhas = 7; // quantidade de linhas a ser exibida no text area da nova janela
         for (Cliente c : listaClientes) {
             sb.append(c.toString());
             linhas += linhas;
@@ -764,11 +791,11 @@ public class AdministradorUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_visualizarAgenciaActionPerformed
 
-    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+    private void funcionariosCadastradosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_funcionariosCadastradosActionPerformed
         
         Funcionario[] listaFuncionarios = Leitura.lerFuncionarios(baseFuncionarios);
-        StringBuilder sb = new StringBuilder();
-        int linhas = 7;
+        StringBuilder sb = new StringBuilder(); // stringBuilder para armazenar as informacoes da Funcionario
+        int linhas = 7; // quantidade de linhas a ser exibida no text area da nova janela
         for (Funcionario f : listaFuncionarios) {
             sb.append(f.toString());
             linhas += linhas;
@@ -779,13 +806,13 @@ public class AdministradorUI extends javax.swing.JFrame {
         this.AreaDeTrabalho.add(show);
         show.setVisible(true);
         
-    }//GEN-LAST:event_jMenuItem10ActionPerformed
+    }//GEN-LAST:event_funcionariosCadastradosActionPerformed
 
-    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
+    private void administradoresCadastradosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_administradoresCadastradosActionPerformed
         
         Administrador[] listaAdministradores = Leitura.lerAdministradores(baseAdministradores);
-        StringBuilder sb = new StringBuilder();
-        int linhas = 7;
+        StringBuilder sb = new StringBuilder(); // stringBuilder para armazenar as informacoes da administrador
+        int linhas = 7; // quantidade de linhas a ser exibida no text area da nova janela
         for (Administrador a : listaAdministradores) {
             sb.append(a.toString());
             linhas += linhas;
@@ -796,7 +823,7 @@ public class AdministradorUI extends javax.swing.JFrame {
         this.AreaDeTrabalho.add(show);
         show.setVisible(true);
         
-    }//GEN-LAST:event_jMenuItem11ActionPerformed
+    }//GEN-LAST:event_administradoresCadastradosActionPerformed
 
     private void alterarContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarContaActionPerformed
         
@@ -883,17 +910,17 @@ public class AdministradorUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem addAgencia;
     private javax.swing.JMenuItem addFuncionario;
     private javax.swing.JMenuItem adicionarConta;
+    private javax.swing.JMenuItem administradoresCadastrados;
     private javax.swing.JMenuItem alterarConta;
     private javax.swing.JMenuItem alterarInfoAdmin;
     private javax.swing.JMenuItem alterarInfoCliente;
     private javax.swing.JMenuItem alterarInfoFuncionario;
     private javax.swing.JMenuItem clientesCadastrados;
     private javax.swing.JMenuItem contasCadastradas;
+    private javax.swing.JMenuItem funcionariosCadastrados;
     private javax.swing.JMenuItem irParaMinhaConta;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem10;
-    private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator10;

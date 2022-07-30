@@ -8,10 +8,7 @@ import views.FA.InfoFA;
 import views.FA.AlterarInfoFA;
 import views.FA.RemoverFA;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import jsonOperations.Leitura;
-import org.json.simple.parser.ParseException;
 import usuarios.Administrador;
 import usuarios.Cliente;
 import usuarios.Funcionario;
@@ -20,7 +17,9 @@ import views.funcionario.AlterarInfoCliente;
 import views.funcionario.InfoCliente;
 
 /**
- *
+ * Classe responsavel por validar osbjetos do tipo de: Cliente, Funcionario, 
+ * Administrador. E repassa um desses objetos para as interfaces posteriores.
+ * 
  * @author Walter
  */
 public class ValidarUsuariosUI extends javax.swing.JFrame {
@@ -176,7 +175,10 @@ public class ValidarUsuariosUI extends javax.swing.JFrame {
     }
     
     
-    
+    /**
+     * Metodo responsavel por pesquisar e definir objeto clienteSelecionado para as 
+     * operacoes da interface e interfaces posteriores.
+     */
     public void setValidarCliente() {
         String id = this.cxID.getText();
         List<Cliente> listaCliente = Leitura.lerClientes(baseClientes);
@@ -187,6 +189,10 @@ public class ValidarUsuariosUI extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Metodo responsavel por pesquisar e definir objeto funcionarioSelecionado para as 
+     * operacoes da interface e interfaces posteriores.
+     */
     public void setValidarFuncionario() {
         String id = this.cxID.getText();
         Funcionario [] listaFuncionarios = Leitura.lerFuncionarios(baseFuncionarios);
@@ -197,6 +203,10 @@ public class ValidarUsuariosUI extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Metodo responsavel por pesquisar e definir objeto administradorSelecionado para as 
+     * operacoes da interface e interfaces posteriores.
+     */
      public void setValidarAdministrador(){
          String id = this.cxID.getText();
          Administrador [] listaAdministradores = Leitura.lerAdministradores(baseAdministradores);
@@ -207,10 +217,31 @@ public class ValidarUsuariosUI extends javax.swing.JFrame {
          }
      }
     
+     /**
+      * Metodo do botao Ir. Seleciona uma das janelas em que for diferente de null: 
+      * <ul>
+      * <li> infoCliente
+      * <li> funcionarioUI
+      * <li> administradorUI
+      * <li> alterarInfoCliente
+      * <li> removerCliente
+      * <li> infoFA
+      * <li> administradorUI
+      * <li> removerFA
+      * </ul>
+      * <br>
+      * <ul>
+      * <li> Com base nos objetos em que for diferente de null: 
+      * <li> clienteSelecionado;
+      * <li> funcionarioLogado;
+      * <li> administradorSelecionado; 
+      * <li> administradorLogado
+      * </ul>
+      */
     public void prosseguir(){
         setValidarCliente();
         
-        if (infoCliente != null){
+        if (infoCliente != null){ // visualizar informacoes do cliente
             infoCliente.setClienteSelecionado(clienteSelecionado);
             infoCliente.setVisible(true);
             
@@ -228,7 +259,7 @@ public class ValidarUsuariosUI extends javax.swing.JFrame {
             
             this.dispose();
         }
-        else if (alterarInfoCliente != null){
+        else if (alterarInfoCliente != null){ // alterar informacoes do cliente a partir do funcionario
             
             if (funcionarioLogado != null){
                 alterarInfoCliente.setFuncionarioLogado(funcionarioLogado);
@@ -240,7 +271,7 @@ public class ValidarUsuariosUI extends javax.swing.JFrame {
                 funcionarioUI.setAlterarCliente(alterarInfoCliente);
             }
 
-            if (administradorLogado != null){
+            if (administradorLogado != null){ // alterar informacoes do cliente a partir do administrador
                 alterarInfoCliente.setFuncionarioLogado(administradorLogado);
                 alterarInfoCliente.setClienteSelecionado(clienteSelecionado);
                 alterarInfoCliente.setBaseClientes(baseClientes);
@@ -252,7 +283,7 @@ public class ValidarUsuariosUI extends javax.swing.JFrame {
             
             this.dispose();
         }
-        else if (removerCliente != null){
+        else if (removerCliente != null){ // remover cliente a partir do funcionario
             removerCliente.setClienteSelecionado(clienteSelecionado);
             removerCliente.setInfoCliente();
             removerCliente.setBaseClientes(baseClientes);
@@ -261,10 +292,10 @@ public class ValidarUsuariosUI extends javax.swing.JFrame {
             administradorUI.setRemoverCliente(removerCliente);
             this.dispose();
         }
-        else if (infoFA != null){
+        else if (infoFA != null){ // mostra as informacoes do funcionario ou cliente
             setValidarFuncionario();
             setValidarAdministrador();
-            if (funcionarioSelecionado != null){
+            if (funcionarioSelecionado != null){ // mostra as informacoes do funcionario
                 infoFA.setFuncionarioSelecionado(funcionarioSelecionado);
                 infoFA.setShowDados();
                 infoFA.setVisible(true);
@@ -272,7 +303,7 @@ public class ValidarUsuariosUI extends javax.swing.JFrame {
                 administradorUI.setInfoFA(infoFA);
                 this.dispose();
             }
-            else if(administradorSelecionado != null){
+            else if(administradorSelecionado != null){ // mostra as informacoes administrador
                 infoFA.setFuncionarioSelecionado(administradorSelecionado);
                 infoFA.setShowDados();
                 infoFA.setVisible(true);
@@ -281,10 +312,10 @@ public class ValidarUsuariosUI extends javax.swing.JFrame {
                 this.dispose();
             }
         }
-        else if (alterarInfoFA != null){
+        else if (alterarInfoFA != null){ // altera as informacoes do fucionario ou admistrador.
             setValidarFuncionario();
             setValidarAdministrador();
-            if (funcionarioSelecionado != null){
+            if (funcionarioSelecionado != null){ // altera as informacoes do fucionario.
                 alterarInfoFA.setFuncionarioSelecionado(funcionarioSelecionado);
                 alterarInfoFA.setAdministradorLogado(administradorLogado);
                 alterarInfoFA.setShowDados();
@@ -293,7 +324,7 @@ public class ValidarUsuariosUI extends javax.swing.JFrame {
                 administradorUI.setAlterarInfoFA(alterarInfoFA);
                 this.dispose();
             }
-            else if(administradorSelecionado != null){
+            else if(administradorSelecionado != null){ // altera as informacoes do admistrador.
                 alterarInfoFA.setAdministradorSelecionado(administradorSelecionado);
                 alterarInfoFA.setAdministradorLogado(administradorLogado);
                 alterarInfoFA.setShowDados();
@@ -303,10 +334,10 @@ public class ValidarUsuariosUI extends javax.swing.JFrame {
                 this.dispose();
             }
         }
-        else if (removerFA != null){
+        else if (removerFA != null){ // remove fucionario ou admistrador.
             setValidarFuncionario();
             setValidarAdministrador();
-            if (funcionarioSelecionado != null){
+            if (funcionarioSelecionado != null){ // remove fucionario.
                 removerFA.setFuncionarioSelecionado(funcionarioSelecionado);
                 removerFA.setAdministradorLogado(administradorLogado);
                 removerFA.setShowDados();
@@ -315,7 +346,7 @@ public class ValidarUsuariosUI extends javax.swing.JFrame {
                 administradorUI.setRemoverFA(removerFA);
                 this.dispose();
             }
-            else if(administradorSelecionado != null){
+            else if(administradorSelecionado != null){ // remove admistrador.
                 removerFA.setAdministradorSelecionado(administradorSelecionado);
                 removerFA.setAdministradorLogado(administradorLogado);
                 removerFA.setShowDados();

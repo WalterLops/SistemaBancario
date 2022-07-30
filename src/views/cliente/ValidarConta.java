@@ -7,11 +7,8 @@ package views.cliente;
 import contas.Conta;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import jsonOperations.Leitura;
-import org.json.simple.parser.ParseException;
 import usuarios.Administrador;
 import usuarios.Cliente;
 import usuarios.Funcionario;
@@ -22,7 +19,15 @@ import views.FuncionarioUI;
 import views.administrador.AlterarConta;
 
 /**
- *
+ * Faz a pesquisa, validacao e redirecionamento da conta pra outras interfaces 
+ * como:
+ * <ul>
+ * <li> ClienteUI
+ * <li> FuncionarioUI
+ * <li> AdministradorUI
+ * <li> AlterarConta
+ * </ul>
+ * 
  * @author Walter
  */
 public class ValidarConta extends javax.swing.JFrame {
@@ -113,7 +118,14 @@ public class ValidarConta extends javax.swing.JFrame {
     public void setFuncionarioLogado(Funcionario funcionarioLogado) {
         this.funcionarioLogado = funcionarioLogado;
     }
-
+    
+    /**
+     * Metodo responsavel por pesquisar e atribuir um objeto do tipo Conta para
+     * o atributo contaSelecionada.
+     * 
+     * @param numeroConta
+     * @param idConta 
+     */
     private void setPesquisarConta(int numeroConta, int idConta) {
         for (Conta conta : contasCliente) {
             if (conta.getNumeroConta() == numeroConta && conta.getIdConta() == idConta) {
@@ -123,6 +135,11 @@ public class ValidarConta extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Metodo responsavel por preencher a <code> List &lt; Integer &gt; contasAssociadas </code>
+     * 
+     * @param contasAssociadas 
+     */
     public void setContasCliente(List<Integer> contasAssociadas) {
         List<Conta> listaContas = Leitura.lerContas(baseContas);
         for (Integer idConta : contasAssociadas) {
@@ -295,7 +312,7 @@ public class ValidarConta extends javax.swing.JFrame {
         int numeroConta = Integer.parseInt(this.CaixaNumeroConta.getText());
         int idConta = Integer.parseInt(this.CaixaID.getText());
 
-        if (alterarConta != null) {
+        if (alterarConta != null) { // se a janela alterarConta for passada para essa classe
             contasCliente = Leitura.lerContas(baseContas);
             setPesquisarConta(numeroConta, idConta);
             alterarConta.setContaSelecionada(contaSelecionada);
@@ -312,7 +329,7 @@ public class ValidarConta extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Dados incorretos!");
             } else {
                 
-                ContaUI show = new ContaUI();
+                ContaUI show = new ContaUI(); // mundando para a interface conta
                 if (clienteLogado != null){
                     show.setClienteLogado(clienteLogado);
                 }else if(funcionarioLogado != null){
@@ -324,7 +341,7 @@ public class ValidarConta extends javax.swing.JFrame {
                 show.setListaContas(contasCliente);
                 show.setVisible(true);
                 
-                if (clienteUI != null) {
+                if (clienteUI != null) { // ocultando a janela anteriror que for != null
                     show.setClienteUI(clienteUI);
                     clienteUI.setVisible(false);
                 } else if (funcionarioUI != null) {

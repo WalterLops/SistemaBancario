@@ -5,11 +5,20 @@
 package views;
 
 /**
- *
+ * Classe responsavel por exibir as informacoes dos usuarios cadastrados no 
+ * sistema.
+ * 
  * @author Walter
  */
 public class UsuariosCadastrados extends javax.swing.JInternalFrame {
-
+    
+   /**
+    * Exibe no text area interno as informacoes dos usuarios em String.
+    * O parametro linhas e o tamanho da String em linhas a ser exibido.
+    * 
+    * @param msg
+    * @param linhas
+    */
    public void setShowContas(String msg, int linhas){
        this.ShowContas.setRows(linhas);
        this.ShowContas.setText(msg);

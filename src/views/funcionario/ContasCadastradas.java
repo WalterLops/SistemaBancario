@@ -5,11 +5,18 @@
 package views.funcionario;
 
 /**
- *
+ * Mostra as informacoes das contas cadastradas
+ * 
  * @author Walter
  */
 public class ContasCadastradas extends javax.swing.JInternalFrame {
 
+    /**
+     * Metodo para mostar as informacoes das contas cadastradas
+     * 
+     * @param msg
+     * @param linhas 
+     */
     public void setShowContas(String msg, int linhas){
         this.showContas.setRows(linhas);
         this.showContas.setText(msg);

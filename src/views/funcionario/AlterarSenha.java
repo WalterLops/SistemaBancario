@@ -4,9 +4,6 @@
  */
 package views.funcionario;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import jsonOperations.Escrita;
 import jsonOperations.Leitura;
 import org.json.simple.parser.ParseException;
@@ -16,7 +13,8 @@ import views.AdministradorUI;
 import views.FuncionarioUI;
 
 /**
- *
+ * Altera a senha do Funcionario ou Administrador
+ * 
  * @author Walter
  */
 public class AlterarSenha extends javax.swing.JInternalFrame {
@@ -55,8 +53,6 @@ public class AlterarSenha extends javax.swing.JInternalFrame {
     public void setAdministradorUI(AdministradorUI administradorUI) {
         this.administradorUI = administradorUI;
     }
-    
-    
 
     public FuncionarioUI getFuncionarioUI() {
         return funcionarioUI;
@@ -65,8 +61,6 @@ public class AlterarSenha extends javax.swing.JInternalFrame {
     public void setFuncionarioUI(FuncionarioUI funcionarioUI) {
         this.funcionarioUI = funcionarioUI;
     }
-    
-    
 
     public String getBaseFuncionarios() {
         return baseFuncionarios;
@@ -84,7 +78,14 @@ public class AlterarSenha extends javax.swing.JInternalFrame {
         this.funcionarioLogado = funcionarioLogado;
     }
 
-    private void alterarSenhaF(String novaSenha) throws ParseException {
+    /**
+     * Metodo para fazer a alteracao da senha do funcionario. A alteracao e feita
+     * e garavada no arquivo JSON.
+     * 
+     * @param novaSenha
+     * @throws ParseException 
+     */
+    private void alterarSenhaF(String novaSenha) {
 
         listaFuncionarios = Leitura.lerFuncionarios(baseFuncionarios);
         for (int i = 0; i < listaFuncionarios.length; i++) {
@@ -99,7 +100,14 @@ public class AlterarSenha extends javax.swing.JInternalFrame {
         }
     }
     
-    private void alterarSenhaA(String novaSenha) throws ParseException {
+    /**
+     * Metodo para fazer a alteracao da senha do Administrador. A alteracao e feita
+     * e garavada no arquivo JSON.
+     * 
+     * @param novaSenha
+     * @throws ParseException 
+     */
+    private void alterarSenhaA(String novaSenha) {
 
         listaAdministradores = Leitura.lerAdministradores(baseAdministradores);
         for (int i = 0; i < listaAdministradores.length; i++) {
@@ -212,15 +220,11 @@ public class AlterarSenha extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        try {
-            String novaSenha = this.cxSenha.getText();
-            if (funcionarioLogado != null)
-                alterarSenhaF(novaSenha);
-            if (administradorLogado != null)
-                alterarSenhaA(novaSenha);
-        } catch (ParseException ex) {
-            Logger.getLogger(AlterarSenha.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        String novaSenha = this.cxSenha.getText();
+        if (funcionarioLogado != null)
+            alterarSenhaF(novaSenha);
+        if (administradorLogado != null)
+            alterarSenhaA(novaSenha);
     }//GEN-LAST:event_btnSalvarActionPerformed
 
 

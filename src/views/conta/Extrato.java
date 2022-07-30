@@ -9,7 +9,8 @@ import java.util.List;
 import views.ContaUI;
 
 /**
- *
+ * Mostra os extratos da conta selecionada
+ * 
  * @author Walter
  */
 public class Extrato extends javax.swing.JFrame {
@@ -33,6 +34,12 @@ public class Extrato extends javax.swing.JFrame {
         this.contaUI = contaUI;
     }
     
+    /**
+     * Metodo pra mostrar os extratos
+     * 
+     * @param msg
+     * @param linhas 
+     */
     public void setShowExtrato(String msg, int linhas){
         showExtrato.setRows(linhas);
         showExtrato.setText(msg);

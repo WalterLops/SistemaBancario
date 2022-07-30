@@ -5,7 +5,8 @@
 package contas;
 
 /**
- *
+ * Classe que herda da classe conta.
+ * 
  * @author Walter
  */
 public class ContaCorrente extends Conta {
@@ -23,7 +24,11 @@ public class ContaCorrente extends Conta {
 	public void setTaxaManutencao(double taxaManutencao) {
 		this.taxaManutencao = taxaManutencao;
 	}
-
+        
+    /**
+     *
+     * @return todas as informacoes da conta.
+     */
     @Override
     public String toString() {
         return super.toString()+"\n==================================================================";

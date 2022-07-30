@@ -18,16 +18,17 @@ import usuarios.Administrador;
 import usuarios.Cliente;
 import usuarios.Funcionario;
 
-import views.LoginUI;
-import views.SplashUI;
 import static jsonOperations.Escrita.escreverAdmin;
 import static jsonOperations.Escrita.escreverCliente;
 import static jsonOperations.Escrita.escreverContas;
 import static jsonOperations.Escrita.escreverFuncionario;
 import jsonOperations.Leitura;
+import views.LoginUI;
+import views.SplashUI;
 
 /**
- *
+ * Classe responsavel por controlar as chamdas iniciais das classes do aplicativo.
+ * 
  * @author Walter
  */
 public class Sistema {
@@ -42,14 +43,19 @@ public class Sistema {
             
             
             // Cadastro da agência
-            listaAgencias.add(new Agencia("Sede WWBanck", 709, "Belo Horizonte", "Av. Azul 249"));
+            listaAgencias.add(new Agencia("Sede WWBank", 709, "Belo Horizonte", "Av. Azul 249"));
+            
+            listaAgencias.add(new Agencia("WWBank 009", 809, "Campinas", "Av. Bonina 754"));
+            
+            listaAgencias.add(new Agencia("WWBank 009", 909, "Porto Alegre", "Av. Lilaz 568"));
             
             // Contas de Clientes
             Cliente c1 = new Cliente("C1020", "1234", "Pedro", "Rua R 255", "88888555");
             listaConta.add(new ContaPoupanca(1130, 709, 1000, 5850.98, "Conta Poupança"));
             c1.setIdConta(1130);
-            String extrato = String.format("20/08/2019"+" - "+"saque"+" - R$"+500+"\n Saldo total da conta: R$ "+1500);
-            c1.setExtratos(extrato);
+            c1.setIdConta(1158);
+            c1.setIdConta(1172);
+            c1.setIdConta(1184);
             listaCliente.add(c1);
             
             Cliente c2 = new Cliente("C1022", "1234", "Laura", "Rua F 258", "77888555");
@@ -104,7 +110,6 @@ public class Sistema {
             Escrita.escreverAgencia(listaAgencias, listaConta, baseAgencias);
             }
             
-            
             // Tela SplashUI
             SplashUI spl = new SplashUI();
             spl.setVisible(true);
@@ -121,9 +126,22 @@ public class Sistema {
             show.setVisible(true);
         
     }
+    /**
+     * Metodo que obtem o numero de clientes instanciados a 
+     * partir de um atributo de classe privado em cliente.
+     * 
+     * @return numero de instancias de cliente
+     */
     public static int nInstanciasClienteP(){
         return Cliente.getInstanciasP();
     }
+    
+    /**
+     * Metodo que obtem o numero de clientes instanciados a 
+     * partir de um atributo de classe protegido em cliente.
+     * 
+     * @return numero de instancias de cliente
+     */
     public static int nInstanciasClienteS(){
         return Cliente.getInstanciasS();
     }

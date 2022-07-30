@@ -4,21 +4,15 @@
  */
 package views.FA;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import jsonOperations.Escrita;
 import jsonOperations.Leitura;
 import usuarios.Administrador;
 import usuarios.Funcionario;
 import views.ApenasNumeros;
-import views.ApenasNumeros;
 
 /**
- *
+ * Classe responsavel por remover funcionarios ou administradores.
+ * 
  * @author Walter
  */
 public class RemoverFA extends javax.swing.JInternalFrame {
@@ -70,6 +64,9 @@ public class RemoverFA extends javax.swing.JInternalFrame {
         this.baseAdministradores = baseAdministradores;
     }
 
+    /**
+     * Exibe as informacoes do funcionario ou administrador.
+     */
     public void setShowDados() {
 
         if (administradorSelecionado != null) {
@@ -336,13 +333,13 @@ public class RemoverFA extends javax.swing.JInternalFrame {
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
 
-        if (administradorSelecionado != null) {
+        if (administradorSelecionado != null) { // remove administrador a partir do administrador
             Administrador[] listaAdministradores = Leitura.lerAdministradores(baseAdministradores);
             listaAdministradores = administradorLogado.removerAdmin(
                     administradorSelecionado.getId(), administradorLogado, listaAdministradores);
             Escrita.escreverAdmin(listaAdministradores, baseAdministradores);
             this.dispose();
-        } else if (funcionarioSelecionado != null) {
+        } else if (funcionarioSelecionado != null) { // remove funcionario a partir do administrador
             Funcionario[] listaFuncionarios = Leitura.lerFuncionarios(baseFuncionarios);
             listaFuncionarios = administradorLogado.removerFuncionario(funcionarioSelecionado.getId(), listaFuncionarios);
             Escrita.escreverFuncionario(listaFuncionarios, baseFuncionarios);

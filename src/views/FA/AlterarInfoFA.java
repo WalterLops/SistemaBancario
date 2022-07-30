@@ -4,17 +4,14 @@
  */
 package views.FA;
 
-import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import jsonOperations.Escrita;
 import jsonOperations.Leitura;
 import usuarios.Administrador;
 import usuarios.Funcionario;
 import views.ApenasNumeros;
-import views.ApenasNumeros;
 
 /**
+ * Classe responsavel por alterar informacoes do funcionario ou administrador.
  *
  * @author Walter
  */
@@ -71,10 +68,13 @@ public class AlterarInfoFA extends javax.swing.JInternalFrame {
         this.funcionarioSelecionado = funcionarioSelecionado;
     }
 
+    /**
+     * Preenche as informacoes do usuario selecionado aos campos de texto.
+     */
     public void setShowDados() {
-        
+
         // Mostar os dados alterados usando objeto do tipo funcionario
-        if (administradorSelecionado != null) { 
+        if (administradorSelecionado != null) {
             funcionarioSelecionado = (Funcionario) administradorSelecionado;
         }
 
@@ -86,14 +86,17 @@ public class AlterarInfoFA extends javax.swing.JInternalFrame {
         this.cxContas.setText(funcionarioSelecionado.getsetIdConta().toString());
         this.cxDataA.setText(funcionarioSelecionado.getDataAdmissao());
         this.cxDataD.setText(funcionarioSelecionado.getDataDemissao());
-        
+
         // Anulando o objeto para não ter interferencia no funcionamento
         if (administradorSelecionado != null) {
             funcionarioSelecionado = null;
         }
-        
+
     }
 
+    /**
+     * Seleciona e preenche as informacoes do usuario aos campos
+     */
     public void setAtualizarDados() {
         if (funcionarioSelecionado != null) {
             for (Funcionario f : listaFuncionarios) {
@@ -362,27 +365,15 @@ public class AlterarInfoFA extends javax.swing.JInternalFrame {
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         if (administradorSelecionado != null) {
-            try {
-
-                listaAdministrador = Leitura.lerAdministradores(baseAdministradores);
-                listaAdministrador = administradorLogado.alterarAdmin(administradorSelecionado.getId(), listaAdministrador);
-                Escrita.escreverAdmin(listaAdministrador, baseAdministradores);
-                setAtualizarDados();
-
-            } catch (ParseException ex) {
-                Logger.getLogger(AlterarInfoFA.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            listaAdministrador = Leitura.lerAdministradores(baseAdministradores);
+            listaAdministrador = administradorLogado.alterarAdmin(administradorSelecionado.getId(), listaAdministrador);
+            Escrita.escreverAdmin(listaAdministrador, baseAdministradores);
+            setAtualizarDados();
         } else if (funcionarioSelecionado != null) {
-            try {
-
-                listaFuncionarios = Leitura.lerFuncionarios(baseFuncionarios);
-                listaFuncionarios = administradorLogado.alterarFuncionario(funcionarioSelecionado.getId(), listaFuncionarios);
-                Escrita.escreverFuncionario(listaFuncionarios, baseFuncionarios);
-                setAtualizarDados();
-
-            } catch (ParseException ex) {
-                Logger.getLogger(AlterarInfoFA.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            listaFuncionarios = Leitura.lerFuncionarios(baseFuncionarios);
+            listaFuncionarios = administradorLogado.alterarFuncionario(funcionarioSelecionado.getId(), listaFuncionarios);
+            Escrita.escreverFuncionario(listaFuncionarios, baseFuncionarios);
+            setAtualizarDados();
         }
     }//GEN-LAST:event_btnAlterarActionPerformed
 

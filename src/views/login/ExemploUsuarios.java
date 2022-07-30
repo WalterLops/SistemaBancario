@@ -6,7 +6,8 @@ package views.login;
 
 
 /**
- *
+ * Mostra exemplos de logins de usuarios na tela de loguin para teste do sistema
+ * 
  * @author Walter
  */
 public class ExemploUsuarios extends javax.swing.JFrame {
@@ -18,6 +19,11 @@ public class ExemploUsuarios extends javax.swing.JFrame {
         initComponents();
     }
     
+    /**
+     * Metodo que motra os exemplos de logins de usuarios
+     * 
+     * @param exemplo 
+     */
     public void setExemplo(String exemplo){
         this.ShowExemplo.setText(exemplo);
     }

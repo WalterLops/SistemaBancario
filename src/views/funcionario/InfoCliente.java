@@ -7,7 +7,8 @@ package views.funcionario;
 import usuarios.Cliente;
 
 /**
- *
+ * Mostra as informacoes do cliente
+ * 
  * @author Walter
  */
 public class InfoCliente extends javax.swing.JInternalFrame {

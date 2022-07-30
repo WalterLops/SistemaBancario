@@ -15,7 +15,8 @@ import usuarios.Funcionario;
 import views.ApenasNumeros;
 
 /**
- *
+ * Remove uma conta bancaria
+ * 
  * @author Walter
  */
 public class RemoverConta extends javax.swing.JInternalFrame {
@@ -60,6 +61,11 @@ public class RemoverConta extends javax.swing.JInternalFrame {
         this.listaContas = Leitura.lerContas(baseContas);
     }
 
+    /**
+     * Remove o id das contas associadas do usuario que teve a conta removida
+     * 
+     * @param idCconta 
+     */
     public void setAtualizarRefConta(int idCconta) {
         
         listaCliente = Leitura.lerClientes(baseCliente);
@@ -215,7 +221,7 @@ public class RemoverConta extends javax.swing.JInternalFrame {
             setAtualizarRefConta(idConta);
             Escrita.escreverContas(listaContas, baseContas);
 
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Digite todos os dados");
         }
 

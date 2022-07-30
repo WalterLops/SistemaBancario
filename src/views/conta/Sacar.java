@@ -6,15 +6,13 @@ package views.conta;
 
 import contas.Conta;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import jsonOperations.Escrita;
 import jsonOperations.Leitura;
-import org.json.simple.parser.ParseException;
 import views.ContaUI;
 
 /**
- *
+ * Efetua o saque em uma conta selecionada
+ * 
  * @author Walter
  */
 public class Sacar extends javax.swing.JFrame {
@@ -48,6 +46,11 @@ public class Sacar extends javax.swing.JFrame {
         this.contaSelecionada = contaSelecionada;
     }
     
+    /**
+     * Realiza uma contagem de contas do tipo contaSelecionada na lista
+     * 
+     * @return int numero de contas
+     */
     private int contarContas() {
         int cont = 0;
         for (Conta c : listaContas) {
@@ -59,7 +62,12 @@ public class Sacar extends javax.swing.JFrame {
         }
         return cont;
     }
-
+    
+    /**
+     * 
+     * Remove da lista a contaSelecionada
+     * 
+     */
     private void removerConta() {
         for (int i = 0; i < contarContas(); i++) {
             for (Conta c : listaContas) {
@@ -182,11 +190,10 @@ public class Sacar extends javax.swing.JFrame {
 
     private void btnSacarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSacarActionPerformed
         listaContas = Leitura.lerContas(baseContas);
-        removerConta();
+        removerConta(); // remover para inserir conta atualizada depois 
         double valorSaque = Double.parseDouble(this.cxSaque.getText());
-        contaSelecionada.sacar(valorSaque);
-        listaContas.add(contaSelecionada);
-        contaSelecionada.setRegistrarExtrato(valorSaque, "saque", contaSelecionada);
+        contaSelecionada.sacar(valorSaque); 
+        listaContas.add(contaSelecionada); // inserindo a conta atualizada
         Escrita.escreverContas(listaContas, baseContas);
     }//GEN-LAST:event_btnSacarActionPerformed
 

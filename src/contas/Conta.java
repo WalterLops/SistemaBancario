@@ -1,21 +1,20 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt 
+to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit 
+this template
  */
 package contas;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
-import jsonOperations.Escrita;
-import jsonOperations.Leitura;
-import usuarios.Administrador;
-import usuarios.Cliente;
-import usuarios.Funcionario;
 
 /**
- *
+ * Classe generica conta.
+ * 
  * @author Walter
  */
 public class Conta {
@@ -25,10 +24,10 @@ public class Conta {
     private int numeroConta;
     private double saldo;
     private String tipoConta;
-    protected SimpleDateFormat data = new SimpleDateFormat("dd/MM/yyyy");
-    protected SimpleDateFormat hora = new SimpleDateFormat("HH:mm:ss");
+    private List<String> extratos = new ArrayList<>();
 
-    public Conta(int idConta, int agencia, int numeroConta, double saldo, String tipoConta) {
+    public Conta(int idConta, int agencia, int numeroConta,
+            double saldo, String tipoConta) {
         this.idConta = idConta;
         this.agencia = agencia;
         this.numeroConta = numeroConta;
@@ -76,111 +75,120 @@ public class Conta {
         this.tipoConta = tipoConta;
     }
 
-    // Métodos específicos 
+    public List<String> getExtratos() {
+        return extratos;
+    }
+
+    public void setExtratos(String extratos) {
+        this.extratos.add(extratos);
+    }
+
+    /**
+     *
+     * @param valorSaque
+     * @return true se o saque foi realizado com sucesso ou false se o saque nao
+     * puder ser efetuado. Registra na conta atual o extrato das operacoes
+     * realizadas.
+     */
     public boolean sacar(double valorSaque) {
         if (valorSaque <= getSaldo()) {
             double novoSaldo = getSaldo() - valorSaque;
             setSaldo(novoSaldo);
-            JOptionPane.showMessageDialog(null, "Operação realizada com sucesso. "
+            //registrando o extrato bancario
+            setRegistrarExtrato(valorSaque, "saque");
+
+            JOptionPane.showMessageDialog(null,
+                    "Operação realizada com sucesso. "
                     + "\nNovo valor da conta: " + getSaldo());
             return true;
         } else {
-            JOptionPane.showMessageDialog(null, "Você não tem saldo suficiente para essa operação.");
+            JOptionPane.showMessageDialog(null, "Você não tem saldo "
+                    + "suficiente para essa operação.");
             return false;
         }
 
     }
 
+    /**
+     *
+     * Realiza o deposito na conta. Registra na conta atual o extrato das
+     * operacoes realizadas.
+     *
+     * @param valorDeposito.
+     *
+     */
     public void depositar(double valorDeposito) {
         double novoSaldo = getSaldo() + valorDeposito;
         setSaldo(novoSaldo);
+
+        //registrando o extrato bancario
+        setRegistrarExtrato(valorDeposito, "depósito");
+
         JOptionPane.showMessageDialog(null, "Valor depositado com sucesso!");
     }
 
+    /**
+     *
+     * @param valorTranferir
+     * @param contaDestino
+     * @return conta destino com o valor depositado. Atualiza a conta atual
+     * descontando o valor transferido. Registra na conta atual o extrato das
+     * operacoes realizadas.
+     */
     public Conta transferir(double valorTranferir, Conta contaDestino) {
-        if (sacar(valorTranferir)){
-        contaDestino.depositar(valorTranferir);
+        if (sacar(valorTranferir)) {
+            contaDestino.receberTransferencia(valorTranferir);
+            //registrando o extrato bancario
+            setRegistrarExtrato(valorTranferir, "transferência");
         }
         return contaDestino;
     }
-    
-    public String infoConta(){
-        return "\n=================================================================="
+
+    /**
+     * Recebe a transferencia fazendo o registro no extrato bancario.
+     *
+     * @param valor
+     *
+     */
+    public void receberTransferencia(double valor) {
+        setSaldo(valor);
+        //registrando o extrato bancario
+        setRegistrarExtrato(valor, "transferência recebida");
+    }
+
+    /**
+     *
+     * Registra na conta atual o extrato das operacoes realizadas com a conta
+     * como saque, deposito, transferencia.
+     *
+     * @param valor
+     * @param operacao
+     *
+     */
+    protected void setRegistrarExtrato(double valor, String operacao) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        String extrato = String.format(
+                "\n" + sdf.format(new Date()) + " - " + operacao
+                + " - R$" + valor
+                + " Saldo total da conta: R$ " + getSaldo());
+
+        setExtratos(extrato);
+    }
+
+    /**
+     *
+     * @return todas as informacoes da conta.
+     */
+    @Override
+    public String toString() {
+        return "\n======================================================="
                 + "\nTipo da conta: " + getTipoConta()
                 + "\nAgência: " + getAgencia()
                 + "\nID da Conta: " + getIdConta()
                 + "\nNumero da Conta: " + getNumeroConta()
                 + "\nSaldo: " + getSaldo()
-                +"\n==================================================================";
-    }
-    
-    public void setRegistrarExtrato(double valor, String operacao, Conta conta){
-        String baseClientes = "./src/baseDeDados/clientes.json";
-        String baseFuncionarios = "./src/baseDeDados/funcionarios.json";
-        String baseAdministradores = "./src/baseDeDados/administradores.json";
-        String baseContas = "./src/baseDeDados/listaContas.json";
-        
-        List<Cliente> listaClientes = Leitura.lerClientes(baseClientes);
-        Funcionario[] listaFuncionarios = Leitura.lerFuncionarios(baseFuncionarios);
-        Administrador[] listaAdministradors = Leitura.lerAdministradores(baseAdministradores);
-        
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        
-        String extrato = String.format(
-                "\n"+sdf.format(new Date())+" - "+operacao+" - R$"+valor
-                        +" Saldo total da conta: R$ "+conta.getSaldo());
-        int index = 0;
-        for (Cliente c : listaClientes){
-            for (Integer i : c.getsetIdConta()){
-                if(conta.getIdConta() == i){
-                    c.setExtratos(extrato);
-                    index = 1;
-                    break;
-                }
-            }
-        }
-        for (Funcionario f : listaFuncionarios){
-            for (Integer i : f.getsetIdConta()){
-                if(conta.getIdConta() == i){
-                    f.setExtratos(extrato);
-                    index = 2;
-                    break;
-                }
-            }
-        }
-        for (Administrador a : listaAdministradors){
-            for (Integer i : a.getsetIdConta()){
-                if(conta.getIdConta() == i){
-                    a.setExtratos(extrato);
-                    index = 3;
-                    break;
-                }
-            }
-        }
-        switch (index) {
-            case 1 -> {
-                Escrita.escreverCliente(listaClientes, baseClientes);
-            }
-            case 2 -> {
-                 Escrita.escreverFuncionario(listaFuncionarios, baseFuncionarios);
-            }
-            case 3 -> {
-                 Escrita.escreverAdmin(listaAdministradors, baseAdministradores);
-            }
-        }
-        listaClientes = null;
-        listaFuncionarios = null;
-        listaAdministradors = null;
-        System.gc();
-    }
-
-    @Override
-    public String toString() { //extratoConta
-        return "\n=================================================================="
-                + "\nWW Bank" + "  Extro " + getTipoConta()
-                + "\nAgência: " + getAgencia() + " Data: " + data.format(new Date()) + " Hora: " + hora.format(new Date())
-                + "\nID da Conta: " + getIdConta()
-                + "\nNumero da Conta: " + getNumeroConta()
-                + "\nSaldo: " + getSaldo(); 
+                + "\n=======================================================";
     }
 }

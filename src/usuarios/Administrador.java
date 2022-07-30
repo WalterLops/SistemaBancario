@@ -9,10 +9,6 @@ import contas.Conta;
 import contas.ContaCorrente;
 import contas.ContaPoupanca;
 import contas.ContaSalario;
-import interfaces_e_Login.InterfaceAdmin;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -20,27 +16,20 @@ import javax.swing.JOptionPane;
  *
  * @author Walter
  */
-public class Administrador extends Funcionario implements InterfaceAdmin {
+public class Administrador extends Funcionario {
 
-    public static int numeroAdministradores;
-    private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
-    public Administrador(Date dataAdmissao, Date dataDemissao, String id, String senha, String nome, String endereco, String telefone) {
+    public Administrador(String dataAdmissao, String dataDemissao, String id, String senha, String nome, String endereco, String telefone) {
         super(dataAdmissao, dataDemissao, id, senha, nome, endereco, telefone);
-        Administrador.numeroAdministradores += 1;
     }
 
-    //----------Definição dos métodos do Administrador-----------
-    @Override
-    public void acessarInfoConta(int idConta, List<Conta> listaConta) {
-        for (Conta conta : listaConta) {
-            if (idConta == conta.getIdConta()) {
-                conta.toString();
-            }
-        }
-    }
-
-    @Override
+    /**
+     * Altera as informacoes da conta se existeir uma conta com o mesmo idConta
+     * na List &lt;Conta&gt; passado como parametro.
+     *
+     * @param idConta
+     * @param listaConta
+     * @return List &lt;Conta&gt com a conta atualizada;
+     */
     public List<Conta> alterarConta(int idConta, List<Conta> listaConta) {
         for (Conta conta : listaConta) {
             if (idConta == conta.getIdConta()) {
@@ -120,17 +109,15 @@ public class Administrador extends Funcionario implements InterfaceAdmin {
         return listaConta;
     }
 
-    @Override
-    public void acessarInfoAdmin(String idAdmin, Administrador[] administrador) {
-        for (Administrador admin : administrador) {
-            if (admin.getId() == idAdmin) {
-                admin.toString();
-            }
-        }
-    }
-
-    @Override
-    public Administrador[] alterarAdmin(String idAdmin, Administrador[] administrador) throws ParseException {
+    /**
+     * Altera as informacoes do administrador se for encontrado um objeto com o
+     * mesmo id que idAdmin. Se nao retorna a lista sem alteracoes.
+     *
+     * @param idAdmin
+     * @param administrador
+     * @return Administrador[]
+     */
+    public Administrador[] alterarAdmin(String idAdmin, Administrador[] administrador) {
 
         String valor = null;
 
@@ -186,7 +173,7 @@ public class Administrador extends Funcionario implements InterfaceAdmin {
                                 "Digite a nova data de admição no formato dd/mm/aaaa: ", "Alterar senha",
                                 JOptionPane.QUESTION_MESSAGE);
                         if (valor != null) {
-                            admin.setDataAdmissao(sdf.parse(valor));
+                            admin.setDataAdmissao(valor);
                         }
                     }
                     case 6 -> {
@@ -194,7 +181,7 @@ public class Administrador extends Funcionario implements InterfaceAdmin {
                                 "Digite a data de demição no formato dd/mm/aaaa: ", "Alterar senha",
                                 JOptionPane.QUESTION_MESSAGE);
                         if (valor != null) {
-                            admin.setDataDemissao(sdf.parse(valor));
+                            admin.setDataDemissao(valor);
                         }
                     }
                 }
@@ -206,16 +193,37 @@ public class Administrador extends Funcionario implements InterfaceAdmin {
         return administrador;
     }
 
-    @Override
-    public Administrador adicionarAdmin(Date dataAdmissao, Date dataDemissao,
+    /**
+     * Gera e retorna um objeto do tipo Administrador.
+     *
+     * @param dataAdmissao
+     * @param dataDemissao
+     * @param id
+     * @param senha
+     * @param nome
+     * @param endereco
+     * @param telefone
+     * @return Administrador
+     */
+    public Administrador adicionarAdmin(String dataAdmissao, String dataDemissao,
             String id, String senha, String nome,
-            String endereco, String telefone) throws ParseException {
+            String endereco, String telefone) {
 
         return new Administrador(dataAdmissao, dataDemissao, id, senha, nome, endereco, telefone);
 
     }
 
-    @Override
+    /**
+     * Remove da lista estatica um objeto Administrador que possuir o id =
+     * idAdmin e retorna a lista estatica atualizada. Caso nao for encontrado
+     * nenhum objeto correspondente entao sera retornada a lista sem nehuma
+     * alteracao.
+     *
+     * @param idAdmin
+     * @param administrador
+     * @param listaAdministradores
+     * @return Administrador[]
+     */
     public Administrador[] removerAdmin(String idAdmin, Administrador administrador, Administrador[] listaAdministradores) {
 
         if (listaAdministradores.length < 2) {
@@ -244,12 +252,29 @@ public class Administrador extends Funcionario implements InterfaceAdmin {
         return null;
     }
 
-    @Override
+    /**
+     * Gera e retorna um objeto do tipo Cliente.
+     *
+     * @param id
+     * @param senha
+     * @param nome
+     * @param endereco
+     * @param telefone
+     * @return Cliente
+     */
     public Cliente adicionarCliente(String id, String senha, String nome, String endereco, String telefone) {
         return new Cliente(id, senha, nome, endereco, telefone);
     }
 
-    @Override
+    /**
+     * Remove da lista um objeto Cliente que possuir o id = idCliente e retorna
+     * a lista atualizada. Caso nao for encontrado nenhum objeto correspondente
+     * entao sera retornada a lista sem nehuma alteracao.
+     *
+     * @param idCliente
+     * @param listaCliente
+     * @return List &lt;Cliente&gt;
+     */
     public List<Cliente> removerCliente(String idCliente, List<Cliente> listaCliente) {
         int tamanhoInicial = listaCliente.size();
         for (Cliente cliente : listaCliente) {
@@ -264,8 +289,15 @@ public class Administrador extends Funcionario implements InterfaceAdmin {
         return listaCliente;
     }
 
-    @Override
-    public Funcionario[] alterarFuncionario(String idFuncionario, Funcionario[] listaFuncionario) throws ParseException {
+    /**
+     * Altera as informacoes do funcionario se for encontrado um objeto com o
+     * mesmo id que idAdmin. Se nao retorna a lista sem alteracoes.
+     *
+     * @param idFuncionario
+     * @param listaFuncionario
+     * @return Funcionario[]
+     */
+    public Funcionario[] alterarFuncionario(String idFuncionario, Funcionario[] listaFuncionario) {
 
         String valor = null;
 
@@ -322,7 +354,7 @@ public class Administrador extends Funcionario implements InterfaceAdmin {
                                 "Digite a nova data de admição no formato dd/mm/aaaa: ", "Alterar senha",
                                 JOptionPane.QUESTION_MESSAGE);
                         if (valor != null) {
-                            funcionario.setDataAdmissao(sdf.parse(valor));
+                            funcionario.setDataAdmissao(valor);
                         }
                     }
                     case 6 -> {
@@ -330,7 +362,7 @@ public class Administrador extends Funcionario implements InterfaceAdmin {
                                 "Digite a data de demição no formato dd/mm/aaaa: ", "Alterar senha",
                                 JOptionPane.QUESTION_MESSAGE);
                         if (valor != null) {
-                            funcionario.setDataDemissao(sdf.parse(valor));
+                            funcionario.setDataDemissao(valor);
                         }
                     }
                 }
@@ -342,14 +374,38 @@ public class Administrador extends Funcionario implements InterfaceAdmin {
         return listaFuncionario;
     }
 
-    @Override
-    public Funcionario adicionarFuncionario(Date dataAdmissao, Date dataDemissao, String id, String senha, String nome, String endereco, String telefone) throws ParseException {
+    /**
+     * Gera e retorna um objeto do tipo Funcionario.
+     *
+     * @param dataAdmissao
+     * @param dataDemissao
+     * @param id
+     * @param senha
+     * @param nome
+     * @param endereco
+     * @param telefone
+     * @return Funcionario
+     */
+    public Funcionario adicionarFuncionario(String dataAdmissao,
+            String dataDemissao, String id, String senha,
+            String nome, String endereco, String telefone) {
 
-        return new Funcionario(dataAdmissao, dataDemissao, id, senha, nome, endereco, telefone);
+        return new Funcionario(dataAdmissao, dataDemissao, id,
+                senha, nome, endereco, telefone);
 
     }
 
-    @Override
+    /**
+     * Remove da lista um objeto Funcionario que possuir o id = idFuncionario e
+     * retorna a lista estatica atualizada. Caso nao for encontrado nenhum
+     * objeto correspondente entao sera retornada a lista estatica sem nehuma
+     * alteracao.
+     *
+     *
+     * @param idFuncionario
+     * @param listaFuncionario
+     * @return Funcionario[]
+     */
     public Funcionario[] removerFuncionario(String idFuncionario, Funcionario[] listaFuncionario) {
 
         if (listaFuncionario.length < 2) {
@@ -374,13 +430,29 @@ public class Administrador extends Funcionario implements InterfaceAdmin {
 
         return null;
     }
-    
-    @Override
+
+    /**
+     * Gera e retorna um objeto do tipo Agencia.
+     *
+     * @param nome
+     * @param codigo
+     * @param cidade
+     * @param endereco
+     * @return Agencia
+     */
     public Agencia adicionarAgencia(String nome, int codigo, String cidade, String endereco) {
         return new Agencia(nome, codigo, cidade, endereco);
     }
-    
-    @Override
+
+    /**
+     * Altera as informacoes da Agencia se for encontrado um objeto lista com o
+     * mesmo codigo que o informado no parametro. Se nao retorna a lista sem
+     * alteracoes.
+     *
+     * @param codigo
+     * @param listaAgencia
+     * @return List &lt;Agencia&gt;
+     */
     public List<Agencia> alterarAgencia(int codigo, List<Agencia> listaAgencia) {
 
         String valor = null;
@@ -430,11 +502,20 @@ public class Administrador extends Funcionario implements InterfaceAdmin {
         return listaAgencia;
     }
 
-    @Override
+    /**
+     * Remove da lista um objeto Agencia que possuir o codigo igual ao que foi
+     * informado no parametro e retorna a lista atualizada. Caso nao for
+     * encontrado nenhum objeto correspondente entao sera retornada a lista sem
+     * nehuma alteracao.
+     *
+     * @param codigo
+     * @param listaAgencia
+     * @return List &lt;Agencia&gt;
+     */
     public List<Agencia> removerAgencia(int codigo, List<Agencia> listaAgencia) {
-        
-        for (Agencia a : listaAgencia){
-            if (codigo == a.getCodigo()){
+
+        for (Agencia a : listaAgencia) {
+            if (codigo == a.getCodigo()) {
                 listaAgencia.remove(a);
                 break;
             }
