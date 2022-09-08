@@ -36,16 +36,8 @@ public class Login {
         return usuarioLogado;
     }
 
-    public void setUsuarioLogado(Cliente usuarioLogado) {
-        this.usuarioLogado = usuarioLogado;
-    }
-
     public Funcionario getFuncionarioLogado() {
         return funcionarioLogado;
-    }
-
-    public void setFuncionarioLogado(Funcionario funcionarioLogado) {
-        this.funcionarioLogado = funcionarioLogado;
     }
 
     /**
@@ -96,6 +88,9 @@ public class Login {
      * tipo de usuario para teste do sistema.
      */
     public String getExemploUsuarios() {
+        listaCliente = Leitura.lerClientes(baseClientes);
+        listaFuncionarios = Leitura.lerFuncionarios(baseFuncionarios);
+        administradores = Leitura.lerAdministradores(baseAdministradores);
         return "Cliente "
                 + "\nID: " + listaCliente.get(0).getId()
                 + "\nSenha: " + listaCliente.get(0).getSenha()

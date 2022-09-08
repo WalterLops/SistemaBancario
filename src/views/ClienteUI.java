@@ -82,7 +82,7 @@ public class ClienteUI extends javax.swing.JFrame {
         Sair = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Interface Cliente - WWBanck");
+        setTitle("Interface Cliente - WWBank");
 
         ContaPainel.setBackground(new java.awt.Color(0, 20, 73));
 

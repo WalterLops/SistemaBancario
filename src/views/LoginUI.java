@@ -147,10 +147,10 @@ public class LoginUI extends javax.swing.JFrame {
         Sair = new javax.swing.JButton();
         Senha = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        ExemploUsuarios = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Login - WWBanck");
+        setTitle("Login - WWBank");
         setLocation(new java.awt.Point(202, 94));
 
         Painel.setBackground(new java.awt.Color(0, 20, 73));
@@ -247,18 +247,21 @@ public class LoginUI extends javax.swing.JFrame {
                 .addContainerGap(134, Short.MAX_VALUE))
         );
 
-        jMenu1.setText("Exemplo de usuários");
-        jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
+        jMenuBar1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        ExemploUsuarios.setForeground(new java.awt.Color(0, 0, 255));
+        ExemploUsuarios.setText("Ver exemplo de usuários");
+        ExemploUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu1MouseClicked(evt);
+                ExemploUsuariosMouseClicked(evt);
             }
         });
-        jMenu1.addActionListener(new java.awt.event.ActionListener() {
+        ExemploUsuarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu1ActionPerformed(evt);
+                ExemploUsuariosActionPerformed(evt);
             }
         });
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(ExemploUsuarios);
 
         setJMenuBar(jMenuBar1);
 
@@ -294,14 +297,14 @@ public class LoginUI extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_SairMouseClicked
 
-    private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
+    private void ExemploUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExemploUsuariosActionPerformed
 
-    }//GEN-LAST:event_jMenu1ActionPerformed
+    }//GEN-LAST:event_ExemploUsuariosActionPerformed
 
-    private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
+    private void ExemploUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ExemploUsuariosMouseClicked
         exp.setExemplo(login.getExemploUsuarios());
         exp.setVisible(true);
-    }//GEN-LAST:event_jMenu1MouseClicked
+    }//GEN-LAST:event_ExemploUsuariosMouseClicked
 
     private void EntarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_EntarKeyPressed
         // TODO add your handling code here:
@@ -348,6 +351,7 @@ public class LoginUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Entar;
+    private javax.swing.JMenu ExemploUsuarios;
     private javax.swing.JPanel Painel;
     private javax.swing.JButton Sair;
     private javax.swing.JTextField Senha;
@@ -355,7 +359,6 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables
 }

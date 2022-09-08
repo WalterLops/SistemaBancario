@@ -143,7 +143,7 @@ public class FuncionarioUI extends javax.swing.JFrame {
         DadosAgencia = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Interface Funcionário - WWBanck");
+        setTitle("Interface Funcionário - WWBank");
         setMinimumSize(new java.awt.Dimension(780, 580));
         setPreferredSize(new java.awt.Dimension(780, 620));
         setSize(new java.awt.Dimension(780, 620));

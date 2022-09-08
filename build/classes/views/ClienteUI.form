@@ -75,7 +75,7 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
-    <Property name="title" type="java.lang.String" value="Interface Cliente - WWBanck"/>
+    <Property name="title" type="java.lang.String" value="Interface Cliente - WWBank"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="menuBar" type="java.lang.String" value="BarraMenuConta"/>

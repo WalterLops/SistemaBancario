@@ -233,7 +233,7 @@ public class AdministradorUI extends javax.swing.JFrame {
         removerAgencia = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Interface Administrador - WWBanck");
+        setTitle("Interface Administrador - WWBank");
         setMinimumSize(new java.awt.Dimension(780, 580));
         setSize(new java.awt.Dimension(780, 620));
 
